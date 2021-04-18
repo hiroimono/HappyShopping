@@ -1,0 +1,15 @@
+{
+    "folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "..\\..\\proshop_mern(completed-version)"
+		}
+	],
+    "settings": {
+        "prettier.singleQuote": true,
+        "prettier.useTabs": true,
+        "prettier.jsxSingleQuote": true
+    }
+}

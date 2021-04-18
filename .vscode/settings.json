@@ -1,0 +1,7 @@
+{
+    "prettier.enableDebugLogs": true,
+    "prettier.jsxSingleQuote": true,
+    "prettier.singleQuote": true,
+    "prettier.semi": false,
+    "prettier.useTabs": true
+}
