@@ -1,0 +1,31 @@
+{
+    "name": "happyshopping",
+    "version": "1.0.0",
+    "description": "A Sample Online Shopping Webpage like Amazon built by using MERN stack",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+        "start": "nodemon backend/server",
+        "client": "npm start --prefix frontend",
+        "dev": "concurrently \"npm run start\" \"npm run client\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hiroimono/HappyShopping.git"
+    },
+    "author": "Hüseyin Eltutan",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/hiroimono/HappyShopping/issues"
+    },
+    "homepage": "https://github.com/hiroimono/HappyShopping#readme",
+    "dependencies": {
+        "colors": "^1.4.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "mongoose": "^5.12.5"
+    },
+    "devDependencies": {
+        "concurrently": "^6.0.2"
+    }
+}
