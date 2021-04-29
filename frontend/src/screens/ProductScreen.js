@@ -25,33 +25,33 @@ const ProductScreen = ({ match }) => {
             <Link to='/' className='btn btn-dark'>Go Back</Link>
             <Row className='my-3'>
 
-                <Col md={6}>
-                    <Image src={product.image} fluid />
+                <Col md={12} lg={6} className="d-flex no-gutter justify-content-center align-items-center mb-3">
+                    <Image src={product.image} fluid className="w-100" />
                 </Col>
 
-                <Col md={3}>
+                <Col md={7} lg={4}>
                     <ListGroup variant='flush'>
-                        <ListGroup.Item>
+                        <ListGroup.Item className='px-0'>
                             <h3>{product.name}</h3>
                         </ListGroup.Item>
 
-                        <ListGroup.Item>
+                        <ListGroup.Item className='px-0'>
 
                             <Ratings rating={product.rating} numReviews={product.numReviews} color='gold'></Ratings>
 
                         </ListGroup.Item>
 
-                        <ListGroup.Item>
+                        <ListGroup.Item className='px-0'>
                             Price: ${product.price && product.price}
                         </ListGroup.Item>
 
-                        <ListGroup.Item>
+                        <ListGroup.Item className='px-0'>
                             Descripton: {product.description && product.description}
                         </ListGroup.Item>
                     </ListGroup>
                 </Col>
 
-                <Col md={3}>
+                <Col md={5} lg={2} className="my-4">
                     <Card>
                         <ListGroup variant='flush'>
                             <ListGroup.Item>
