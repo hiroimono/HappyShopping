@@ -8,6 +8,7 @@
         "start": "nodemon backend/server",
         "client": "npm start --prefix frontend",
         "dev": "concurrently \"npm run start\" \"npm run client\"",
+        "redux-devtools": "redux-devtools --hostname=localhost --port=8000",
         "data:import": "node backend/seeder",
         "data:destroy": "node backend/seeder -d"
     },
@@ -30,6 +31,7 @@
         "mongoose": "^5.12.5"
     },
     "devDependencies": {
+        "@redux-devtools/cli": "^1.0.0-7",
         "concurrently": "^6.0.2"
     }
 }

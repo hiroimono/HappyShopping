@@ -1,7 +1,12 @@
 import express from 'express';
 import { config } from 'dotenv';
 import connectDB from './config/db.js';
+
+// import reducDevTools from '@redux-devtools/cli';
+// reducDevTools({ hostname: 'localhost', port: 8000 });
+
 import colors from 'colors';
+
 import productRouter from './routes/productRouter.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
