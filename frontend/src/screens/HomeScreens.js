@@ -7,15 +7,16 @@ import { Row, Col } from 'react-bootstrap';
 // actons
 import { getProducts } from '../actions/productActions.js'
 
-/** Data */
-// import products from '../products';
-
 /** Components */
 import Product from '../components/Product';
+import Loader from '../components/Loader';
 
 const HomeScreen = () => {
     const dispatch = useDispatch();
-    const { loading, error, products } = useSelector(state => state.products)
+    const { loading, error, products } = useSelector(state => state.productsReducer)
+
+    /** If state is in Basic Version */
+    // const { loading, error, products } = useSelector(state => state)
 
     useEffect(() => {
         dispatch(getProducts())
@@ -26,7 +27,7 @@ const HomeScreen = () => {
             <h1>Latest Products</h1>
 
             { loading ?
-                <h2>Loading</h2> :
+                <Loader></Loader> :
                 error ? <h3>{error}</h3> :
                     <Row>
                         {products.map(product => (
