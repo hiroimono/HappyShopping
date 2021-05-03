@@ -7,6 +7,7 @@ import { getSingleProduct } from '../actions/productActions.js'
 /** Components */
 import Ratings from '../components/Ratings';
 import Loader from '../components/Loader';
+import Message from '../components/Message';
 
 const ProductScreen = ({ match }) => {
     const dispatch = useDispatch()
@@ -24,7 +25,7 @@ const ProductScreen = ({ match }) => {
             { loading ?
                 <Loader>Loading</Loader> :
                 error ?
-                    <h3>{error}</h3> :
+                    <Message variant='danger' messageText={error}></Message> :
                     (
                         <>
                             <Link to='/' className='btn btn-dark'>Go Back</Link>
