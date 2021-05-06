@@ -26,7 +26,7 @@ export const addProductToCart = (id, qty) => async (dispatch, getState) => {
     }
 }
 
-export const removeProductFromCart = (id) => async (dispatch) => {
+export const removeProductFromCart = (id) => async (dispatch, getState) => {
     try {
         dispatch({
             type: constants.CART_REMOVE_ITEM,
@@ -34,6 +34,8 @@ export const removeProductFromCart = (id) => async (dispatch) => {
                 id: id
             }
         })
+
+        localStorage.setItem('cartItems', JSON.stringify(getState().cartReducer.cartItems));
     } catch (error) {
         // dispatch({
         //     type: constants.PRODUCT_LIST_FAILED,
