@@ -25,3 +25,19 @@ export const addProductToCart = (id, qty) => async (dispatch, getState) => {
         // })
     }
 }
+
+export const removeProductFromCart = (id) => async (dispatch) => {
+    try {
+        dispatch({
+            type: constants.CART_REMOVE_ITEM,
+            payload: {
+                id: id
+            }
+        })
+    } catch (error) {
+        // dispatch({
+        //     type: constants.PRODUCT_LIST_FAILED,
+        //     payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        // })
+    }
+}

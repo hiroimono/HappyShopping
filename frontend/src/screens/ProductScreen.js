@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
+// bootstrap
 import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap';
+
+// actions
 import { getSingleProduct } from '../actions/productActions.js'
+import { addProductToCart, removeProductFromCart } from '../actions/cartActions.js';
 
 /** Components */
 import Ratings from '../components/Ratings';
@@ -14,6 +19,9 @@ const ProductScreen = ({ history, match }) => {
 
     const dispatch = useDispatch()
     const { loading, error, product } = useSelector(state => state.productReducer)
+    const { cartItems } = useSelector(state => state.cartReducer)
+    const initial = cartItems.filter(item => item._id === match.params.id).length ? true : false;
+    const [isInCart, setIsInCart] = useState(initial);
 
     /** If state is in Basic Version */
     // const { loading, error, product } = useSelector(state => state)
@@ -23,8 +31,16 @@ const ProductScreen = ({ history, match }) => {
     }, [dispatch, match])
 
     const addToCartHandler = () => {
-        history.push(`/cart/${match.params.id}?qty=${qty}`);
+        // history.push(`/cart/${match.params.id}?qty=${qty}`);
+        dispatch(addProductToCart(match.params.id, qty))
+        setIsInCart(true)
     }
+
+    const removeFromCartHandler = () => {
+        dispatch(removeProductFromCart(match.params.id));
+        setIsInCart(false)
+    }
+
 
     return (
         <>
@@ -96,11 +112,20 @@ const ProductScreen = ({ history, match }) => {
 
                                             <ListGroup.Item>
                                                 <Row>
-                                                    <Button type='button' className="btn btn-block"
-                                                        disabled={product?.countInStock <= 0 ? true : false}
-                                                        onClick={addToCartHandler}>
-                                                        Add to Cart
-                                                    </Button>
+                                                    {isInCart ? (
+                                                        <Button type='button' className="btn btn-block"
+                                                            disabled={product?.countInStock <= 0 ? true : false}
+                                                            onClick={removeFromCartHandler}>
+                                                            Remove from cart
+                                                        </Button>
+                                                    ) : (
+                                                        <Button type='button' className="btn btn-block"
+                                                            disabled={product?.countInStock <= 0 ? true : false}
+                                                            onClick={addToCartHandler}>
+                                                            Add to cart
+                                                        </Button>
+                                                    )
+                                                    }
                                                 </Row>
                                             </ListGroup.Item>
                                         </ListGroup>
