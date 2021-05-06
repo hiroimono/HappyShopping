@@ -1,4 +1,4 @@
-export const productConstants = {
+export const constants = {
     // Products action types
     PRODUCT_LIST_REQUEST: 'PRODUCT_LIST_REQUEST',
     PRODUCT_LIST_SUCCESS: 'PRODUCT_LIST_SUCCESS',
@@ -8,4 +8,8 @@ export const productConstants = {
     SINGLE_PRODUCT_REQUEST: 'SINGLE_PRODUCT_REQUEST',
     SINGLE_PRODUCT_SUCCESS: 'SINGLE_PRODUCT_SUCCESS',
     SINGLE_PRODUCT_FAILED: 'SINGLE_PRODUCT_FAILED',
+
+    // Cart action types
+    CART_ADD_ITEM: 'CART_ADD_ITEM',
+    CART_REMOVE_ITEM: 'CART_REMOVE_ITEM'
 }

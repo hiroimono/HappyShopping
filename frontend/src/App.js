@@ -9,8 +9,8 @@ import Footer from './components/Footer';
 import Header from './components/Header';
 import HomeScreen from './screens/HomeScreens';
 import ProductScreen from './screens/ProductScreen';
+import CartScreen from './screens/CartScreen';
 import Login from './screens/Login';
-import ShoppingCart from './screens/ShoppingCart';
 
 const App = () => {
     return (
@@ -21,8 +21,8 @@ const App = () => {
                 <Container className='py-3'>
                     <Route path='/' component={HomeScreen} exact />
                     <Route path='/login' component={Login} />
-                    <Route path='/cart' component={ShoppingCart} />
                     <Route path='/products/:id' component={ProductScreen} />
+                    <Route path='/cart/:id?' component={CartScreen} />
                 </Container>
             </main>
 

@@ -28,8 +28,9 @@ const HomeScreen = () => {
             <h1>Latest Products</h1>
 
             { loading ?
-                <Loader></Loader> :
-                error ? <Message variant='danger' messageText={error}></Message> :
+                <Loader /> :
+                error ?
+                    <Message variant='danger' messageText={error} /> :
                     <Row>
                         {products.map(product => (
                             <Col key={product._id} xs={12} md={6} lg={4}>

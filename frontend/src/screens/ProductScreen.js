@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
+import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap';
 import { getSingleProduct } from '../actions/productActions.js'
 
 /** Components */
@@ -9,7 +9,9 @@ import Ratings from '../components/Ratings';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
-const ProductScreen = ({ match }) => {
+const ProductScreen = ({ history, match }) => {
+    const [qty, setQty] = useState(1);
+
     const dispatch = useDispatch()
     const { loading, error, product } = useSelector(state => state.productReducer)
 
@@ -19,6 +21,10 @@ const ProductScreen = ({ match }) => {
     useEffect(() => {
         dispatch(getSingleProduct(match.params.id));
     }, [dispatch, match])
+
+    const addToCartHandler = () => {
+        history.push(`/cart/${match.params.id}?qty=${qty}`);
+    }
 
     return (
         <>
@@ -31,8 +37,8 @@ const ProductScreen = ({ match }) => {
                             <Link to='/' className='btn btn-dark'>Go Back</Link>
                             <Row className='my-3'>
 
-                                <Col md={12} lg={6} className="d-flex no-gutter justify-content-center align-items-center mb-3">
-                                    <Image src={product?.image} fluid className="w-100" />
+                                <Col md={12} lg={5} className="d-flex no-gutter justify-content-center align-items-center mb-3">
+                                    <Image src={product?.image} fluid className="w-100 h-100" style={{ objectFit: 'cover' }} />
                                 </Col>
 
                                 <Col md={7} lg={4}>
@@ -57,7 +63,7 @@ const ProductScreen = ({ match }) => {
                                     </ListGroup>
                                 </Col>
 
-                                <Col md={5} lg={2} className="my-4">
+                                <Col md={5} lg={3} className="my-4">
                                     <Card>
                                         <ListGroup variant='flush'>
                                             <ListGroup.Item>
@@ -76,7 +82,25 @@ const ProductScreen = ({ match }) => {
 
                                             <ListGroup.Item>
                                                 <Row>
-                                                    <Button type='button' disabled={product?.countInStock <= 0 ? true : false} className="btn btn-block">Add to Cart</Button>
+                                                    <Col className="d-flex align-items-center">Quantity: </Col>
+                                                    <Col>
+                                                        {product?.countInStock > 0 && (
+                                                            <Form.Control as='select' value={qty} onChange={(e) => setQty(e.target.value)}>
+                                                                {[...Array(product.countInStock).keys()].map((num) =>
+                                                                    <option key={num}>{num + 1}</option>
+                                                                )}
+                                                            </Form.Control>
+                                                        )}</Col>
+                                                </Row>
+                                            </ListGroup.Item>
+
+                                            <ListGroup.Item>
+                                                <Row>
+                                                    <Button type='button' className="btn btn-block"
+                                                        disabled={product?.countInStock <= 0 ? true : false}
+                                                        onClick={addToCartHandler}>
+                                                        Add to Cart
+                                                    </Button>
                                                 </Row>
                                             </ListGroup.Item>
                                         </ListGroup>

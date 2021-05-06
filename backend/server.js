@@ -20,6 +20,7 @@ app.get('/', (req, res) => res.send('API is running!'))
 
 /** Middlewares */
 app.use('/api/products', productRouter);
+// app.use('/api/cart', cartRouter);
 app.use(notFound);
 app.use(errorHandler);
 
