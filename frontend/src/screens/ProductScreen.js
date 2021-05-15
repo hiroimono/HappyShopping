@@ -28,7 +28,7 @@ const ProductScreen = ({ history, match }) => {
 
     useEffect(() => {
         dispatch(getSingleProduct(match.params.id));
-    }, [dispatch, match])
+    }, [dispatch, match.params.id, qty])
 
     const addToCartHandler = () => {
         // history.push(`/cart/${match.params.id}?qty=${qty}`);
@@ -124,8 +124,7 @@ const ProductScreen = ({ history, match }) => {
                                                             onClick={addToCartHandler}>
                                                             Add to cart
                                                         </Button>
-                                                    )
-                                                    }
+                                                    )}
                                                 </Row>
                                             </ListGroup.Item>
                                         </ListGroup>
