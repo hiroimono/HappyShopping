@@ -53,7 +53,7 @@ const ProductScreen = ({ history, match }) => {
                             <Link to='/' className='btn btn-dark'>Go Back</Link>
                             <Row className='my-3'>
 
-                                <Col md={12} lg={5} className="d-flex no-gutter justify-content-center align-items-center mb-3">
+                                <Col md={12} lg={5} className="d-flex no-gutter justify-content-center align-items-center my-3">
                                     <Image src={product?.image} fluid className="w-100 h-100" style={{ objectFit: 'cover' }} />
                                 </Col>
 
@@ -79,7 +79,7 @@ const ProductScreen = ({ history, match }) => {
                                     </ListGroup>
                                 </Col>
 
-                                <Col md={5} lg={3} className="my-4">
+                                <Col md={5} lg={3} className="my-3">
                                     <Card>
                                         <ListGroup variant='flush'>
                                             <ListGroup.Item>

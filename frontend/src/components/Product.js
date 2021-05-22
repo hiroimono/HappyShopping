@@ -8,24 +8,21 @@ import Ratings from './Ratings';
 const Product = ({ product }) => {
     return (
         <>
-            <Card className='my-3 rounded'>
+            <Card className='pb-3 rounded h-100'>
                 <Link to={`/products/${product?._id}`}>
                     <Card.Img src={product?.image} variant='top' />
                 </Link>
 
-                <Card.Body>
-                    <Link to={`/products/${product?._id}`}>
+                <Card.Body className="d-flex flex-column justify-content-between pb-0">
+                    <Link to={`/products/${product?._id}`} title={product?.description}>
                         <Card.Title as='div'>
                             <strong>{product?.name}</strong>
                         </Card.Title>
                     </Link>
 
-                    <Card.Text as='div' className="py-3">
+                    <Card.Text as='div'>
                         <Ratings rating={product.rating} numReviews={product.numReviews} color='gold' />
-                    </Card.Text>
-
-                    <Card.Text as='h3'>
-                        ${product.price}
+                        <h3 className="text-left mt-3">${product.price}</h3>
                     </Card.Text>
                 </Card.Body>
             </Card>

@@ -88,10 +88,10 @@ const CartScreen = ({ match, location, history }) => {
                                 <Col md={4} className="mb-5 px-0 pl-md-4 order-first order-md-last">
                                     <Card className="my-2 text-right">
                                         <ListGroup variant='flush'>
-                                            <Card.Header>
-                                                <h3>
+                                            <Card.Header className="p-3 text-right">
+                                                <h4 className="mb-0">
                                                     Subtotal: <span className="text-nowrap">{cartItems.reduce((acc, item) => acc + item.qty, 0)} item</span>
-                                                </h3>
+                                                </h4>
                                             </Card.Header>
 
                                             <ListGroup.Item>
