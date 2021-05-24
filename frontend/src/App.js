@@ -10,7 +10,7 @@ import Header from './components/Header';
 import HomeScreen from './screens/HomeScreens';
 import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
-import Login from './screens/Login';
+import LoginScreen from './screens/LoginScreen';
 
 const App = () => {
     return (
@@ -20,7 +20,7 @@ const App = () => {
             <main>
                 <Container className='py-3'>
                     <Route path='/' component={HomeScreen} exact />
-                    <Route path='/login' component={Login} />
+                    <Route path='/login' component={LoginScreen} />
                     <Route path='/products/:id' component={ProductScreen} />
                     <Route path='/cart/:id?' component={CartScreen} />
                 </Container>

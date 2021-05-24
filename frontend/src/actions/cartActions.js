@@ -16,7 +16,7 @@ export const addProductToCart = (id, qty) => async (dispatch, getState) => {
             }
         })
 
-        localStorage.setItem('cartItems', JSON.stringify(getState().cartReducer.cartItems));
+        localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
 
     } catch (error) {
         // dispatch({
@@ -35,7 +35,7 @@ export const removeProductFromCart = (id) => async (dispatch, getState) => {
             }
         })
 
-        localStorage.setItem('cartItems', JSON.stringify(getState().cartReducer.cartItems));
+        localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
     } catch (error) {
         // dispatch({
         //     type: constants.PRODUCT_LIST_FAILED,

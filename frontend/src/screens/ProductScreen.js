@@ -18,8 +18,8 @@ const ProductScreen = ({ history, match }) => {
     const [qty, setQty] = useState(1);
 
     const dispatch = useDispatch()
-    const { loading, error, product } = useSelector(state => state.productReducer)
-    const { cartItems } = useSelector(state => state.cartReducer)
+    const { loading, error, product } = useSelector(state => state.product)
+    const { cartItems } = useSelector(state => state.cart)
     const initial = cartItems.filter(item => item._id === match.params.id).length ? true : false;
     const [isInCart, setIsInCart] = useState(initial);
 

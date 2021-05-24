@@ -4,7 +4,7 @@ import generateToken from '../utils/generateToken.js';
 
 /**
  * @description Register a new user
- * @route POST /api/users/new
+ * @route POST /api/users/register
  * @access Public
  */
 const registerNewUser = asyncHandler(async (req, res) => {

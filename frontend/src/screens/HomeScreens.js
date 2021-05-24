@@ -14,7 +14,7 @@ import Message from '../components/Message';
 
 const HomeScreen = () => {
     const dispatch = useDispatch();
-    const { loading, error, products } = useSelector(state => state.productsReducer)
+    const { loading, error, products } = useSelector(state => state.products)
 
     /** If state is in Basic Version */
     // const { loading, error, products } = useSelector(state => state)

@@ -15,7 +15,7 @@ const CartScreen = ({ match, location, history }) => {
     const productId = match.params.id ? match.params.id : null;
     const qty = location.search ? Number(location.search.split('=')[1]) : 1;
     const dispatch = useDispatch();
-    const { cartItems } = useSelector(state => state.cartReducer);
+    const { cartItems } = useSelector(state => state.cart);
 
     useEffect(() => {
         if (productId) {
