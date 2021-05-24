@@ -1,5 +1,6 @@
-import axios from 'axios'
-import { constants } from '../constants/constant.js'
+import axios from 'axios';
+import { constants } from '../constants/constant.js';
+import { setLocal } from '../localStorage.js';
 
 export const addProductToCart = (id, qty) => async (dispatch, getState) => {
     try {
@@ -15,9 +16,7 @@ export const addProductToCart = (id, qty) => async (dispatch, getState) => {
                 qty
             }
         })
-
-        localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
-
+        setLocal('cartItems', getState().cart.cartItems);
     } catch (error) {
         // dispatch({
         //     type: constants.PRODUCT_LIST_FAILED,
@@ -34,8 +33,7 @@ export const removeProductFromCart = (id) => async (dispatch, getState) => {
                 id: id
             }
         })
-
-        localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems));
+        setLocal('cartItems', getState().cart.cartItems);
     } catch (error) {
         // dispatch({
         //     type: constants.PRODUCT_LIST_FAILED,
