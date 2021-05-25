@@ -24,15 +24,14 @@ const initialState = {
 };
 
 const middleware = [thunk];
-
 let composeEnhancers;
 let store;
-console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
-if (process.env.NODE_ENV === 'development') {
-    composeEnhancers = composeWithDevTools({ realtime: true, port: 8000 });
-    store = createStore(combinedReducer, initialState, composeEnhancers(applyMiddleware(...middleware)));
-} else {
-    store = createStore(combinedReducer, initialState, applyMiddleware(...middleware));
-}
+
+// if (process.env.NODE_ENV === 'development') {
+composeEnhancers = composeWithDevTools({ realtime: true, port: 8000 });
+store = createStore(combinedReducer, initialState, composeEnhancers(applyMiddleware(...middleware)));
+// } else {
+//     store = createStore(combinedReducer, initialState, applyMiddleware(...middleware));
+// }
 
 export default store;
