@@ -40,6 +40,8 @@ export const userLogin = (loginData) => async (dispatch) => {
 }
 
 export const userLogout = () => async (dispatch) => {
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('cartItems');
     dispatch({ type: constants.USER_LOGOUT });
-    localStorage.setItem('userInfo', null);
+    document.location.href = '/login'
 }

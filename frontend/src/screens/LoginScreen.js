@@ -1,37 +1,66 @@
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
+// components
+import Message from '../components/Message';
+import Loader from '../components/Loader';
+import FormContainer from '../components/FormContainer';
 
 // actions
-import { userLogin, userLogout } from '../actions/userActions';
+import { userLogin } from '../actions/userActions';
 
 // bootstrap
-import { Button } from 'react-bootstrap';
+import { Button, Form, Row, Col } from 'react-bootstrap';
 
-const LoginScreen = () => {
+const LoginScreen = ({ location, history }) => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
     const dispatch = useDispatch();
-    let data = { email: 'abuziddin@example.com', password: '123456' };
+    const { loading, error, userInfo } = useSelector(state => state.userLogin);
+
+    const redirect = location.search ? location.search.split('=')[1] : '/';
+
     useEffect(() => {
-        // dispatch(userLogin(data));
-    }, [dispatch]);
+        if (userInfo) {
+            history.push(redirect)
+        }
+    }, [history, userInfo, redirect])
 
-    const login = () => {
-        dispatch(userLogin(data))
-    }
-
-    const logout = () => {
-        dispatch(userLogout(data))
+    const submitHandler = (e) => {
+        e.preventDefault();
+        dispatch(userLogin({ email, password }));
     }
 
     return (
-        <>
-            <Button onClick={login}>
-                Login
-            </Button>
+        <FormContainer>
+            <h3>Sign in</h3>
 
-            <Button onClick={logout}>
-                Logout
-            </Button>
-        </>
+            { error && <Message variant='danger'>{error}</Message>}
+            { loading && <Loader />}
+
+            <Form onSubmit={submitHandler}>
+                <Form.Group controlId='email'>
+                    <Form.Label>Email Address</Form.Label>
+                    <Form.Control type='email' placeholder='Enter email' value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId='password'>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type='password' placeholder='Enter password' value={password} onChange={(e) => setPassword(e.target.value)}></Form.Control>
+                </Form.Group>
+
+                <Button type='submit' variant='primary'>Sign In</Button>
+
+                <Row className="py-3">
+                    <Col>
+                        New Customer ? {' '}
+                        <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>Register</Link>
+                    </Col>
+                </Row>
+            </Form>
+        </FormContainer>
     )
 }
 
