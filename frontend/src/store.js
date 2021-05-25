@@ -14,7 +14,7 @@
 /** Combined Version of State */
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-// import { composeWithDevTools } from 'remote-redux-devtools';
+import { composeWithDevTools } from 'remote-redux-devtools';
 import { combinedReducer } from './reducers/combinedReducer.js';
 import { cartItemsFromLocalStorage, userLoggedInFromLocalStorage } from './localStorage.js';
 
@@ -27,9 +27,10 @@ const middleware = [thunk];
 
 let composeEnhancers;
 let store;
+console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'development') {
-    // composeEnhancers = composeWithDevTools({ realtime: true, port: 8000 });
-    // store = createStore(combinedReducer, initialState, composeEnhancers(applyMiddleware(...middleware)));
+    composeEnhancers = composeWithDevTools({ realtime: true, port: 8000 });
+    store = createStore(combinedReducer, initialState, composeEnhancers(applyMiddleware(...middleware)));
 } else {
     store = createStore(combinedReducer, initialState, applyMiddleware(...middleware));
 }

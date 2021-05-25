@@ -7,7 +7,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 const Header = () => {
     return (
         <header>
-            <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
+            <Navbar bg="dark" fixed="top" variant="dark" expand="md" collapseOnSelect>
                 <Navbar.Brand as={Link} to="/">HappyShopping</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">

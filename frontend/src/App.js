@@ -17,7 +17,7 @@ const App = () => {
         <Router>
             <Header />
 
-            <main>
+            <main style={{ paddingTop: '56px' }}>
                 <Container className='py-3'>
                     <Route path='/' component={HomeScreen} exact />
                     <Route path='/login' component={LoginScreen} />
