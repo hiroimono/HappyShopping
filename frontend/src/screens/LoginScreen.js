@@ -59,7 +59,7 @@ const LoginScreen = ({ location, history }) => {
                                 New Customer ? {' '}
                                 <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
                                     Register
-                                    <i class="fas fa-sign-in-alt pl-1"></i>
+                                    <i className="fas fa-sign-in-alt pl-1"></i>
                                 </Link>
                             </Col>
                         </Row>
