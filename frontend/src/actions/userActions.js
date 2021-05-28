@@ -1,12 +1,11 @@
 import axios from 'axios'
 import { constants } from '../constants/constant.js'
 
-export const userRegister = (userRegisterInfo) => async (dispatch) => {
+export const userRegister = (registerData) => async (dispatch) => {
     try {
         dispatch({ type: constants.USER_REGISTER_REQUEST });
         const config = { headers: { 'Content-Type': 'Application/json' } };
-        const { data } = await axios.post(`/api/users/register`, userRegisterInfo, config);
-        console.log('data: ', data);
+        const { data } = await axios.post(`/api/users/register`, registerData, config);
         dispatch({
             type: constants.USER_REGISTER_SUCCESS,
             payload: data
@@ -51,4 +50,8 @@ export const userLogout = () => async (dispatch) => {
     localStorage.removeItem('cartItems');
     dispatch({ type: constants.USER_LOGOUT });
     document.location.href = '/login'
+}
+
+export const removeUserRegisterErrors = () => (dispatch) => {
+    dispatch({ type: constants.REMOVE_USER_REGISTER_ERRORS });
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 // bootstrap
 import { Button, Form, Row, Col, Card, Badge } from 'react-bootstrap';
@@ -11,7 +11,7 @@ import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 
 // actions
-import { userRegister } from '../actions/userActions';
+import { userRegister, removeUserRegisterErrors } from '../actions/userActions';
 
 const RegisterScreen = ({ location, history }) => {
     const [name, setName] = useState('');
@@ -23,7 +23,7 @@ const RegisterScreen = ({ location, history }) => {
     const [message, setMessage] = useState(null);
 
     const dispatch = useDispatch();
-    const { loading, error, userInfo } = useSelector(state => state.userLogin);
+    const { loading, error, userInfo } = useSelector(state => state.userRegister);
 
     const redirect = location.search ? location.search.split('=')[1] : '/';
 
@@ -34,9 +34,7 @@ const RegisterScreen = ({ location, history }) => {
     }, [history, userInfo, redirect])
 
     const checkPassword = password => {
-        console.log('password: ', password);
         let isEmpty = (password.trim().length && confirmPassword.trim().length) ? true : false;
-        console.log('isEmpty: ', isEmpty);
         setIsPasswordEmpty(isEmpty);
         if (!isPasswordEmpty) {
             var passw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
@@ -46,7 +44,6 @@ const RegisterScreen = ({ location, history }) => {
                 setIsPasswordOK(false);
             }
         }
-        console.log('IsPasswordOK: ', isPasswordOK);
     }
 
     const submitHandler = (e) => {
@@ -55,11 +52,16 @@ const RegisterScreen = ({ location, history }) => {
             setMessage('Passwords don\'t match!')
         } else if (!isPasswordOK) {
             setMessage('Password should be between 6 to 20 characters which contain at least one numeric digit, one uppercase and one lowercase letter.');
-        } else if (!name || !email) {
+        } else if (!(name && email)) {
             setMessage('Name or Email is missing!');
         } else {
             dispatch(userRegister({ name, email, password }));
         }
+    }
+
+    const redirectTo = () => {
+        dispatch(removeUserRegisterErrors());
+        history.push(redirect ? `/login?redirect=${redirect}` : '/login');
     }
 
     return (
@@ -140,10 +142,10 @@ const RegisterScreen = ({ location, history }) => {
                         <Row className="py-3">
                             <Col className="text-right">
                                 Already have an account ? {' '}
-                                <Link to={redirect ? `/login?redirect=${redirect}` : '/login'}>
+                                <span onClick={redirectTo} style={{ cursor: 'pointer', color: '#e95420' }}>
                                     Login
                                     <i className="fas fa-sign-in-alt pl-1"></i>
-                                </Link>
+                                </span>
                             </Col>
                         </Row>
                     </Form>
