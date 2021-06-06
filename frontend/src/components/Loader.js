@@ -13,7 +13,7 @@ function Loader() {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: 'rgba(0,0,0, .1)',
-            zIndex: 0
+            zIndex: 2
         }}>
             <Spinner animation='border' variant='info' style={{
                 width: '100px',
