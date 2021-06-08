@@ -32,17 +32,32 @@ export const userLoginReducer = (state = {}, action) => {
     }
 }
 
-export const userProfileUpdateReducer = (state = { user: {} }, action) => {
+export const userProfileUpdateReducer = (state = {}, action) => {
     switch (action.type) {
         case constants.USER_PROFILE_UPDATE_REQUEST:
-            return { ...state, loading: true }
+            return { loading: true }
         case constants.USER_PROFILE_UPDATE_SUCCESS:
-            return { ...state, loading: false, users: action.payload }
+            return { success: true, loading: false, users: action.payload }
         case constants.USER_PROFILE_UPDATE_FAILED:
-            return { ...state, loading: false, error: action.payload }
+            return { loading: false, error: action.payload }
         case constants.USER_PROFILE_UPDATE_RESET:
-            return { ...state, user: {} }
+            return {}
         default:
             return state;
+    }
+}
+
+export const userDetailsReducer = (state = { user: {} }, action) => {
+    switch (action.type) {
+        case constants.USER_DETAILS_REQUEST:
+            return { ...state, loading: true }
+        case constants.USER_DETAILS_SUCCESS:
+            return { loading: false, user: action.payload }
+        case constants.USER_DETAILS_FAIL:
+            return { loading: false, error: action.payload }
+        case constants.USER_DETAILS_RESET:
+            return { user: {} }
+        default:
+            return state
     }
 }
