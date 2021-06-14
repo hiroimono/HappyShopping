@@ -30,7 +30,6 @@ export const userLogin = (loginData) => async (dispatch) => {
         dispatch({ type: constants.USER_LOGIN_REQUEST });
         const config = { headers: { 'Content-Type': 'Application/json' } };
         const { data } = await axios.post(`/api/users/login`, loginData, config);
-        console.log('user: ', data);
         dispatch({
             type: constants.USER_LOGIN_SUCCESS,
             payload: data
@@ -48,6 +47,8 @@ export const userLogin = (loginData) => async (dispatch) => {
 export const userLogout = () => async (dispatch) => {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('cartItems');
+    localStorage.removeItem('shippingAddress');
+    localStorage.removeItem('userPaymentMethod');
     dispatch({ type: constants.USER_LOGOUT });
     document.location.href = '/login'
 }

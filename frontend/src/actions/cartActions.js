@@ -26,18 +26,29 @@ export const addProductToCart = (id, qty) => async (dispatch, getState) => {
 }
 
 export const removeProductFromCart = (id) => async (dispatch, getState) => {
-    try {
-        dispatch({
-            type: constants.CART_REMOVE_ITEM,
-            payload: {
-                id: id
-            }
-        })
-        setLocal('cartItems', getState().cart.cartItems);
-    } catch (error) {
-        // dispatch({
-        //     type: constants.PRODUCT_LIST_FAILED,
-        //     payload: error.response && error.response.data.message ? error.response.data.message : error.message
-        // })
-    }
+    dispatch({
+        type: constants.CART_REMOVE_ITEM,
+        payload: {
+            id: id
+        }
+    })
+    setLocal('cartItems', getState().cart.cartItems);
+}
+
+export const saveShippingAddress = (shippingData) => async (dispatch) => {
+    dispatch({
+        type: constants.CART_SAVE_USER_SHIPPING_ADDRESS,
+        payload: shippingData
+    });
+
+    localStorage.setItem('shippingAddress', JSON.stringify(shippingData))
+}
+
+export const savePaymentMethod = (paymentMethod) => async (dispatch) => {
+    dispatch({
+        type: constants.CART_SAVE_USER_PAYMENT_METHOD,
+        payload: paymentMethod
+    });
+
+    localStorage.setItem('userPaymentMethod', JSON.stringify(paymentMethod))
 }

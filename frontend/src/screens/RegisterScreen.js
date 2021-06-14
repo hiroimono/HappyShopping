@@ -67,16 +67,16 @@ const RegisterScreen = ({ location, history }) => {
     return (
         <FormContainer>
             <h3>Sign up</h3>
-            { message && <Message variant='danger'>{message}</Message>}
-            { error && <Message variant='danger'>{error}</Message>}
-            { loading && <Loader />}
+            {message && <Message variant='danger'>{message}</Message>}
+            {error && <Message variant='danger'>{error}</Message>}
+            {loading && <Loader />}
 
             <Card>
                 <Card.Body>
                     <Form onSubmit={submitHandler}>
                         <Form.Group controlId='name'>
                             <Form.Label>Name</Form.Label>
-                            <Form.Control type='name' placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
+                            <Form.Control type='text' placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='email'>

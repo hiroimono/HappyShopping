@@ -16,11 +16,16 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'remote-redux-devtools';
 import { combinedReducer } from './reducers/combinedReducer.js';
-import { cartItemsFromLocalStorage, userInfoFromLocalStorage } from './localStorage.js';
+import { localStorageData } from './localStorage.js';
 
 const initialState = {
-    cart: { cartItems: cartItemsFromLocalStorage },
-    userLogin: { userInfo: userInfoFromLocalStorage }
+    cart: {
+        cartItems: localStorageData.cartItemsFromLocalStorage,
+        shippingAddress: localStorageData.shippingAddressFromLocalStorage
+    },
+    userLogin: {
+        userInfo: localStorageData.userInfoFromLocalStorage
+    }
 };
 
 const middleware = [thunk];

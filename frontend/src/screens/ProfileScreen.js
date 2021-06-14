@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { Link } from 'react-router-dom';
 
 // bootstrap
-import { Button, Form, Row, Col, Badge } from 'react-bootstrap';
+import { Button, Form, Card, Col, Badge } from 'react-bootstrap';
 
 // Components
 import Message from '../components/Message';
 import Loader from '../components/Loader';
+import FormContainer from '../components/FormContainer';
 
 // Constants for action types
 import { constants } from '../constants/constant.js';
@@ -66,91 +67,87 @@ const ProfileScreen = ({ location, history }) => {
     }
 
     return (
-        <Row>
-            <Col md={3}>
-                <h2>User Profile</h2>
-                {message && <Message variant='danger'>{message}</Message>}
-                {success && <Message variant="success">Profile Updated</Message>}
-                {loading ? (
-                    <Loader />
-                ) : error ? (
-                    <Message variant='danger'>{error}</Message>
-                ) : (
-                    <Form onSubmit={submitHandler}>
-                        <Form.Group controlId='name'>
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control type='name' placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
-                        </Form.Group>
+        <FormContainer>
+            <h2>User Profile</h2>
+            {message && <Message variant='danger'>{message}</Message>}
+            {success && <Message variant="success">Profile Updated</Message>}
+            {loading ? (
+                <Loader />
+            ) : error ? (
+                <Message variant='danger'>{error}</Message>
+            ) : (
+                <Card>
+                    <Card.Body>
+                        <Form onSubmit={submitHandler}>
+                            <Form.Group controlId='name'>
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control type='name' placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
+                            </Form.Group>
 
-                        <Form.Group controlId='email'>
-                            <Form.Label>Email Address</Form.Label>
-                            <Form.Control type='email' placeholder='Enter email' value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
-                        </Form.Group>
+                            <Form.Group controlId='email'>
+                                <Form.Label>Email Address</Form.Label>
+                                <Form.Control type='email' placeholder='Enter email' value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
+                            </Form.Group>
 
-                        <Form.Group controlId='password'>
-                            <Form.Row>
-                                <Col>
-                                    <Form.Label>Password</Form.Label>
-                                </Col>
-                                <Col xs="auto" className='d-flex align-items-center'>
-                                    {!isPasswordEmpty && (password && (isPasswordOK ? (
-                                        <Badge pill variant="success">
-                                            <i className="fas fa-thumbs-up text-white"></i>
-                                        </Badge>
-                                    ) : (
-                                        <Badge pill variant="secondary">
-                                            <i className="fas fa-thumbs-down text-white"></i>
-                                        </Badge>
-                                    )))}
-                                </Col>
-                            </Form.Row>
-                            <Form.Control type='password' placeholder='Enter password' value={password} onChange={(e) => { setPassword(e.target.value); checkPassword(e.target.value) }}></Form.Control>
-                        </Form.Group>
+                            <Form.Group controlId='password'>
+                                <Form.Row>
+                                    <Col>
+                                        <Form.Label>Password</Form.Label>
+                                    </Col>
+                                    <Col xs="auto" className='d-flex align-items-center'>
+                                        {!isPasswordEmpty && (password && (isPasswordOK ? (
+                                            <Badge pill variant="success">
+                                                <i className="fas fa-thumbs-up text-white"></i>
+                                            </Badge>
+                                        ) : (
+                                            <Badge pill variant="secondary">
+                                                <i className="fas fa-thumbs-down text-white"></i>
+                                            </Badge>
+                                        )))}
+                                    </Col>
+                                </Form.Row>
+                                <Form.Control type='password' placeholder='Enter password' value={password} onChange={(e) => { setPassword(e.target.value); checkPassword(e.target.value) }}></Form.Control>
+                            </Form.Group>
 
-                        <Form.Group controlId='confirmPassword'>
-                            <Form.Row>
-                                <Col>
-                                    <Form.Label>Confirm Password</Form.Label>
-                                </Col>
-                                <Col xs="auto" className='d-flex align-items-center'>
+                            <Form.Group controlId='confirmPassword'>
+                                <Form.Row>
+                                    <Col>
+                                        <Form.Label>Confirm Password</Form.Label>
+                                    </Col>
+                                    <Col xs="auto" className='d-flex align-items-center'>
+                                        {!isPasswordEmpty && (confirmPassword && ((password === confirmPassword) ? (
+                                            <Badge pill variant="success">
+                                                <i className="fas fa-thumbs-up text-white"></i>
+                                            </Badge>
+                                        ) : (
+                                            <Badge pill variant="secondary">
+                                                <i className="fas fa-thumbs-down text-white"></i>
+                                            </Badge>
+                                        )))}
+                                    </Col>
+                                </Form.Row>
+                                <Form.Control type='password' placeholder='Enter password again' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}></Form.Control>
+                                <div>
                                     {!isPasswordEmpty && (confirmPassword && ((password === confirmPassword) ? (
-                                        <Badge pill variant="success">
-                                            <i className="fas fa-thumbs-up text-white"></i>
+                                        <Badge variant='success'>
+                                            <i className="fas fa-check mr-1"></i>
+                                            Match
                                         </Badge>
                                     ) : (
-                                        <Badge pill variant="secondary">
-                                            <i className="fas fa-thumbs-down text-white"></i>
+                                        <Badge variant='secondary'>
+                                            <i className="fas fa-times mr-1"></i>
+                                            Not match
                                         </Badge>
                                     )))}
-                                </Col>
-                            </Form.Row>
-                            <Form.Control type='password' placeholder='Enter password again' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}></Form.Control>
-                            <div>
-                                {!isPasswordEmpty && (confirmPassword && ((password === confirmPassword) ? (
-                                    <Badge variant='success'>
-                                        <i className="fas fa-check mr-1"></i>
-                                        Match
-                                    </Badge>
-                                ) : (
-                                    <Badge variant='secondary'>
-                                        <i className="fas fa-times mr-1"></i>
-                                        Not match
-                                    </Badge>
-                                )))}
-                            </div>
-                        </Form.Group>
+                                </div>
+                            </Form.Group>
 
-                        <Button type='submit' variant='primary'>Update</Button>
-                    </Form>
-                )}
-            </Col>
-
-            <Col md={9}>
-                <Row className="py-3">
-                    <h2>My Orders</h2>
-                </Row>
-            </Col>
-        </Row >
+                            <Button type='submit' variant='primary'>Update</Button>
+                        </Form>
+                    </Card.Body>
+                </Card>
+            )}
+        </FormContainer>
     )
 }
 

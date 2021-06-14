@@ -28,16 +28,14 @@ const Header = ({ history }) => {
 
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
-                        <LinkContainer to='/cart'>
-                            <Nav.Link>
-                                <i className="fas fa-shopping-cart mx-2"></i>Shopping Cart
-                            </Nav.Link>
-                        </LinkContainer>
-
                         {isLoggedIn ? (
                             <NavDropdown title={userInfo.name} id='username'>
                                 <LinkContainer to='/profile'>
                                     <NavDropdown.Item>Profile</NavDropdown.Item>
+                                </LinkContainer>
+
+                                <LinkContainer to='/orders'>
+                                    <NavDropdown.Item>My Orders</NavDropdown.Item>
                                 </LinkContainer>
 
                                 <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
@@ -49,6 +47,12 @@ const Header = ({ history }) => {
                                 </Nav.Link>
                             </LinkContainer>
                         )}
+
+                        <LinkContainer to='/cart'>
+                            <Nav.Link>
+                                <i className="fas fa-shopping-cart mx-2"></i>Shopping Cart
+                            </Nav.Link>
+                        </LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
