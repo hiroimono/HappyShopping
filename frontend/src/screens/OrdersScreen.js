@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // bootstrap
@@ -12,7 +12,7 @@ import Message from '../components/Message';
 import CheckoutSteps from '../components/CheckoutSteps';
 
 // Actions
-import { savePaymentMethod } from '../actions/cartActions.js';
+// import { savePaymentMethod } from '../actions/cartActions.js';
 
 const OrdersScreen = ({ history }) => {
     const cart = useSelector(state => state.cart);
@@ -104,7 +104,7 @@ const OrdersScreen = ({ history }) => {
                                                 </Col>
 
                                                 <Col xs={4} className="px-0">
-                                                    {cartItem.qty} x €{cartItem.price} = €{cartItem.qty * cartItem.price}
+                                                    {cartItem.qty} x €{cartItem.price} = €{Number(Number(cartItem.qty) * Number(cartItem.price)).toFixed(2)}
                                                 </Col>
 
                                                 {/* <Col md={1} className="col-2 col-md-1 pr-0 text-right">

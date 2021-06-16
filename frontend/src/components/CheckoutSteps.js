@@ -18,11 +18,11 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
 
             {step2 ? (
                 <Nav.Item>
-                    <strong><i class="fas fa-greater-than text-danger"></i><i class="fas fa-greater-than text-danger"></i></strong>
+                    <strong><i className="fas fa-greater-than text-danger"></i><i className="fas fa-greater-than text-danger"></i></strong>
                 </Nav.Item>
             ) : (
                 <Nav.Item>
-                    <i class="fas fa-greater-than text-secondary"></i>
+                    <i className="fas fa-greater-than text-secondary"></i>
                 </Nav.Item>
             )}
 
@@ -40,17 +40,17 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
 
             {step3 ? (
                 <Nav.Item>
-                    <strong><i class="fas fa-greater-than text-danger"></i><i class="fas fa-greater-than text-danger"></i></strong>
+                    <strong><i className="fas fa-greater-than text-danger"></i><i className="fas fa-greater-than text-danger"></i></strong>
                 </Nav.Item>
             ) : (
                 <Nav.Item>
-                    <i class="fas fa-greater-than text-secondary"></i>
+                    <i className="fas fa-greater-than text-secondary"></i>
                 </Nav.Item>
             )}
 
             <Nav.Item>
                 {step3 ? (
-                    <LinkContainer to="/payment">
+                    <LinkContainer to="/payment-methodName">
                         <Nav.Link>
                             <h4 className='mb-0'>Payment</h4>
                         </Nav.Link>
@@ -62,11 +62,11 @@ const CheckoutSteps = ({ step1, step2, step3, step4 }) => {
 
             {step4 ? (
                 <Nav.Item>
-                    <strong><i class="fas fa-greater-than text-danger"></i><i class="fas fa-greater-than text-danger"></i></strong>
+                    <strong><i className="fas fa-greater-than text-danger"></i><i className="fas fa-greater-than text-danger"></i></strong>
                 </Nav.Item>
             ) : (
                 <Nav.Item>
-                    <i class="fas fa-greater-than text-secondary"></i>
+                    <i className="fas fa-greater-than text-secondary"></i>
                 </Nav.Item>
             )}
 
