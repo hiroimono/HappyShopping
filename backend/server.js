@@ -7,6 +7,7 @@ import colors from 'colors';
 
 import productRouter from './routers/productRouter.js';
 import userRouter from './routers/userRouter.js';
+import orderRouter from './routers/orderRouter.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 config();
@@ -18,6 +19,7 @@ app.use(express.json());
 /** Router Middlewares */
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
+app.use('/api/orders', orderRouter);
 // app.use('/api/cart', cartRouter);
 
 if (process.env.NODE_ENV === 'production') {

@@ -7,6 +7,7 @@ import {
     userDetailsReducer,
     userProfileUpdateReducer
 } from './userReducer.js';
+import { orderCreateReducer, orderDetailsByIdReducer } from './orderReducer.js'
 
 export const combinedReducer = combineReducers({
     products: productsReducer,
@@ -16,4 +17,6 @@ export const combinedReducer = combineReducers({
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
     userProfileUpdate: userProfileUpdateReducer,
+    orderCreate: orderCreateReducer,
+    orderDetailsById: orderDetailsByIdReducer
 });
