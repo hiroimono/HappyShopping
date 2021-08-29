@@ -1,9 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // bootstrap
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
+
+// Paypal Button
+import { loadScript } from "@paypal/paypal-js";
+import { PayPalButton } from 'react-paypal-button-v2';
 
 // Components
 import Message from '../components/Message';
@@ -11,25 +15,68 @@ import Loader from '../components/Loader';
 // import FormContainer from '../components/FormContainer';
 
 // Actions
-import { getOrderDetailsById } from '../actions/orderActions.js';
+import { getOrderDetailsById, payOrder } from '../actions/orderActions.js';
+import { getPayPalScript } from '../actions/configActions.js';
+import { constants } from '../constants/constant.js'
 
 const OrdersScreen = ({ match }) => {
-    const dispatch = useDispatch();
     const orderId = match.params.id;
-    const orderDetails = useSelector(state => state.orderDetailsById);
-    console.log('orderDetails: ', orderDetails);
-    const { order, loading, error } = orderDetails;
+    const [sdkReady, setSdkReady] = useState(false);
+    const dispatch = useDispatch();
 
-    const addDecimals = (num) => Math.round((num * 100) / 100).toFixed(2)
+    const { order, loading, error } = useSelector(state => state.orderDetailsById);
+    const { loading: loadingPay, success: successPay } = useSelector((state) => state.orderPay);
+    const { paypalClientId } = useSelector((state) => state.paypalClientId);
 
     // Calculator
     if (!loading) {
+        const addDecimals = (num) => Math.round((num * 100) / 100).toFixed(2)
         order.itemsPrice = addDecimals(order.cartItems.reduce((acc, curr) => acc + curr.price * curr.qty, 0));
     }
 
     useEffect(() => {
-        dispatch(getOrderDetailsById(orderId))
-    }, [dispatch, orderId])
+        if (!order || successPay || order?._id !== orderId) {
+            dispatch({ type: constants.ORDER_PAY_RESET })
+            dispatch(getOrderDetailsById(orderId))
+        }
+    }, [dispatch, orderId, successPay, order])
+
+    useEffect(() => {
+        // const addPayPalScript = async (clientId) => {
+        //     const script = document.createElement('script')
+        //     script.type = 'text/javascript'
+        //     script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
+        //     script.async = true
+        //     script.onload = () => {
+        //         setSdkReady(true)
+        //     }
+        //     document.body.appendChild(script)
+        // }
+
+        if (order && !order.isPaid) {
+            if (!window.paypal) {
+                dispatch(getPayPalScript())
+
+                if (paypalClientId) {
+                    // addPayPalScript(paypalClientId)
+                    console.log('paypalClientId: ', paypalClientId);
+                    loadScript({ "client-id": paypalClientId })
+                        .then(() => {
+                            setSdkReady(true)
+                        })
+                        .catch(e => console.log('e: ', e));
+                }
+            } else {
+                setSdkReady(true)
+            }
+        }
+    }, [dispatch, order, sdkReady, paypalClientId])
+
+
+    const successPaymentHandler = (paymentResult) => {
+        dispatch(payOrder(orderId, paymentResult))
+    }
+
 
     return loading ?
         <Loader /> :
@@ -39,12 +86,32 @@ const OrdersScreen = ({ match }) => {
                 <Row>
                     <Col lg={8}>
                         <ListGroup variant='flush'>
-                            <ListGroup.Item>
+                            <ListGroup.Item className="px-0">
                                 <h3>Shipping</h3>
+                                <Row>
+                                    <Col md={2} className='mb-0'>
+                                        <strong>Name: </strong>
+                                    </Col>
+                                    <Col className='mb-0'>
+                                        <span>
+                                            {order.user.name}
+                                        </span>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col md={2} className='mb-0'>
+                                        <strong>Email: </strong>
+                                    </Col>
+                                    <Col className='mb-0'>
+                                        <span>
+                                            <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+                                        </span>
+                                    </Col>
+                                </Row>
                                 <Row>
                                     <Col md={2}>
                                         <p className='mb-0'>
-                                            Address:
+                                            <strong>Address: </strong>
                                         </p>
                                     </Col>
                                     <Col>
@@ -62,14 +129,23 @@ const OrdersScreen = ({ match }) => {
                                         </span>
                                     </Col>
                                 </Row>
+                                <Row>
+                                    <Col className='col-12 mt-2'>
+                                        {
+                                            order?.isDelivered ?
+                                                <Message variant='success'>Paid on {order?.deliveredAt}</Message> :
+                                                <Message variant='danger'>Not delivered yet.</Message>
+                                        }
+                                    </Col>
+                                </Row>
                             </ListGroup.Item>
 
-                            <ListGroup.Item>
+                            <ListGroup.Item className='px-0'>
                                 <h3>Payment Method:</h3>
                                 <Row>
                                     <Col md={2}>
                                         <p className='mb-0'>
-                                            Method:
+                                            <strong>Method:</strong>
                                         </p>
                                     </Col>
                                     <Col>
@@ -78,9 +154,18 @@ const OrdersScreen = ({ match }) => {
                                         </p>
                                     </Col>
                                 </Row>
+                                <Row>
+                                    <Col className='col-12 mt-2'>
+                                        {
+                                            order?.isPaid ?
+                                                <Message variant='success'>Paid on {order?.paidAt}</Message> :
+                                                <Message variant='danger'>Not paid yet.</Message>
+                                        }
+                                    </Col>
+                                </Row>
                             </ListGroup.Item>
 
-                            <ListGroup.Item>
+                            <ListGroup.Item className='px-0'>
                                 <h3>Order items:</h3>
                                 {!order?.cartItems?.length ? (
                                     <Message>Your Order is empty.</Message>
@@ -117,9 +202,9 @@ const OrdersScreen = ({ match }) => {
                         </ListGroup>
                     </Col>
 
-                    <Col lg={4} className="mb-5 px-0 pl-md-4">
+                    <Col lg={4} className="mb-5 pl-lg-4 col-lg-4">
                         <ListGroup variant='flush'>
-                            <ListGroup.Item>
+                            <ListGroup.Item className='px-0'>
                                 <Card className="my-2 text-right">
                                     <ListGroup variant='flush'>
                                         <Card.Header className="p-3 text-right">
@@ -131,7 +216,7 @@ const OrdersScreen = ({ match }) => {
                                         <ListGroup.Item>
                                             <Row>
                                                 <Col xs={2} lg={4} className='px-1'>
-                                                    Items:
+                                                    <strong>Items:</strong>
                                                 </Col>
                                                 <Col xs={10} lg={8} className='pr-4 text-right'>
                                                     {order.itemsPrice}€
@@ -142,7 +227,7 @@ const OrdersScreen = ({ match }) => {
                                         <ListGroup.Item>
                                             <Row>
                                                 <Col xs={2} lg={4} className='px-1'>
-                                                    Shipping:
+                                                    <strong>Shipping:</strong>
                                                 </Col>
                                                 <Col xs={10} lg={8} className='pr-4 text-right'>
                                                     {order.shippingPrice}€
@@ -153,7 +238,7 @@ const OrdersScreen = ({ match }) => {
                                         <ListGroup.Item>
                                             <Row>
                                                 <Col xs={2} lg={4} className='px-1'>
-                                                    Tax:
+                                                    <strong>Tax:</strong>
                                                 </Col>
                                                 <Col xs={10} lg={8} className='pr-4 text-right'>
                                                     {order.taxPrice}€
@@ -175,7 +260,6 @@ const OrdersScreen = ({ match }) => {
 
                                 </Card>
 
-
                                 {
                                     error &&
                                     <Message variant='danger'>
@@ -183,6 +267,22 @@ const OrdersScreen = ({ match }) => {
                                     </Message>
                                 }
                             </ListGroup.Item>
+
+                            {
+                                !order.isPaid && (
+                                    <ListGroup.Item className='p-0'>
+                                        {loadingPay && <Loader />}
+                                        {!sdkReady ? (
+                                            <Loader />
+                                        ) : (
+                                            <PayPalButton
+                                                amount={order.totalPrice}
+                                                onSuccess={successPaymentHandler}
+                                            />
+                                        )}
+                                    </ListGroup.Item>
+                                )
+                            }
                         </ListGroup>
                     </Col>
                 </Row>

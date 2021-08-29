@@ -23,11 +23,10 @@ export const orderCreateReducer = (state = {}, action) => {
     }
 }
 
-export const orderDetailsByIdReducer = (state = { loading: true, order: {} }, action) => {
+export const orderDetailsByIdReducer = (state = { loading: true, orderItems: [], shippingAddress: {} }, action) => {
     switch (action.type) {
         case constants.ORDER_DETAILS_BY_ID_REQUEST:
             return {
-                ...state,
                 loading: true
             }
         case constants.ORDER_DETAILS_BY_ID_SUCCESS:
@@ -40,6 +39,38 @@ export const orderDetailsByIdReducer = (state = { loading: true, order: {} }, ac
             return {
                 loading: false,
                 error: action.payload
+            }
+
+        default:
+            return state
+    }
+}
+
+export const orderPayReducer = (state = { loading: false, success: false }, action) => {
+    switch (action.type) {
+        case constants.ORDER_PAY_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case constants.ORDER_PAY_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                success: true
+            }
+        case constants.ORDER_PAY_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case constants.ORDER_PAY_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false
             }
 
         default:

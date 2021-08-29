@@ -52,7 +52,7 @@ const PlaceOrdersScreen = ({ history }) => {
             <Row>
                 <Col lg={8}>
                     <ListGroup variant='flush'>
-                        <ListGroup.Item>
+                        <ListGroup.Item className="px-0">
                             <h3>Shipping</h3>
                             <Row>
                                 <Col md={2}>
@@ -77,7 +77,7 @@ const PlaceOrdersScreen = ({ history }) => {
                             </Row>
                         </ListGroup.Item>
 
-                        <ListGroup.Item>
+                        <ListGroup.Item className="px-0">
                             <h3>Payment Method:</h3>
                             <Row>
                                 <Col md={2}>
@@ -93,9 +93,9 @@ const PlaceOrdersScreen = ({ history }) => {
                             </Row>
                         </ListGroup.Item>
 
-                        <ListGroup.Item>
+                        <ListGroup.Item className="px-0">
                             <h3>Order items:</h3>
-                            {cart.cartItems.length ? (
+                            {!cart?.cartItems?.length ? (
                                 <Message>Your cart is empty.</Message>
                             ) : (
                                 <ListGroup variant=''>
@@ -130,9 +130,9 @@ const PlaceOrdersScreen = ({ history }) => {
                     </ListGroup>
                 </Col>
 
-                <Col lg={4} className="mb-5 px-0 pl-md-4">
+                <Col lg={4} className="mb-5 pl-lg-4">
                     <ListGroup variant='flush'>
-                        <ListGroup.Item>
+                        <ListGroup.Item className='px-0'>
                             <Card className="my-2 text-right">
                                 <ListGroup variant='flush'>
                                     <Card.Header className="p-3 text-right">

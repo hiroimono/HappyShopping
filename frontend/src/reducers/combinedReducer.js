@@ -1,13 +1,32 @@
-import { combineReducers } from 'redux';
-import { productsReducer, productReducer } from './productReducer.js';
-import { cartReducer } from './cartReducer.js';
+import {
+    combineReducers
+} from 'redux';
+
+import {
+    productsReducer,
+    productReducer
+} from './productReducer.js';
+
+import {
+    cartReducer
+} from './cartReducer.js';
+
 import {
     userLoginReducer,
     userRegisterReducer,
     userDetailsReducer,
     userProfileUpdateReducer
 } from './userReducer.js';
-import { orderCreateReducer, orderDetailsByIdReducer } from './orderReducer.js'
+
+import {
+    orderCreateReducer,
+    orderDetailsByIdReducer,
+    orderPayReducer
+} from './orderReducer.js'
+
+import {
+    paypalClientIdReducer
+} from './configReducer.js'
 
 export const combinedReducer = combineReducers({
     products: productsReducer,
@@ -18,5 +37,7 @@ export const combinedReducer = combineReducers({
     userDetails: userDetailsReducer,
     userProfileUpdate: userProfileUpdateReducer,
     orderCreate: orderCreateReducer,
-    orderDetailsById: orderDetailsByIdReducer
+    orderDetailsById: orderDetailsByIdReducer,
+    orderPay: orderPayReducer,
+    paypalClientId: paypalClientIdReducer
 });
