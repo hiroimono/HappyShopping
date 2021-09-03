@@ -13,6 +13,7 @@ import CheckoutSteps from '../components/CheckoutSteps';
 
 // Actions
 import { createOrder } from '../actions/orderActions.js';
+import { constants } from '../constants/constant';
 
 const PlaceOrdersScreen = ({ history }) => {
     const dispatch = useDispatch();
@@ -43,7 +44,10 @@ const PlaceOrdersScreen = ({ history }) => {
             taxPrice: cart.taxPrice,
             totalPrice: cart.totalPrice,
         }))
+        dispatch({ type: constants.ORDER_CREATE_RESET })
     }
+
+    const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
 
     return (
         <>
@@ -113,7 +117,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                                 </Col>
 
                                                 <Col xs={4} className="px-0">
-                                                    {cartItem.qty} x €{cartItem.price} = €{Number(Number(cartItem.qty) * Number(cartItem.price)).toFixed(2)}
+                                                    {cartItem.qty} x {currency(cartItem.price)} = {currency(Number(cartItem.qty) * Number(cartItem.price))}
                                                 </Col>
 
                                                 {/* <Col md={1} className="col-2 col-md-1 pr-0 text-right">
@@ -147,7 +151,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                                 Items:
                                             </Col>
                                             <Col xs={10} lg={8} className='pr-4 text-right'>
-                                                {cart.itemsPrice}€
+                                                {currency(cart.itemsPrice)}
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>
@@ -158,7 +162,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                                 Shipping:
                                             </Col>
                                             <Col xs={10} lg={8} className='pr-4 text-right'>
-                                                {cart.shippingPrice}€
+                                                {currency(cart.shippingPrice)}
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>
@@ -169,7 +173,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                                 Tax:
                                             </Col>
                                             <Col xs={10} lg={8} className='pr-4 text-right'>
-                                                {cart.taxPrice}€
+                                                {currency(cart.taxPrice)}
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>
@@ -180,7 +184,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                                 <h5><strong>Total:</strong></h5>
                                             </Col>
                                             <Col xs={10} lg={8} className='pr-4 text-right'>
-                                                <h5><strong>{cart.totalPrice}€</strong></h5>
+                                                <h5><strong>{currency(cart.totalPrice)}</strong></h5>
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>

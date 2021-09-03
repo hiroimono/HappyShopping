@@ -40,7 +40,7 @@ const ProductScreen = ({ history, match }) => {
         dispatch(removeProductFromCart(match.params.id));
         setIsInCart(false)
     }
-
+    const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
 
     return (
         <>
@@ -70,11 +70,11 @@ const ProductScreen = ({ history, match }) => {
                                         </ListGroup.Item>
 
                                         <ListGroup.Item className='px-0'>
-                                            Price: ${product?.price && product?.price}
+                                            Price: {currency(product?.price)}
                                         </ListGroup.Item>
 
                                         <ListGroup.Item className='px-0'>
-                                            Descripton: {product?.description && product?.description}
+                                            Descripton: {product?.description}
                                         </ListGroup.Item>
                                     </ListGroup>
                                 </Col>
@@ -85,7 +85,7 @@ const ProductScreen = ({ history, match }) => {
                                             <ListGroup.Item>
                                                 <Row>
                                                     <Col>Price: </Col>
-                                                    <Col><strong>${product?.price}</strong></Col>
+                                                    <Col><strong>{currency(product?.price)}</strong></Col>
                                                 </Row>
                                             </ListGroup.Item>
 

@@ -19,7 +19,7 @@ import { getOrderDetailsById, payOrder } from '../actions/orderActions.js';
 import { getPayPalScript } from '../actions/configActions.js';
 import { constants } from '../constants/constant.js'
 
-const OrdersScreen = ({ match }) => {
+const OrdersScreen = ({ match, history }) => {
     const orderId = match.params.id;
     const [sdkReady, setSdkReady] = useState(false);
     const dispatch = useDispatch();
@@ -27,6 +27,7 @@ const OrdersScreen = ({ match }) => {
     const { order, loading, error } = useSelector(state => state.orderDetailsById);
     const { loading: loadingPay, success: successPay } = useSelector((state) => state.orderPay);
     const { paypalClientId } = useSelector((state) => state.paypalClientId);
+    const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
 
     // Calculator
     if (!loading) {
@@ -72,11 +73,13 @@ const OrdersScreen = ({ match }) => {
         }
     }, [dispatch, order, sdkReady, paypalClientId])
 
-
     const successPaymentHandler = (paymentResult) => {
         dispatch(payOrder(orderId, paymentResult))
+        dispatch({ type: constants.CART_ITEMS_RESET })
     }
 
+    const showDate = (str) => new Date(str).toLocaleDateString('de-DE', { dateStyle: 'full' })
+    const showTime = (str) => new Date(str).toLocaleTimeString('de-DE', { timeStyle: 'short' })
 
     return loading ?
         <Loader /> :
@@ -133,7 +136,7 @@ const OrdersScreen = ({ match }) => {
                                     <Col className='col-12 mt-2'>
                                         {
                                             order?.isDelivered ?
-                                                <Message variant='success'>Paid on {order?.deliveredAt}</Message> :
+                                                <Message variant='success'>Paid on {showDate(order?.deliveredAt)}</Message> :
                                                 <Message variant='danger'>Not delivered yet.</Message>
                                         }
                                     </Col>
@@ -158,7 +161,7 @@ const OrdersScreen = ({ match }) => {
                                     <Col className='col-12 mt-2'>
                                         {
                                             order?.isPaid ?
-                                                <Message variant='success'>Paid on {order?.paidAt}</Message> :
+                                                <Message variant='success'>Paid on {showDate(order?.paidAt)} at {showTime(order?.paidAt)}</Message> :
                                                 <Message variant='danger'>Not paid yet.</Message>
                                         }
                                     </Col>
@@ -185,7 +188,7 @@ const OrdersScreen = ({ match }) => {
                                                     </Col>
 
                                                     <Col xs={4} className="px-0">
-                                                        {item.qty} x €{item.price} = €{Number(Number(item.qty) * Number(item.price)).toFixed(2)}
+                                                        {item.qty} x {currency(item.price)} = {currency(Number(Number(item.qty) * Number(item.price)).toFixed(2))}
                                                     </Col>
 
                                                     {/* <Col md={1} className="col-2 col-md-1 pr-0 text-right">
@@ -219,7 +222,7 @@ const OrdersScreen = ({ match }) => {
                                                     <strong>Items:</strong>
                                                 </Col>
                                                 <Col xs={10} lg={8} className='pr-4 text-right'>
-                                                    {order.itemsPrice}€
+                                                    {currency(order.itemsPrice)}
                                                 </Col>
                                             </Row>
                                         </ListGroup.Item>
@@ -230,7 +233,7 @@ const OrdersScreen = ({ match }) => {
                                                     <strong>Shipping:</strong>
                                                 </Col>
                                                 <Col xs={10} lg={8} className='pr-4 text-right'>
-                                                    {order.shippingPrice}€
+                                                    {currency(order.shippingPrice)}
                                                 </Col>
                                             </Row>
                                         </ListGroup.Item>
@@ -241,7 +244,7 @@ const OrdersScreen = ({ match }) => {
                                                     <strong>Tax:</strong>
                                                 </Col>
                                                 <Col xs={10} lg={8} className='pr-4 text-right'>
-                                                    {order.taxPrice}€
+                                                    {currency(order.taxPrice)}
                                                 </Col>
                                             </Row>
                                         </ListGroup.Item>
@@ -252,7 +255,7 @@ const OrdersScreen = ({ match }) => {
                                                     <h5><strong>Total:</strong></h5>
                                                 </Col>
                                                 <Col xs={10} lg={8} className='pr-4 text-right'>
-                                                    <h5><strong>{order.totalPrice}€</strong></h5>
+                                                    <h5><strong>{currency(order.totalPrice)}</strong></h5>
                                                 </Col>
                                             </Row>
                                         </ListGroup.Item>

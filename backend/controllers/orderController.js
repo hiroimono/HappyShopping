@@ -23,6 +23,23 @@ const addOrderItems = asyncHandler(async (req, res) => {
 })
 
 /**
+ * @description Delete an order
+ * @route DELETE api/orders/:id
+ * @access private
+ */
+const removeOrderItems = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id)
+
+    if (order) {
+        await order.remove()
+        res.json({ message: 'Order removed' })
+    } else {
+        res.status(404)
+        throw new Error('Order not found')
+    }
+})
+
+/**
  * @description get Order By Id
  * @route GET api/orders/:id
  * @access private
@@ -39,6 +56,17 @@ const getOrderById = asyncHandler(async (req, res) => {
 })
 
 /**
+ * @description get User's Orders
+ * @route GET api/orders/myorders
+ * @access private
+ */
+const getUserOrders = asyncHandler(async (req, res) => {
+    const orders = await Order.find({ user: req.user._id });
+
+    res.json(orders);
+})
+
+/**
  * @description updatw Order to be paid
  * @route GET api/orders/:id/pay
  * @access private
@@ -49,7 +77,6 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     if (order) {
         order.isPaid = true;
         order.paidAt = Date.now();
-        console.log('req.body: ', req.body);
         order.paymentResult = {
             id: req.body.id,
             status: req.body.status,
@@ -64,4 +91,4 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     }
 })
 
-export { addOrderItems, getOrderById, updateOrderToPaid }
+export { addOrderItems, getOrderById, updateOrderToPaid, getUserOrders, removeOrderItems }

@@ -8,7 +8,7 @@ import { userLogout } from '../actions/userActions.js'
 /** Styles */
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 
-const Header = ({ history }) => {
+const Header = () => {
     const dispatch = useDispatch()
     const { userInfo } = useSelector(state => state.userLogin);
     const isLoggedIn = userInfo ? true : false;
@@ -34,7 +34,7 @@ const Header = ({ history }) => {
                                     <NavDropdown.Item>Profile</NavDropdown.Item>
                                 </LinkContainer>
 
-                                <LinkContainer to='/orders'>
+                                <LinkContainer to='/my-orders'>
                                     <NavDropdown.Item>My Orders</NavDropdown.Item>
                                 </LinkContainer>
 

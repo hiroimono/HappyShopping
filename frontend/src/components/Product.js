@@ -6,6 +6,7 @@ import { Card } from 'react-bootstrap';
 import Ratings from './Ratings';
 
 const Product = ({ product }) => {
+    const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
     return (
         <>
             <Card className='pb-3 rounded h-100'>
@@ -22,7 +23,7 @@ const Product = ({ product }) => {
 
                     <Card.Text as='div'>
                         <Ratings rating={product.rating} numReviews={product.numReviews} color='gold' />
-                        <h3 className="text-left mt-3">${product.price}</h3>
+                        <h3 className="text-left mt-3">{currency(product.price)}</h3>
                     </Card.Text>
                 </Card.Body>
             </Card>

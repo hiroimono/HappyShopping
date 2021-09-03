@@ -50,6 +50,8 @@ export const userLogout = () => async (dispatch) => {
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('userPaymentMethod');
     dispatch({ type: constants.USER_LOGOUT });
+    dispatch({ type: constants.USER_DETAILS_RESET });
+    dispatch({ type: constants.MY_ORDERS_RESET });
     document.location.href = '/login'
 }
 

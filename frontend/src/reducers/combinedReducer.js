@@ -20,8 +20,10 @@ import {
 
 import {
     orderCreateReducer,
+    orderCancelReducer,
     orderDetailsByIdReducer,
-    orderPayReducer
+    orderPayReducer,
+    myOrdersReducer
 } from './orderReducer.js'
 
 import {
@@ -37,7 +39,9 @@ export const combinedReducer = combineReducers({
     userDetails: userDetailsReducer,
     userProfileUpdate: userProfileUpdateReducer,
     orderCreate: orderCreateReducer,
+    orderCancel: orderCancelReducer,
     orderDetailsById: orderDetailsByIdReducer,
+    myOrders: myOrdersReducer,
     orderPay: orderPayReducer,
     paypalClientId: paypalClientIdReducer
 });

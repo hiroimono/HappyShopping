@@ -17,6 +17,32 @@ export const orderCreateReducer = (state = {}, action) => {
                 loading: false,
                 error: action.payload
             }
+        case constants.ORDER_CREATE_RESET:
+            return {
+                loading: false
+            }
+
+        default:
+            return state
+    }
+}
+
+export const orderCancelReducer = (state = {}, action) => {
+    switch (action.type) {
+        case constants.ORDER_CANCEL_REQUEST:
+            return {
+                loading: true
+            }
+        case constants.ORDER_CANCEL_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+            }
+        case constants.ORDER_CANCEL_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
 
         default:
             return state
@@ -39,6 +65,35 @@ export const orderDetailsByIdReducer = (state = { loading: true, orderItems: [],
             return {
                 loading: false,
                 error: action.payload
+            }
+
+        default:
+            return state
+    }
+}
+
+export const myOrdersReducer = (state = { myOrders: [] }, action) => {
+    switch (action.type) {
+        case constants.MY_ORDERS_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case constants.MY_ORDERS_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                myOrders: action.payload
+            }
+        case constants.MY_ORDERS_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+
+        case constants.MY_ORDERS_RESET:
+            return {
+                myOrder: []
             }
 
         default:

@@ -35,6 +35,8 @@ const CartScreen = ({ match, location, history }) => {
         history.push('/login?redirect=shipping')
     }
 
+    const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
+
     return (
         <Container>
             <Row>
@@ -63,7 +65,7 @@ const CartScreen = ({ match, location, history }) => {
                                                     </Col>
 
                                                     <Col md={2} className="col-7 px-0 col-md-2">
-                                                        €{cartItem.price}
+                                                        {currency(cartItem.price)}
                                                     </Col>
 
                                                     <Col md={2} className="col-3 px-0 col-md-2">
@@ -95,11 +97,10 @@ const CartScreen = ({ match, location, history }) => {
                                             </Card.Header>
 
                                             <ListGroup.Item>
-                                                <h4>€ {cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}</h4>
+                                                <h4> {currency(cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2))}</h4>
                                             </ListGroup.Item>
 
                                         </ListGroup>
-
                                     </Card>
 
                                     <Button type='button' className='btn btn-success btn-block'
