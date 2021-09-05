@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap'
 
 // bootstrap
-import { Table, Button } from 'react-bootstrap'
+import { Table, Button, Modal } from 'react-bootstrap'
 
 // Components
 import Message from '../components/Message';
@@ -18,7 +18,6 @@ const UserListScreen = ({ history }) => {
     const { users, loading, error } = useSelector(state => state.userList);
     const { userInfo } = useSelector(state => state.userLogin);
     const { deletedUser, loading: loadingDeleted, error: errorDeleted } = useSelector(state => state.userDelete);
-    console.log('userDeleted: ', deletedUser);
 
     useEffect(() => {
         if (userInfo?.isAdmin) {
@@ -34,9 +33,20 @@ const UserListScreen = ({ history }) => {
         }
     }, [dispatch, userInfo, deletedUser])
 
-    const deleteHandler = (id) => {
-        dispatch(deleteUser(id));
-    }
+    const [show, setShow] = useState(false);
+    const [userForDelete, setUserForDelete] = useState(null);
+
+    const deleteHandlerShow = (user) => {
+        setUserForDelete(user);
+        setShow(true)
+    };
+
+    const handleConfirm = (confirm) => {
+        if (confirm) {
+            dispatch(deleteUser(userForDelete._id));
+        }
+        setShow(false)
+    };
 
     return loading || loadingDeleted ?
         <Loader /> :
@@ -86,7 +96,7 @@ const UserListScreen = ({ history }) => {
                                                         <i className='fas fa-edit'></i>
                                                     </Button>
                                                 </LinkContainer>
-                                                <Button className="btn-sm mr-2" variant='danger' onClick={() => deleteHandler(user._id)}>
+                                                <Button className="btn-sm mr-2" variant='danger' onClick={() => deleteHandlerShow(user)} data-toggle="confirmation">
                                                     <i className='fas fa-trash'></i>
                                                 </Button>
                                             </td>
@@ -97,6 +107,39 @@ const UserListScreen = ({ history }) => {
                         </Table>
                     )
                 }
+
+                <Modal show={show} onHide={() => handleConfirm(false)}>
+                    <Modal.Body>
+                        <h3> Would you really want remove the user? </h3>
+
+                        <Table striped bordered responsive hover className="table-sm mt-4">
+                            <thead>
+                                <tr>
+                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>ID</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>NAME</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>EMAIL</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className="text-center" style={{ verticalAlign: 'middle' }}>{userForDelete?._id}</td>
+                                    <td className="text-center" style={{ verticalAlign: 'middle' }}>{userForDelete?.name}</td>
+                                    <td className="text-center" style={{ verticalAlign: 'middle' }}>
+                                        <a href={`mailto:${userForDelete?.email}`}>{userForDelete?.email}</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => handleConfirm(false)}>
+                            No
+                        </Button>
+                        <Button variant="primary" onClick={() => handleConfirm(true)}>
+                            Yes
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </>
 }
 
