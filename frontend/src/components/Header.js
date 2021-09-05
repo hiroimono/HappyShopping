@@ -12,6 +12,7 @@ const Header = () => {
     const dispatch = useDispatch()
     const { userInfo } = useSelector(state => state.userLogin);
     const isLoggedIn = userInfo ? true : false;
+    console.log('userInfo: ', userInfo);
 
     const logoutHandler = () => {
         dispatch(userLogout())
@@ -24,22 +25,42 @@ const Header = () => {
                     <Navbar.Brand>HappyShopping</Navbar.Brand>
                 </LinkContainer>
 
+                {
+                    userInfo?.isAdmin && (
+                        <NavDropdown title='ADMIN MENU' id='adminmenu'>
+                            <LinkContainer to='/admin/userlist'>
+                                <NavDropdown.Item>Users</NavDropdown.Item>
+                            </LinkContainer>
+
+                            <LinkContainer to='/admin/productlist'>
+                                <NavDropdown.Item>Products</NavDropdown.Item>
+                            </LinkContainer>
+
+                            <LinkContainer to='/admin/orderlist'>
+                                <NavDropdown.Item>Orders</NavDropdown.Item>
+                            </LinkContainer>
+                        </NavDropdown>
+                    )
+                }
+
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
 
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
                         {isLoggedIn ? (
-                            <NavDropdown title={userInfo.name} id='username'>
-                                <LinkContainer to='/profile'>
-                                    <NavDropdown.Item>Profile</NavDropdown.Item>
-                                </LinkContainer>
+                            <>
+                                <NavDropdown title={userInfo.name} id='username'>
+                                    <LinkContainer to='/profile'>
+                                        <NavDropdown.Item>Profile</NavDropdown.Item>
+                                    </LinkContainer>
 
-                                <LinkContainer to='/my-orders'>
-                                    <NavDropdown.Item>My Orders</NavDropdown.Item>
-                                </LinkContainer>
+                                    <LinkContainer to='/my-orders'>
+                                        <NavDropdown.Item>My Orders</NavDropdown.Item>
+                                    </LinkContainer>
 
-                                <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
-                            </NavDropdown>
+                                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                                </NavDropdown>
+                            </>
                         ) : (
                             <LinkContainer to='/login'>
                                 <Nav.Link>
