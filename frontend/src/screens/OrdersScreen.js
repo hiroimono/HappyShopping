@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // bootstrap
-import { Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 
 // Paypal Button
 import { loadScript } from "@paypal/paypal-js";
@@ -15,7 +15,7 @@ import Loader from '../components/Loader';
 // import FormContainer from '../components/FormContainer';
 
 // Actions
-import { getOrderDetailsById, payOrder } from '../actions/orderActions.js';
+import { getOrderDetailsById, payOrder, cancelOrder } from '../actions/orderActions.js';
 import { getPayPalScript } from '../actions/configActions.js';
 import { constants } from '../constants/constant.js'
 
@@ -77,6 +77,8 @@ const OrdersScreen = ({ match, history }) => {
         dispatch(payOrder(orderId, paymentResult))
         dispatch({ type: constants.CART_ITEMS_RESET })
     }
+
+    const removeOrder = (id) => dispatch(cancelOrder(id))
 
     const showDate = (str) => new Date(str).toLocaleDateString('de-DE', { dateStyle: 'full' })
     const showTime = (str) => new Date(str).toLocaleTimeString('de-DE', { timeStyle: 'short' })
@@ -273,17 +275,23 @@ const OrdersScreen = ({ match, history }) => {
 
                             {
                                 !order.isPaid && (
-                                    <ListGroup.Item className='p-0'>
-                                        {loadingPay && <Loader />}
-                                        {!sdkReady ? (
-                                            <Loader />
-                                        ) : (
-                                            <PayPalButton
-                                                amount={order.totalPrice}
-                                                onSuccess={successPaymentHandler}
-                                            />
-                                        )}
-                                    </ListGroup.Item>
+                                    <>
+                                        <ListGroup.Item className='p-0'>
+                                            {loadingPay && <Loader />}
+                                            {!sdkReady ? (
+                                                <Loader />
+                                            ) : (
+                                                <PayPalButton
+                                                    amount={order.totalPrice}
+                                                    onSuccess={successPaymentHandler}
+                                                />
+                                            )}
+                                        </ListGroup.Item>
+
+                                        <ListGroup.Item className='p-0'>
+                                            <Button className="btn-sm w-100 mr-2" variant='outline-danger' onClick={() => removeOrder(order._id)}>Cancel Order</Button>
+                                        </ListGroup.Item>
+                                    </>
                                 )
                             }
                         </ListGroup>

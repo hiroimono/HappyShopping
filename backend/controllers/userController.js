@@ -7,7 +7,7 @@ import generateToken from '../utils/generateToken.js';
  * @route POST /api/users/register
  * @access Public
  */
-const registerNewUser = asyncHandler(async (req, res) => {
+export const registerNewUser = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
     const isUserExists = await User.findOne({ email });
 
@@ -41,7 +41,7 @@ const registerNewUser = asyncHandler(async (req, res) => {
  * @route POST /api/users/login
  * @access public
  */
-const authUser = asyncHandler(async (req, res) => {
+export const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
@@ -70,7 +70,7 @@ const authUser = asyncHandler(async (req, res) => {
  * @route GET /api/users/profile
  * @access Private
  */
-const getUserProfile = asyncHandler(async (req, res) => {
+export const getUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
     if (user) {
         res.json({
@@ -85,13 +85,12 @@ const getUserProfile = asyncHandler(async (req, res) => {
     }
 })
 
-
 /**
  * @description Update User's Profile
  * @route PUT /api/users/profile
  * @access Private
  */
-const updateUserProfile = asyncHandler(async (req, res) => {
+export const updateUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
     if (user) {
         user.name = req.body.name || user.name;
@@ -113,4 +112,75 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     }
 })
 
-export { authUser, getUserProfile, registerNewUser, updateUserProfile }
+/**
+ * @description Get all users
+ * @route GET /api/users
+ * @access Private/Admin
+ */
+export const getUsers = asyncHandler(async (req, res) => {
+    const users = await User.find({});
+    if (users) {
+        res.json(users)
+    } else {
+        res.status(404);
+        throw new Error('Users could not get!');
+    }
+})
+
+/**
+ * @description Get User Details By Id
+ * @route GET /api/users/:id
+ * @access Private/Admin
+ */
+export const getUserById = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id).select('-password');
+    if (user) {
+        res.json(user)
+    } else {
+        res.status(404);
+        throw new Error('Users could not get!');
+    }
+})
+
+/**
+ * @description Delete a user
+ * @route DELETE /api/users/:id
+ * @access Private/Admin
+ */
+export const deleteUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    const deletedUser = await user.remove();
+    if (deletedUser) {
+        res.json(deletedUser)
+    } else {
+        res.status(404);
+        throw new Error('User was not found!');
+    }
+})
+
+/**
+ * @description Update User
+ * @route PUT /api/users/:id
+ * @access Private/Admin
+ */
+export const updateUserById = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+
+    if (user) {
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+        user.isAdmin = req.body.isAdmin;
+
+        const updatedUser = await user.save();
+
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin
+        })
+    } else {
+        res.status(404);
+        throw new Error('User not found!');
+    }
+})

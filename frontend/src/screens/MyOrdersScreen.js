@@ -8,7 +8,6 @@ import { Table, Button } from 'react-bootstrap';
 // Components
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-// import FormContainer from '../components/FormContainer';
 
 // Actions
 import { getMyOrders, cancelOrder } from '../actions/orderActions.js';
@@ -27,9 +26,7 @@ const MyOrdersScreen = () => {
         } else dispatch(getMyOrders())
     }, [dispatch, successCancel])
 
-    const removeOrder = (id) => {
-        dispatch(cancelOrder(id))
-    }
+    const removeOrder = (id) => dispatch(cancelOrder(id))
 
     const showDate = (str) => new Date(str).toLocaleDateString('de-DE', { dateStyle: 'medium' })
     const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
@@ -69,7 +66,7 @@ const MyOrdersScreen = () => {
                                         <tr key={order._id}>
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>{order._id}</td>
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>{showDate(order.createdAt)}</td>
-                                            <td className="text-center" style={{ verticalAlign: 'middle' }}>{currency(order.totalPrice)}</td>
+                                            <td className="text-right px-2" style={{ verticalAlign: 'middle' }}>{currency(order.totalPrice)}</td>
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>
                                                 {
                                                     order.isPaid ? (
@@ -92,13 +89,15 @@ const MyOrdersScreen = () => {
                                             </td>
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>
                                                 <LinkContainer to={`/orders/${order._id}`}>
-                                                    <Button className="btn-sm mr-2" variant='outline-info'>Details</Button>
+                                                    <Button className="btn-sm w-100 mr-2" variant='outline-info'>Details</Button>
                                                 </LinkContainer>
                                             </td>
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>
                                                 {
                                                     !order?.isPaid ? (
-                                                        <Button className="btn-sm mr-2" variant='outline-danger' onClick={() => removeOrder(order._id)}>Cancel</Button>
+                                                        <Button className="btn-sm mr-2" variant='outline-danger' onClick={() => removeOrder(order._id)}>
+                                                            Cancel
+                                                        </Button>
                                                     ) : <i className="fas fa-times text-danger"></i>
                                                 }
                                             </td>
