@@ -91,3 +91,18 @@ export const userDeleteReducer = (state = {}, action) => {
             return state;
     }
 }
+
+export const userEditReducer = (state = {}, action) => {
+    switch (action.type) {
+        case constants.USER_EDIT_REQUEST:
+            return { ...state }
+        case constants.USER_EDIT_SUCCESS:
+            return { success: true }
+        case constants.USER_EDIT_FAIL:
+            return { error: action.payload }
+        case constants.USER_EDIT_RESET:
+            return {}
+        default:
+            return state
+    }
+}

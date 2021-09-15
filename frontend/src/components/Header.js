@@ -12,7 +12,6 @@ const Header = () => {
     const dispatch = useDispatch()
     const { userInfo } = useSelector(state => state.userLogin);
     const isLoggedIn = userInfo ? true : false;
-    console.log('userInfo: ', userInfo);
 
     const logoutHandler = () => {
         dispatch(userLogout())

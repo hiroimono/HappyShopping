@@ -249,3 +249,40 @@ export const deleteUser = (id) => async (dispatch, getState) => {
         })
     }
 }
+
+export const editUser = (user) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: constants.USER_EDIT_REQUEST,
+        })
+
+        const {
+            userLogin: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        }
+
+        await axios.put(`/api/users/${user.id}`, user, config)
+
+        dispatch({
+            type: constants.USER_EDIT_SUCCESS
+        })
+    } catch (error) {
+        const message =
+            error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message
+        if (message === 'Not authorized, token failed') {
+            dispatch(userLogout())
+        }
+        dispatch({
+            type: constants.USER_EDIT_FAIL,
+            payload: message,
+        })
+    }
+}

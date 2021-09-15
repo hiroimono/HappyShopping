@@ -12,12 +12,19 @@ import Loader from '../components/Loader';
 // Actions
 import { getUserList, deleteUser } from '../actions/userActions.js';
 
+// Constants for action types
+import { constants } from '../constants/constant.js';
+
 const UserListScreen = ({ history }) => {
+    const [showSuccess, setShowSuccess] = useState(false);
     const dispatch = useDispatch();
 
     const { users, loading, error } = useSelector(state => state.userList);
     const { userInfo } = useSelector(state => state.userLogin);
     const { deletedUser, loading: loadingDeleted, error: errorDeleted } = useSelector(state => state.userDelete);
+    const { success, error: errorEdit } = useSelector(state => state.userEdit);
+    console.log('success: ', success);
+    console.log('errorEdit: ', errorEdit);
 
     useEffect(() => {
         if (userInfo?.isAdmin) {
@@ -25,7 +32,17 @@ const UserListScreen = ({ history }) => {
         } else {
             history.push('/login')
         }
-    }, [dispatch, userInfo, history])
+
+        if (success) {
+            setShowSuccess(true)
+        } else if (errorEdit) {
+            setShowSuccess(false)
+        }
+
+        return () => {
+            (success || errorEdit) && dispatch({ type: constants.USER_EDIT_RESET });
+        }
+    }, [dispatch, userInfo, history, success, errorEdit])
 
     useEffect(() => {
         if (userInfo?.isAdmin && deletedUser) {
@@ -54,6 +71,7 @@ const UserListScreen = ({ history }) => {
             <Message variant='danger'>{error || errorDeleted}</Message> :
             <>
                 <h3>My Orders:</h3>
+                {showSuccess && <Message variant="success">User edited successfully.</Message>}
                 {
                     deletedUser && <Message variant="success">User <span>{deletedUser?.name}</span> (id: <span>{deletedUser?._id}</span>) was successfully deleted.</Message>
                 }
@@ -91,7 +109,7 @@ const UserListScreen = ({ history }) => {
                                                 {user.isAdmin ? <i className="fas fa-check ml-2 text-success"></i> : <i className="fas fa-times text-danger"></i>}
                                             </td>
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>
-                                                <LinkContainer to={`/user/${user._id}/edit`}>
+                                                <LinkContainer to={`/admin/useredit/${user._id}/edit`}>
                                                     <Button className="btn-sm mr-2" variant='outline-info'>
                                                         <i className='fas fa-edit'></i>
                                                     </Button>
@@ -108,9 +126,9 @@ const UserListScreen = ({ history }) => {
                     )
                 }
 
-                <Modal show={show} onHide={() => handleConfirm(false)}>
+                <Modal show={show} size={'lg'} onHide={() => handleConfirm(false)}>
                     <Modal.Body>
-                        <h3> Would you really want remove the user? </h3>
+                        <h3> Would you really want to remove the user? </h3>
 
                         <Table striped bordered responsive hover className="table-sm mt-4">
                             <thead>
@@ -118,6 +136,7 @@ const UserListScreen = ({ history }) => {
                                     <th className="text-center" style={{ verticalAlign: 'middle' }}>ID</th>
                                     <th className="text-center" style={{ verticalAlign: 'middle' }}>NAME</th>
                                     <th className="text-center" style={{ verticalAlign: 'middle' }}>EMAIL</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>ADMIN</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -126,6 +145,9 @@ const UserListScreen = ({ history }) => {
                                     <td className="text-center" style={{ verticalAlign: 'middle' }}>{userForDelete?.name}</td>
                                     <td className="text-center" style={{ verticalAlign: 'middle' }}>
                                         <a href={`mailto:${userForDelete?.email}`}>{userForDelete?.email}</a>
+                                    </td>
+                                    <td className="text-center" style={{ verticalAlign: 'middle' }}>
+                                        {userForDelete?.isAdmin ? <i className="fas fa-check ml-2 text-success"></i> : <i className="fas fa-times text-danger"></i>}
                                     </td>
                                 </tr>
                             </tbody>
