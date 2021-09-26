@@ -18,8 +18,10 @@ import OrdersScreen from './screens/OrdersScreen';
 import MyOrdersScreen from './screens/MyOrdersScreen';
 import ShippingScreen from './screens/ShippingScreen';
 import PaymentMethodScreen from './screens/PaymentMethodScreen';
-import UserListScreen from './screens/UserListScreen';
-import UserEditScreen from './screens/UserEditScreen';
+import AdminUserListScreen from './screens/AdminUserListScreen';
+import AdminUserEditScreen from './screens/AdminUserEditScreen';
+import AdminProductListScreen from './screens/AdminProductListScreen';
+import AdminProductEditScreen from './screens/AdminProductEditScreen';
 
 const App = () => {
     return (
@@ -39,8 +41,10 @@ const App = () => {
                     <Route path='/payment-method' component={PaymentMethodScreen} />
                     <Route path='/products/:id' component={ProductScreen} />
                     <Route path='/cart/:id?' component={CartScreen} />
-                    <Route path='/admin/userlist' component={UserListScreen} />
-                    <Route path='/admin/useredit/:id/edit' component={UserEditScreen} />
+                    <Route path='/admin/userlist' component={AdminUserListScreen} />
+                    <Route path='/admin/useredit/:id/edit' component={AdminUserEditScreen} />
+                    <Route path='/admin/productlist' component={AdminProductListScreen} />
+                    <Route path='/admin/productedit/:id/edit' component={AdminProductEditScreen} />
                 </Container>
             </main>
 

@@ -15,7 +15,7 @@ import { getUserList, deleteUser } from '../actions/userActions.js';
 // Constants for action types
 import { constants } from '../constants/constant.js';
 
-const UserListScreen = ({ history }) => {
+const AdminUserListScreen = ({ history }) => {
     const [showSuccess, setShowSuccess] = useState(false);
     const dispatch = useDispatch();
 
@@ -27,10 +27,11 @@ const UserListScreen = ({ history }) => {
     console.log('errorEdit: ', errorEdit);
 
     useEffect(() => {
-        if (userInfo?.isAdmin) {
-            dispatch(getUserList())
-        } else {
+
+        if (!userInfo || !userInfo.isAdmin) {
             history.push('/login')
+        } else if (userInfo?.isAdmin) {
+            dispatch(getUserList())
         }
 
         if (success) {
@@ -165,4 +166,4 @@ const UserListScreen = ({ history }) => {
             </>
 }
 
-export default UserListScreen
+export default AdminUserListScreen

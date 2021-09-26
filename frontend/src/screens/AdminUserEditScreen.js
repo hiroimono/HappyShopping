@@ -16,7 +16,7 @@ import { constants } from '../constants/constant.js';
 // actions
 import { getUserDetails, editUser } from '../actions/userActions';
 
-const UserEditScreen = ({ match, history }) => {
+const AdminUserEditScreen = ({ match, history }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [isAdmin, setIsAdmin] = useState(false);
@@ -87,4 +87,4 @@ const UserEditScreen = ({ match, history }) => {
     )
 }
 
-export default UserEditScreen
+export default AdminUserEditScreen

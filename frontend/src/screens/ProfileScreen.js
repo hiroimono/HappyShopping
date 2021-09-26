@@ -27,8 +27,11 @@ const ProfileScreen = ({ location, history }) => {
 
     const dispatch = useDispatch();
     const { loading, error, user } = useSelector(state => state.userDetails);
+    console.log('user: ', user);
     const { userInfo } = useSelector(state => state.userLogin);
+    console.log('userInfo: ', userInfo);
     const { success } = useSelector(state => state.userProfileUpdate);
+    console.log('success: ', success);
 
     useEffect(() => {
         if (!userInfo) {
