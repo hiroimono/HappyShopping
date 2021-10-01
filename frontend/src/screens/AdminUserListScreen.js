@@ -23,8 +23,6 @@ const AdminUserListScreen = ({ history }) => {
     const { userInfo } = useSelector(state => state.userLogin);
     const { deletedUser, loading: loadingDeleted, error: errorDeleted } = useSelector(state => state.userDelete);
     const { success, error: errorEdit } = useSelector(state => state.userEdit);
-    console.log('success: ', success);
-    console.log('errorEdit: ', errorEdit);
 
     useEffect(() => {
 

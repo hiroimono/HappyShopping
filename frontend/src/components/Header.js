@@ -8,8 +8,12 @@ import { userLogout } from '../actions/userActions.js'
 /** Styles */
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 
+// Custom Hooks
+import useBreakpoint from '../customHooks/useBreakpoint';
+
 const Header = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const { width } = useBreakpoint();
     const { userInfo } = useSelector(state => state.userLogin);
     const isLoggedIn = userInfo ? true : false;
 
@@ -25,7 +29,7 @@ const Header = () => {
                 </LinkContainer>
 
                 {
-                    userInfo?.isAdmin && (
+                    userInfo?.isAdmin && width >= 768 && (
                         <NavDropdown title='ADMIN MENU' id='adminmenu'>
                             <LinkContainer to='/admin/userlist'>
                                 <NavDropdown.Item>Users</NavDropdown.Item>
@@ -42,12 +46,30 @@ const Header = () => {
                     )
                 }
 
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Toggle aria-controls="collapse" />
 
-                <Navbar.Collapse id="basic-navbar-nav">
+                <Navbar.Collapse id="collapse">
                     <Nav className="ml-auto">
                         {isLoggedIn ? (
                             <>
+                                {
+                                    userInfo?.isAdmin && width < 768 && (
+                                        <NavDropdown title='ADMIN MENU' id='adminmenu'>
+                                            <LinkContainer to='/admin/userlist'>
+                                                <NavDropdown.Item>Users</NavDropdown.Item>
+                                            </LinkContainer>
+
+                                            <LinkContainer to='/admin/productlist'>
+                                                <NavDropdown.Item>Products</NavDropdown.Item>
+                                            </LinkContainer>
+
+                                            <LinkContainer to='/admin/orderlist'>
+                                                <NavDropdown.Item>Orders</NavDropdown.Item>
+                                            </LinkContainer>
+                                        </NavDropdown>
+                                    )
+                                }
+
                                 <NavDropdown title={userInfo.name} id='username'>
                                     <LinkContainer to='/profile'>
                                         <NavDropdown.Item>Profile</NavDropdown.Item>

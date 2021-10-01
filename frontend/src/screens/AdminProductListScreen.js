@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { LinkContainer } from 'react-router-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap';
 
 // bootstrap
-import { Table, Button, Modal } from 'react-bootstrap'
+import { Row, Table, Button, Modal, Col } from 'react-bootstrap'
 
 // Components
 import Message from '../components/Message';
@@ -12,12 +12,16 @@ import Loader from '../components/Loader';
 // Actions
 import { getProducts, deleteSingleProduct } from '../actions/productActions.js';
 
+// Custom Hooks
+import useBreakpoint from '../customHooks/useBreakpoint';
+
 // Constants for action types
 // import { constants } from '../constants/constant.js';
 
 const AdminProductListScreen = ({ history, match }) => {
     // const [showSuccess, setShowSuccess] = useState(false);
     const dispatch = useDispatch();
+    const { width } = useBreakpoint();
 
     const { products, loading, error } = useSelector(state => state.products);
     const { userInfo } = useSelector(state => state.userLogin);
@@ -59,7 +63,20 @@ const AdminProductListScreen = ({ history, match }) => {
         error || errorDeleted ?
             <Message variant='danger'>{error || errorDeleted}</Message> :
             <>
-                <h3>Products:</h3>
+                <Row>
+                    <Col>
+                        <h3>Products:</h3>
+                    </Col>
+
+                    <Col className="text-right">
+                        <LinkContainer to='/admin/product/add'>
+                            <Button variant="warning">
+                                <i className={`fas fa-plus ${width >= 576 && 'mr-2'}`}></i>
+                                {width < 576 ? null : 'Add product'}
+                            </Button>
+                        </LinkContainer>
+                    </Col>
+                </Row>
                 {/* {showSuccess && <Message variant="success">Product edited successfully.</Message>} */}
                 {
                     deletedProduct && <Message variant="success">User <span>{deletedProduct?.name}</span> (id: <span>{deletedProduct?._id}</span>) was successfully deleted.</Message>
@@ -95,7 +112,7 @@ const AdminProductListScreen = ({ history, match }) => {
                                             <td className="text-right" style={{ verticalAlign: 'middle' }}>{currency(product.price)}</td>
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>{product.category}</td>
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>{product.brand}</td>
-                                            <td className="text-center" style={{ verticalAlign: 'middle' }}>
+                                            <td className="text-center" style={{ verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
                                                 <LinkContainer to={`/admin/productedit/${product._id}/edit`}>
                                                     <Button className="btn-sm mr-2" variant='outline-info'>
                                                         <i className='fas fa-edit'></i>

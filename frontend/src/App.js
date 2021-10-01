@@ -22,6 +22,7 @@ import AdminUserListScreen from './screens/AdminUserListScreen';
 import AdminUserEditScreen from './screens/AdminUserEditScreen';
 import AdminProductListScreen from './screens/AdminProductListScreen';
 import AdminProductEditScreen from './screens/AdminProductEditScreen';
+import AdminAddNewProductScreen from './screens/AdminAddNewProductScreen';
 
 const App = () => {
     return (
@@ -45,6 +46,7 @@ const App = () => {
                     <Route path='/admin/useredit/:id/edit' component={AdminUserEditScreen} />
                     <Route path='/admin/productlist' component={AdminProductListScreen} />
                     <Route path='/admin/productedit/:id/edit' component={AdminProductEditScreen} />
+                    <Route path='/admin/product/add' component={AdminAddNewProductScreen} />
                 </Container>
             </main>
 
