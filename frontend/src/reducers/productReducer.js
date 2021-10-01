@@ -28,6 +28,19 @@ export const productReducer = (state = {}, action) => {
     }
 }
 
+export const productNewAddReducer = (state = { productAdded: null }, action) => {
+    switch (action.type) {
+        case constants.PRODUCT_NEW_ADD_REQUEST:
+            return { ...state, loading: true }
+        case constants.PRODUCT_NEW_ADD_SUCCESS:
+            return { ...state, loading: false, productAdded: action.payload }
+        case constants.PRODUCT_NEW_ADD_FAILED:
+            return { ...state, loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
 export const productEditReducer = (state = {}, action) => {
     switch (action.type) {
         case constants.PRODUCT_EDIT_REQUEST:

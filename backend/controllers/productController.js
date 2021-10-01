@@ -81,3 +81,35 @@ export const updateProductById = asyncHandler(async (req, res) => {
         throw new Error('Product not updated!');
     }
 })
+
+/**
+ * @description Add New Product
+ * @route PUT /api/products/new
+ * @access Private/Admin
+ */
+export const addNewProduct = asyncHandler(async (req, res) => {
+    const { category, name, description, brand, price, countInStock, image } = req.body;
+
+    if (!name) {
+        res.status(400);
+        throw new Error('Error: Name is missing!')
+    } else if (price == undefined) {
+        res.status(400);
+        throw new Error('Error: Please enter a price!')
+    } else if (countInStock == undefined || countInStock < 0) {
+        res.status(400);
+        throw new Error('Error: Please enter count number in stock!')
+    } else {
+        const product = new Product({
+            user: req.user._id, category, name, description, brand, price, countInStock, image
+        })
+
+        try {
+            const createdProduct = await product.save()
+            res.status(201).json(createdProduct)
+        } catch (error) {
+            res.status(400);
+            throw new Error('Error: Oops! There is something wrong. Product was not generated. Please check the entries.')
+        }
+    }
+})

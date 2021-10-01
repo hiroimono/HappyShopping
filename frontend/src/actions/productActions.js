@@ -112,3 +112,43 @@ export const editSingleProduct = (product) => async (dispatch, getState) => {
         })
     }
 }
+
+export const addNewProduct = (product) => async (dispatch, getState) => {
+    try {
+        dispatch({
+            type: constants.PRODUCT_NEW_ADD_REQUEST,
+        })
+
+        const {
+            userLogin: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        }
+
+        const productAdded = await axios.post(`/api/products/new`, product, config)
+
+        dispatch({
+            type: constants.PRODUCT_NEW_ADD_SUCCESS,
+            payload: productAdded.data
+        })
+    } catch (error) {
+        const message =
+            error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message
+
+        if (message === 'Not authorized, token failed') {
+            dispatch(userLogout())
+        }
+
+        dispatch({
+            type: constants.PRODUCT_NEW_ADD_FAILED,
+            payload: message,
+        })
+    }
+}

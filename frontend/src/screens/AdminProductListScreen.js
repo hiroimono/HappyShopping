@@ -69,10 +69,12 @@ const AdminProductListScreen = ({ history, match }) => {
                     </Col>
 
                     <Col className="text-right">
-                        <Button variant="warning">
-                            <i className={`fas fa-plus ${width >= 576 && 'mr-2'}`}></i>
-                            {width < 576 ? null : 'Add product'}
-                        </Button>
+                        <LinkContainer to='/admin/product/add'>
+                            <Button variant="warning">
+                                <i className={`fas fa-plus ${width >= 576 && 'mr-2'}`}></i>
+                                {width < 576 ? null : 'Add product'}
+                            </Button>
+                        </LinkContainer>
                     </Col>
                 </Row>
                 {/* {showSuccess && <Message variant="success">Product edited successfully.</Message>} */}
