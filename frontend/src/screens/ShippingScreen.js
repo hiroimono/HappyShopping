@@ -12,7 +12,7 @@ import FormContainer from '../components/FormContainer';
 import CheckoutSteps from '../components/CheckoutSteps';
 
 // Actions
-import { saveShippingAddress } from '../actions/cartActions.js';
+import { saveShippingAddress, savePaymentMethod } from '../actions/cartActions.js';
 
 const ShippingScreen = ({ history }) => {
     const { shippingAddress } = useSelector(state => state.cart);
@@ -28,7 +28,8 @@ const ShippingScreen = ({ history }) => {
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(saveShippingAddress({ street, number, zipcode, city, country }));
-        history.push('/payment-method');
+        dispatch(savePaymentMethod('PayPal'));
+        history.push('/placeorder');
     }
 
     return (

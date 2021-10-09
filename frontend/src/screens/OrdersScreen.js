@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 
 // Paypal Button
-import { loadScript } from "@paypal/paypal-js";
+// import { loadScript } from "@paypal/paypal-js";
 import { PayPalButton } from 'react-paypal-button-v2';
 
 // Components
@@ -27,45 +27,51 @@ const OrdersScreen = ({ match, history }) => {
     const { order, loading, error } = useSelector(state => state.orderDetailsById);
     const { loading: loadingPay, success: successPay } = useSelector((state) => state.orderPay);
     const { paypalClientId } = useSelector((state) => state.paypalClientId);
-    const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
 
     // Calculator
-    if (!loading) {
+    if (!loading && !loadingPay) {
         const addDecimals = (num) => Math.round((num * 100) / 100).toFixed(2)
         order.itemsPrice = addDecimals(order.cartItems.reduce((acc, curr) => acc + curr.price * curr.qty, 0));
     }
 
     useEffect(() => {
+        const removeScript = async () => {
+            const script = document.getElementById('script')
+            script && script.remove();
+        }
+
         if (!order || successPay || order?._id !== orderId) {
+            removeScript()
             dispatch({ type: constants.ORDER_PAY_RESET })
             dispatch(getOrderDetailsById(orderId))
         }
     }, [dispatch, orderId, successPay, order])
 
     useEffect(() => {
-        // const addPayPalScript = async (clientId) => {
-        //     const script = document.createElement('script')
-        //     script.type = 'text/javascript'
-        //     script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
-        //     script.async = true
-        //     script.onload = () => {
-        //         setSdkReady(true)
-        //     }
-        //     document.body.appendChild(script)
-        // }
+        const addPayPalScript = async (clientId) => {
+            const script = document.createElement('script')
+            script.type = 'text/javascript'
+            script.id = 'paypalScript'
+            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&buyer-country=DE`
+            script.async = true
+            script.onload = () => {
+                setSdkReady(true)
+            }
+            document.body.appendChild(script)
+        }
 
         if (order && !order.isPaid) {
             if (!window.paypal) {
                 dispatch(getPayPalScript())
 
                 if (paypalClientId) {
-                    // addPayPalScript(paypalClientId)
+                    addPayPalScript(paypalClientId)
                     console.log('paypalClientId: ', paypalClientId);
-                    loadScript({ "client-id": paypalClientId })
-                        .then(() => {
-                            setSdkReady(true)
-                        })
-                        .catch(e => console.log('e: ', e));
+                    // loadScript({ "client-id": paypalClientId })
+                    //     .then(() => {
+                    //         setSdkReady(true)
+                    //     })
+                    //     .catch(e => console.log('e: ', e));
                 }
             } else {
                 setSdkReady(true)
@@ -73,17 +79,25 @@ const OrdersScreen = ({ match, history }) => {
         }
     }, [dispatch, order, sdkReady, paypalClientId])
 
-    const successPaymentHandler = (paymentResult) => {
+    const successPaymentHandler = (paymentResult, data) => {
+        console.log('order.user: ', order.user);
+        console.log('paymentResult: ', paymentResult);
+        console.log('data: ', data);
         dispatch(payOrder(orderId, paymentResult))
         dispatch({ type: constants.CART_ITEMS_RESET })
+    }
+
+    const paypalErrorHandler = (e) => {
+        console.log('error: ', e);
     }
 
     const removeOrder = (id) => dispatch(cancelOrder(id))
 
     const showDate = (str) => new Date(str).toLocaleDateString('de-DE', { dateStyle: 'full' })
     const showTime = (str) => new Date(str).toLocaleTimeString('de-DE', { timeStyle: 'short' })
+    const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
 
-    return loading ?
+    return loading || loadingPay ?
         <Loader /> :
         error ?
             <Message variant='danger'>{error}</Message> :
@@ -283,7 +297,11 @@ const OrdersScreen = ({ match, history }) => {
                                             ) : (
                                                 <PayPalButton
                                                     amount={order.totalPrice}
+                                                    // currency="EUR"
                                                     onSuccess={successPaymentHandler}
+                                                    shippingPreference="NO_SHIPPING"
+                                                    vault="false"
+                                                    catchError={paypalErrorHandler}
                                                 />
                                             )}
                                         </ListGroup.Item>

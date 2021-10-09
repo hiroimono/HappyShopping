@@ -18,9 +18,9 @@ import { constants } from '../constants/constant';
 const PlaceOrdersScreen = ({ history }) => {
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart);
-    const addDecimals = (num) => Math.round((num * 100) / 100).toFixed(2)
 
     // Calculator
+    const addDecimals = (num) => Math.round((num * 100) / 100).toFixed(2)
     cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, curr) => acc + curr.price * curr.qty, 0));
     cart.shippingPrice = cart.itemsPrice > 100 ? addDecimals(0) : Number(10);
     cart.taxPrice = addDecimals(.19 * cart.itemsPrice);
@@ -30,9 +30,10 @@ const PlaceOrdersScreen = ({ history }) => {
 
     useEffect(() => {
         if (success) {
+            dispatch({ type: constants.ORDER_CREATE_RESET })
             history.push(`/orders/${order._id}`)
         }
-    }, [history, success, order])
+    }, [history, success, order, dispatch])
 
     const placeOrderHandler = () => {
         dispatch(createOrder({
@@ -44,14 +45,13 @@ const PlaceOrdersScreen = ({ history }) => {
             taxPrice: cart.taxPrice,
             totalPrice: cart.totalPrice,
         }))
-        dispatch({ type: constants.ORDER_CREATE_RESET })
     }
 
     const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
 
     return (
         <>
-            <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
+            <CheckoutSteps step1 step2 step3></CheckoutSteps>
 
             <Row>
                 <Col lg={8}>
@@ -81,7 +81,7 @@ const PlaceOrdersScreen = ({ history }) => {
                             </Row>
                         </ListGroup.Item>
 
-                        <ListGroup.Item className="px-0">
+                        {/* <ListGroup.Item className="px-0">
                             <h3>Payment Method:</h3>
                             <Row>
                                 <Col md={2}>
@@ -95,7 +95,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                     </p>
                                 </Col>
                             </Row>
-                        </ListGroup.Item>
+                        </ListGroup.Item> */}
 
                         <ListGroup.Item className="px-0">
                             <h3>Order items:</h3>

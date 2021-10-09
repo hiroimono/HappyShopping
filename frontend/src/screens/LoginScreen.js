@@ -19,6 +19,7 @@ const LoginScreen = ({ location, history }) => {
 
     const dispatch = useDispatch();
     const { loading, error, userInfo } = useSelector(state => state.userLogin);
+    const { cartItems } = useSelector(state => state.cart);
 
     const redirect = location.search ? location.search.split('=')[1] : '/';
 
@@ -33,11 +34,16 @@ const LoginScreen = ({ location, history }) => {
         dispatch(userLogin({ email, password }));
     }
 
+    const guestHandler = (e) => {
+        e.preventDefault();
+        dispatch(userLogin({ email, password }));
+    }
+
     return (
         <FormContainer>
             <h3>Sign in</h3>
-            { error && <Message variant='danger'>{error}</Message>}
-            { loading && <Loader />}
+            {error && <Message variant='danger'>{error}</Message>}
+            {loading && <Loader />}
 
             <Card>
                 <Card.Body>
@@ -55,6 +61,23 @@ const LoginScreen = ({ location, history }) => {
                         <Button type='submit' variant='primary'>Sign In</Button>
 
                         <Row className="py-3">
+                            <Col className="text-left">
+                                {
+                                    cartItems?.length ? (
+                                        <Link to={`/shipping`}>
+                                            Continue as a Guest
+                                            <i className="fas fa-walking pl-1"></i>
+                                        </Link>
+                                    ) : (
+                                        <Link to={`/`}>
+                                            <Button variant="link" size="sm" onClick={() => guestHandler()}>
+                                                Continue as a Guest
+                                                <i className="fas fa-walking pl-1"></i>
+                                            </Button>
+                                        </Link>
+                                    )
+                                }
+                            </Col>
                             <Col className="text-right">
                                 New Customer ? {' '}
                                 <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>

@@ -16,6 +16,7 @@ export const cartReducer = (state = { cartItems: [], shippingAddress: {}, paymen
             return { ...state, cartItems: [...state.cartItems.filter(cartItem => cartItem._id !== action.payload.id)] }
 
         case constants.CART_ITEMS_RESET:
+            localStorage.removeItem('cartItems');
             return { ...state, cartItems: [] }
 
         case constants.CART_SAVE_USER_SHIPPING_ADDRESS:
