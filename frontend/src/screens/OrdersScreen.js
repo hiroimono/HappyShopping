@@ -26,6 +26,7 @@ const OrdersScreen = ({ match, history }) => {
 
     const { order, loading, error } = useSelector(state => state.orderDetailsById);
     const { loading: loadingPay, success: successPay } = useSelector((state) => state.orderPay);
+    const { success: successCancel } = useSelector((state) => state.orderCancel);
     const { paypalClientId } = useSelector((state) => state.paypalClientId);
 
     // Calculator
@@ -52,7 +53,7 @@ const OrdersScreen = ({ match, history }) => {
             const script = document.createElement('script')
             script.type = 'text/javascript'
             script.id = 'paypalScript'
-            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&buyer-country=DE`
+            script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&buyer-country=DE&currency=EUR&locale=de_DE`
             script.async = true
             script.onload = () => {
                 setSdkReady(true)
@@ -78,6 +79,12 @@ const OrdersScreen = ({ match, history }) => {
             }
         }
     }, [dispatch, order, sdkReady, paypalClientId])
+
+    useEffect(() => {
+        if (successCancel) {
+            history.push('/cart')
+        }
+    }, [history, successCancel])
 
     const successPaymentHandler = (paymentResult, data) => {
         console.log('order.user: ', order.user);
@@ -297,10 +304,9 @@ const OrdersScreen = ({ match, history }) => {
                                             ) : (
                                                 <PayPalButton
                                                     amount={order.totalPrice}
-                                                    // currency="EUR"
+                                                    currency="EUR"
                                                     onSuccess={successPaymentHandler}
                                                     shippingPreference="NO_SHIPPING"
-                                                    vault="false"
                                                     catchError={paypalErrorHandler}
                                                 />
                                             )}
