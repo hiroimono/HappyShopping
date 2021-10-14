@@ -26,7 +26,7 @@ const OrdersScreen = ({ match, history }) => {
 
     const { order, loading, error } = useSelector(state => state.orderDetailsById);
     const { loading: loadingPay, success: successPay } = useSelector((state) => state.orderPay);
-    const { success: successCancel } = useSelector((state) => state.orderCancel);
+    const { success: successCancel, error: errorCancel } = useSelector((state) => state.orderCancel);
     const { paypalClientId } = useSelector((state) => state.paypalClientId);
 
     // Calculator
@@ -84,7 +84,13 @@ const OrdersScreen = ({ match, history }) => {
         if (successCancel) {
             history.push('/cart')
         }
-    }, [history, successCancel])
+
+        return () => {
+            if (successCancel || errorCancel) {
+                dispatch({ type: constants.ORDER_CANCEL_RESET })
+            };
+        }
+    }, [dispatch, history, successCancel, errorCancel])
 
     const successPaymentHandler = (paymentResult, data) => {
         console.log('order.user: ', order.user);

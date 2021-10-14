@@ -43,6 +43,8 @@ export const orderCancelReducer = (state = {}, action) => {
                 loading: false,
                 error: action.payload
             }
+        case constants.ORDER_CANCEL_RESET:
+            return {}
 
         default:
             return state

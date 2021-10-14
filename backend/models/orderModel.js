@@ -4,8 +4,13 @@ const orderSchema = mongoose.Schema(
     {
         user: {
             type: mongoose.Schema.Types.ObjectId,
-            required: true,
+            // required: true,
             ref: 'User',
+        },
+        visitor: {
+            type: mongoose.Schema.Types.ObjectId,
+            // required: true,
+            ref: 'Visitor',
         },
         cartItems: [
             {

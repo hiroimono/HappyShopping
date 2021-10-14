@@ -24,7 +24,14 @@ const MyOrdersScreen = () => {
             dispatch(getMyOrders())
             dispatch({ type: constants.ORDER_CREATE_RESET })
         } else dispatch(getMyOrders())
-    }, [dispatch, successCancel])
+
+
+        return () => {
+            if (successCancel || errorCancel) {
+                dispatch({ type: constants.ORDER_CANCEL_RESET })
+            };
+        }
+    }, [dispatch, errorCancel, successCancel])
 
     const removeOrder = (id) => dispatch(cancelOrder(id))
 
