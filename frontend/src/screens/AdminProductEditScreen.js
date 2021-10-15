@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
+import axios from 'axios';
 // import { Link } from 'react-router-dom';
 
 // bootstrap
-import { Button, Form, Card } from 'react-bootstrap';
+import { Button, Form, Card, InputGroup } from 'react-bootstrap';
 
 // Components
 import Message from '../components/Message';
@@ -25,6 +26,8 @@ const AdminProductEditScreen = ({ match, history }) => {
     const [price, setPrice] = useState('');
     const [countInStock, setCountInStock] = useState(0);
     const [image, setImage] = useState('');
+    const [imgError, setImgError] = useState('');
+    const [isUploading, setIsUploading] = useState(false);
 
     const dispatch = useDispatch();
     const { loading, error, product } = useSelector(state => state.product);
@@ -76,15 +79,51 @@ const AdminProductEditScreen = ({ match, history }) => {
         dispatch(editSingleProduct({ id: product._id, name, description, brand, category, price, countInStock, image }));
     }
 
+    const uploadFileHandler = async (e) => {
+        console.log('e.target: ', e.target);
+        const file = e.target.files[0];
+        console.log('file: ', file);
+        const formData = new FormData();
+
+        try {
+            setIsUploading(true);
+            let isImage = (/image\/.*/gm).test(file.type)
+
+            if (isImage) {
+                formData.append('image', file)
+                const config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+
+                const { data } = await axios.post('/api/uploads', formData, config)
+
+                setImage(data);
+            } else {
+                // throw new Error('File is not an image. Accepted types: ".jpg", ".jpeg", ".png"')
+                setImgError('File is not an image. Accepted types: ".jpg", ".jpeg", ".png"')
+            }
+
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setIsUploading(false)
+        }
+    }
+
+    const currency = (amount) => {
+        return amount ? new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount) : ''
+    }
+
     return (
         <FormContainer>
             <h2>Edit Product</h2>
-            {loading || loadingEdit ? (
+            {loading || loadingEdit || isUploading ? (
                 <Loader />
-            ) : error || errorEdit ? (
-                <Message variant='danger'>{error || errorEdit}</Message>
             ) : (
                 <>
+                    {(error || errorEdit || imgError) && <Message variant='danger'>{error || errorEdit || imgError}</Message>}
                     {successEdit && <Message variant='success'>Success: Product Item was updated!</Message>}
                     <Card>
                         <Card.Body>
@@ -111,17 +150,21 @@ const AdminProductEditScreen = ({ match, history }) => {
 
                                 <Form.Group controlId='price'>
                                     <Form.Label>Price (€)</Form.Label>
-                                    <Form.Control type='number' placeholder='Enter price' value={price} onChange={(e) => setPrice(e.target.value)}></Form.Control>
+                                    <InputGroup>
+                                        <Form.Control type='text' placeholder='Enter price' value={price} onChange={(e) => setPrice(e.target.value)}></Form.Control>
+                                        <InputGroup.Text id="btnGroupAddon">{currency(price)}</InputGroup.Text>
+                                    </InputGroup>
                                 </Form.Group>
 
                                 <Form.Group controlId='countInStock'>
                                     <Form.Label>Count In Stock</Form.Label>
-                                    <Form.Control type='number' placeholder='Enter amount of item in stock' value={countInStock} onChange={(e) => setCountInStock(e.target.value)}></Form.Control>
+                                    <Form.Control type='number' min='0' placeholder='Enter amount of item in stock' value={countInStock} onChange={(e) => setCountInStock(e.target.value)}></Form.Control>
                                 </Form.Group>
 
                                 <Form.Group controlId='image'>
                                     <Form.Label>image</Form.Label>
                                     <Form.Control type='text' placeholder='Enter image' value={image} onChange={(e) => setImage(e.target.value)}></Form.Control>
+                                    <Form.File id="image-file" label="Choose File" custom onChange={uploadFileHandler}></Form.File>
                                 </Form.Group>
 
                                 {/* <Form.Group className="mb-3" controlId="isAdmin">
@@ -133,8 +176,21 @@ const AdminProductEditScreen = ({ match, history }) => {
                                 <Button type='submit' variant='primary' className="mr-2">Update</Button>
 
                                 <LinkContainer to={`/admin/productlist`}>
-                                    <Button variant='info' className="mr-2"><i className="fas fa-chevron-circle-left mr-1"></i>Back to Product List</Button>
+                                    <Button variant='info' className="mr-2">
+                                        <i className="fas fa-chevron-circle-left mr-1"></i>
+                                        Back to Product List
+                                    </Button>
                                 </LinkContainer>
+                                {
+                                    match?.params?.id && (
+                                        <LinkContainer to={`/products/${match.params.id}`}>
+                                            <Button variant='warning' className="mr-2">
+                                                <i className="fas fa-chevron-circle-up mr-1"></i>
+                                                Show Product
+                                            </Button>
+                                        </LinkContainer>
+                                    )
+                                }
                             </Form>
                         </Card.Body>
                     </Card>
