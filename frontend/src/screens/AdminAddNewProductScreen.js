@@ -64,13 +64,13 @@ const AdminAddNewProductScreen = ({ match, history }) => {
     useEffect(() => {
         if (productAdded?._id) {
             dispatch(getSingleProduct(productAdded._id))
+            setProductAddedSuccess(true)
             // history.push('/admin/productlist')
         }
     }, [dispatch, productAdded])
 
     useEffect(() => {
         if (product) {
-            setProductAddedSuccess(true)
             setName(product.name)
             setDescription(product.description)
             setBrand(product.brand)
