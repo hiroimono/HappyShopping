@@ -32,14 +32,18 @@ const Header = ({ history }) => {
 
                 {
                     userInfo?.isAdmin && width >= 768 && (
-                        <NavDropdown title='ADMIN MENU' id='adminmenu'>
+                        <NavDropdown title='Admin Menu' id='adminmenu' className="d-md-flex flex-column justify-content-md-center">
                             <LinkContainer to='/admin/userlist'>
                                 <NavDropdown.Item>Users</NavDropdown.Item>
                             </LinkContainer>
 
+                            <NavDropdown.Divider />
+
                             <LinkContainer to='/admin/productlist'>
                                 <NavDropdown.Item>Products</NavDropdown.Item>
                             </LinkContainer>
+
+                            <NavDropdown.Divider />
 
                             <LinkContainer to='/admin/orderlist'>
                                 <NavDropdown.Item>Orders</NavDropdown.Item>
@@ -56,14 +60,18 @@ const Header = ({ history }) => {
                             <>
                                 {
                                     userInfo?.isAdmin && width < 768 && (
-                                        <NavDropdown title='ADMIN MENU' id='adminmenu'>
+                                        <NavDropdown title='Admin Menu' id='adminmenu' className="d-md-flex flex-column justify-content-md-center">
                                             <LinkContainer to='/admin/userlist'>
                                                 <NavDropdown.Item>Users</NavDropdown.Item>
                                             </LinkContainer>
 
+                                            <NavDropdown.Divider />
+
                                             <LinkContainer to='/admin/productlist'>
                                                 <NavDropdown.Item>Products</NavDropdown.Item>
                                             </LinkContainer>
+
+                                            <NavDropdown.Divider />
 
                                             <LinkContainer to='/admin/orderlist'>
                                                 <NavDropdown.Item>Orders</NavDropdown.Item>
@@ -72,14 +80,18 @@ const Header = ({ history }) => {
                                     )
                                 }
 
-                                <NavDropdown title={userInfo.name} id='username'>
+                                <NavDropdown title={userInfo.name} id='username' className="d-md-flex flex-column justify-content-md-center">
                                     <LinkContainer to='/profile'>
                                         <NavDropdown.Item>Profile</NavDropdown.Item>
                                     </LinkContainer>
 
+                                    <NavDropdown.Divider />
+
                                     <LinkContainer to='/my-orders'>
                                         <NavDropdown.Item>My Orders</NavDropdown.Item>
                                     </LinkContainer>
+
+                                    <NavDropdown.Divider />
 
                                     <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                                 </NavDropdown>

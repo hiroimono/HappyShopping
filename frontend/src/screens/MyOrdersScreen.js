@@ -50,7 +50,7 @@ const MyOrdersScreen = () => {
                             You don't have any orders yet.
                             <LinkContainer to='/'>
                                 <Button className="btn-sm ml-3" variant='outline-info'>
-                                    <i className="fas fa-home pr-1"></i> Go to Home
+                                    <i className="fas fa-home pr-1"></i> Home
                                 </Button>
                             </LinkContainer>
                         </Message>
