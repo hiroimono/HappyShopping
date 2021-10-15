@@ -53,11 +53,12 @@ export const userLogout = () => async (dispatch) => {
     localStorage.removeItem('cartItems');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('userPaymentMethod');
-    dispatch({ type: constants.USER_LOGOUT });
+    dispatch({ type: constants.USER_LOGIN_RESET });
+    dispatch({ type: constants.USER_REGISTER_RESET });
     dispatch({ type: constants.USER_DETAILS_RESET });
     dispatch({ type: constants.MY_ORDERS_RESET });
     dispatch({ type: constants.USER_LIST_RESET });
-    document.location.href = '/login'
+    // document.location.href = '/login'
 }
 
 export const removeUserRegisterErrors = () => (dispatch) => {

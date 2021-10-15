@@ -11,7 +11,7 @@ import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 // Custom Hooks
 import useBreakpoint from '../customHooks/useBreakpoint';
 
-const Header = () => {
+const Header = ({ history }) => {
     const dispatch = useDispatch();
     const { width } = useBreakpoint();
     const { userInfo } = useSelector(state => state.userLogin);
@@ -100,7 +100,7 @@ const Header = () => {
                                     <i className="fas fa-shopping-cart"></i>
                                     {
                                         cartItems?.length !== 0 && (
-                                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-warning text-dark">
+                                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-warning text-dark">
                                                 {cartItems.length}
                                             </span>
                                         )

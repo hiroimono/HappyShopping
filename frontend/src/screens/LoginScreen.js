@@ -35,7 +35,7 @@ const LoginScreen = ({ location, history }) => {
     }
 
     const guestHandler = (e) => {
-        e.preventDefault();
+        e?.preventDefault();
         dispatch(userLogin({ email, password }));
     }
 
