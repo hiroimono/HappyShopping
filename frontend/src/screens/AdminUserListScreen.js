@@ -80,7 +80,7 @@ const AdminUserListScreen = ({ history }) => {
                             There is no user yet.
                             <LinkContainer to='/'>
                                 <Button className="btn-sm ml-3" variant='outline-info'>
-                                    <i className="fas fa-home pr-1"></i> Go to Home
+                                    <i className="fas fa-home pr-1"></i> Home
                                 </Button>
                             </LinkContainer>
                         </Message>
@@ -107,7 +107,7 @@ const AdminUserListScreen = ({ history }) => {
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>
                                                 {user.isAdmin ? <i className="fas fa-check ml-2 text-success"></i> : <i className="fas fa-times text-danger"></i>}
                                             </td>
-                                            <td className="text-center" style={{ verticalAlign: 'middle' }}>
+                                            <td className="text-center" style={{ verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
                                                 <LinkContainer to={`/admin/useredit/${user._id}/edit`}>
                                                     <Button className="btn-sm mr-2" variant='outline-info'>
                                                         <i className='fas fa-edit'></i>

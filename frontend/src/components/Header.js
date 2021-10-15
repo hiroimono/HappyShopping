@@ -6,15 +6,17 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { userLogout } from '../actions/userActions.js'
 
 /** Styles */
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 
 // Custom Hooks
 import useBreakpoint from '../customHooks/useBreakpoint';
 
-const Header = () => {
+const Header = ({ history }) => {
     const dispatch = useDispatch();
     const { width } = useBreakpoint();
     const { userInfo } = useSelector(state => state.userLogin);
+    const { cartItems } = useSelector(state => state.cart)
+
     const isLoggedIn = userInfo ? true : false;
 
     const logoutHandler = () => {
@@ -30,14 +32,18 @@ const Header = () => {
 
                 {
                     userInfo?.isAdmin && width >= 768 && (
-                        <NavDropdown title='ADMIN MENU' id='adminmenu'>
+                        <NavDropdown title='Admin Menu' id='adminmenu' className="d-md-flex flex-column justify-content-md-center">
                             <LinkContainer to='/admin/userlist'>
                                 <NavDropdown.Item>Users</NavDropdown.Item>
                             </LinkContainer>
 
+                            <NavDropdown.Divider />
+
                             <LinkContainer to='/admin/productlist'>
                                 <NavDropdown.Item>Products</NavDropdown.Item>
                             </LinkContainer>
+
+                            <NavDropdown.Divider />
 
                             <LinkContainer to='/admin/orderlist'>
                                 <NavDropdown.Item>Orders</NavDropdown.Item>
@@ -54,14 +60,18 @@ const Header = () => {
                             <>
                                 {
                                     userInfo?.isAdmin && width < 768 && (
-                                        <NavDropdown title='ADMIN MENU' id='adminmenu'>
+                                        <NavDropdown title='Admin Menu' id='adminmenu' className="d-md-flex flex-column justify-content-md-center">
                                             <LinkContainer to='/admin/userlist'>
                                                 <NavDropdown.Item>Users</NavDropdown.Item>
                                             </LinkContainer>
 
+                                            <NavDropdown.Divider />
+
                                             <LinkContainer to='/admin/productlist'>
                                                 <NavDropdown.Item>Products</NavDropdown.Item>
                                             </LinkContainer>
+
+                                            <NavDropdown.Divider />
 
                                             <LinkContainer to='/admin/orderlist'>
                                                 <NavDropdown.Item>Orders</NavDropdown.Item>
@@ -70,14 +80,18 @@ const Header = () => {
                                     )
                                 }
 
-                                <NavDropdown title={userInfo.name} id='username'>
+                                <NavDropdown title={userInfo.name} id='username' className="d-md-flex flex-column justify-content-md-center">
                                     <LinkContainer to='/profile'>
                                         <NavDropdown.Item>Profile</NavDropdown.Item>
                                     </LinkContainer>
 
+                                    <NavDropdown.Divider />
+
                                     <LinkContainer to='/my-orders'>
                                         <NavDropdown.Item>My Orders</NavDropdown.Item>
                                     </LinkContainer>
+
+                                    <NavDropdown.Divider />
 
                                     <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
                                 </NavDropdown>
@@ -85,14 +99,26 @@ const Header = () => {
                         ) : (
                             <LinkContainer to='/login'>
                                 <Nav.Link>
-                                    <i className="fas fa-user mx-2"></i> Log In
+                                    <Button variant="outline-light border-0" size="sm">
+                                        <i className="fas fa-user mr-2"></i> Log In
+                                    </Button>
                                 </Nav.Link>
                             </LinkContainer>
                         )}
 
                         <LinkContainer to='/cart'>
                             <Nav.Link>
-                                <i className="fas fa-shopping-cart mx-2"></i>Shopping Cart
+                                <Button variant="outline-light border-0" size="sm" className="position-relative">
+                                    <i className="fas fa-shopping-cart"></i>
+                                    {
+                                        cartItems?.length !== 0 && (
+                                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-warning text-dark">
+                                                {cartItems.length}
+                                            </span>
+                                        )
+                                    }
+                                    <span className={cartItems?.length !== 0 ? 'ml-3' : 'ml-2'}>Shopping Cart</span>
+                                </Button>
                             </Nav.Link>
                         </LinkContainer>
                     </Nav>

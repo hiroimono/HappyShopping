@@ -7,13 +7,14 @@ export const getPayPalScript = () => async (dispatch, getState) => {
             type: constants.PAYPAL_CLIENT_ID_REQUEST,
         })
 
-        const {
-            userLogin: { userInfo },
-        } = getState()
+        // const {
+        //     userLogin: { userInfo },
+        // } = getState()
 
         const config = {
             headers: {
-                Authorization: `Bearer ${userInfo.token}`,
+                'Content-Type': 'application/json',
+                // Authorization: `Bearer ${userInfo.token}`,
             },
         }
 

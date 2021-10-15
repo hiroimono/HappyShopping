@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
+import Visitor from '../models/visitorModel.js';
 import generateToken from '../utils/generateToken.js';
 
 /**
@@ -32,6 +33,52 @@ export const registerNewUser = asyncHandler(async (req, res) => {
         } catch (error) {
             res.status(400);
             throw new Error('User didn\'t be registered successfully!');
+        }
+    }
+})
+
+/**
+ * @description Register a new visitor
+ * @route POST /api/users/register/visitor
+ * @access Public
+ */
+export const registerNewVisitor = asyncHandler(async (req, res) => {
+    const { name, email } = req.body;
+    const isVisitorExists = await Visitor.findOne({ email });
+
+    if (isVisitorExists) {
+        try {
+            await isVisitorExists.updateOne({
+                name,
+                email
+            })
+
+            const visitor = await Visitor.findOne({ email });
+
+            res.status(201).json({
+                _id: visitor._id,
+                name: visitor.name,
+                email: visitor.email
+            });
+        } catch (error) {
+            res.status(400);
+            throw new Error('Visitor didn\'t be updated successfully!');
+        }
+    } else {
+        try {
+            const visitor = await Visitor.create({
+                name,
+                email
+            });
+
+            res.status(201).json({
+                _id: visitor._id,
+                name: visitor.name,
+                email: visitor.email
+            });
+        } catch (error) {
+            res.status(400);
+            throw new Error('Visitor didn\'t be registered successfully!');
         }
     }
 })

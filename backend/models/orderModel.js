@@ -4,8 +4,13 @@ const orderSchema = mongoose.Schema(
     {
         user: {
             type: mongoose.Schema.Types.ObjectId,
-            required: true,
+            // required: true,
             ref: 'User',
+        },
+        visitor: {
+            type: mongoose.Schema.Types.ObjectId,
+            // required: true,
+            ref: 'Visitor',
         },
         cartItems: [
             {
@@ -23,7 +28,7 @@ const orderSchema = mongoose.Schema(
         shippingAddress: {
             street: { type: String, required: true },
             number: { type: String, required: true },
-            zipcode: { type: String, required: true },
+            zipcode: { type: String },
             city: { type: String, required: true },
             country: { type: String, required: true },
         },

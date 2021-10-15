@@ -75,19 +75,19 @@ const RegisterScreen = ({ location, history }) => {
                 <Card.Body>
                     <Form onSubmit={submitHandler}>
                         <Form.Group controlId='name'>
-                            <Form.Label>Name</Form.Label>
+                            <Form.Label>Name and Surname*</Form.Label>
                             <Form.Control type='text' placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='email'>
-                            <Form.Label>Email Address</Form.Label>
+                            <Form.Label>Email Address*</Form.Label>
                             <Form.Control type='email' placeholder='Enter email' value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='password'>
                             <Form.Row>
                                 <Col>
-                                    <Form.Label>Password</Form.Label>
+                                    <Form.Label>Password*</Form.Label>
                                 </Col>
                                 <Col xs="auto" className='d-flex align-items-center'>
                                     {!isPasswordEmpty && (password && (isPasswordOK ? (
@@ -107,7 +107,7 @@ const RegisterScreen = ({ location, history }) => {
                         <Form.Group controlId='confirmPassword'>
                             <Form.Row>
                                 <Col>
-                                    <Form.Label>Confirm Password</Form.Label>
+                                    <Form.Label>Confirm Password*</Form.Label>
                                 </Col>
                                 <Col xs="auto" className='d-flex align-items-center'>
                                     {!isPasswordEmpty && (confirmPassword && ((password === confirmPassword) ? (

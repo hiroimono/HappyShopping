@@ -10,7 +10,7 @@ export const userRegisterReducer = (state = {}, action) => {
             return { ...state, loading: false, error: action.payload }
         case constants.REMOVE_USER_REGISTER_ERRORS:
             return { ...state, error: null }
-        case constants.USER_LOGOUT:
+        case constants.USER_REGISTER_RESET:
             return {}
         default:
             return state;
@@ -20,12 +20,27 @@ export const userRegisterReducer = (state = {}, action) => {
 export const userLoginReducer = (state = {}, action) => {
     switch (action.type) {
         case constants.USER_LOGIN_REQUEST:
-            return { ...state, loading: true }
+            return { loading: true }
         case constants.USER_LOGIN_SUCCESS:
-            return { ...state, loading: false, userInfo: action.payload }
+            return { loading: false, userInfo: action.payload }
         case constants.USER_LOGIN_FAILED:
-            return { ...state, loading: false, error: action.payload }
-        case constants.USER_LOGOUT:
+            return { loading: false, error: action.payload }
+        case constants.USER_LOGIN_RESET:
+            return {}
+        default:
+            return state;
+    }
+}
+
+export const userAsGuestReducer = (state = {}, action) => {
+    switch (action.type) {
+        case constants.USER_AS_GUEST_REQUEST:
+            return { loading: true }
+        case constants.USER_AS_GUEST_SUCCESS:
+            return { loading: false, guestInfo: action.payload }
+        case constants.USER_AS_GUEST_FAILED:
+            return { loading: false, error: action.payload }
+        case constants.USER_AS_GUEST_RESET:
             return {}
         default:
             return state;

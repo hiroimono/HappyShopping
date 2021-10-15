@@ -24,7 +24,14 @@ const MyOrdersScreen = () => {
             dispatch(getMyOrders())
             dispatch({ type: constants.ORDER_CREATE_RESET })
         } else dispatch(getMyOrders())
-    }, [dispatch, successCancel])
+
+
+        return () => {
+            if (successCancel || errorCancel) {
+                dispatch({ type: constants.ORDER_CANCEL_RESET })
+            };
+        }
+    }, [dispatch, errorCancel, successCancel])
 
     const removeOrder = (id) => dispatch(cancelOrder(id))
 
@@ -43,7 +50,7 @@ const MyOrdersScreen = () => {
                             You don't have any orders yet.
                             <LinkContainer to='/'>
                                 <Button className="btn-sm ml-3" variant='outline-info'>
-                                    <i className="fas fa-home pr-1"></i> Go to Home
+                                    <i className="fas fa-home pr-1"></i> Home
                                 </Button>
                             </LinkContainer>
                         </Message>
@@ -67,7 +74,7 @@ const MyOrdersScreen = () => {
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>{order._id}</td>
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>{showDate(order.createdAt)}</td>
                                             <td className="text-right px-2" style={{ verticalAlign: 'middle' }}>{currency(order.totalPrice)}</td>
-                                            <td className="text-center" style={{ verticalAlign: 'middle' }}>
+                                            <td className="text-center" style={{ verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
                                                 {
                                                     order.isPaid ? (
                                                         <>
@@ -77,7 +84,7 @@ const MyOrdersScreen = () => {
                                                     ) : <i className="fas fa-times text-danger"></i>
                                                 }
                                             </td>
-                                            <td className="text-center" style={{ verticalAlign: 'middle' }}>
+                                            <td className="text-center" style={{ verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
                                                 {
                                                     order.isDelivered ? (
                                                         <>

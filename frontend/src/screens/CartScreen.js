@@ -45,7 +45,11 @@ const CartScreen = ({ match, location, history }) => {
                     {
                         cartItems.length === 0 ? (
                             <Message>
-                                Your cart is empty. <Link to='/'>Go back</Link>
+                                Your cart is empty. <Link to='/'>
+                                    <Button className="btn-sm ml-3" variant='outline-info'>
+                                        <i className="fas fa-home pr-1"></i> Home
+                                    </Button>
+                                </Link>
                             </Message>
                         ) : (
                             <Row>

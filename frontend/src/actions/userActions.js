@@ -25,24 +25,39 @@ export const userRegister = (registerData) => async (dispatch) => {
     }
 }
 
-export const userLogin = (loginData, asGuest) => async (dispatch) => {
+export const userLogin = (loginData) => async (dispatch) => {
     try {
-        if (!asGuest) {
-            dispatch({ type: constants.USER_LOGIN_REQUEST });
-            const config = { headers: { 'Content-Type': 'Application/json' } };
-            const { data } = await axios.post(`/api/users/login`, loginData, config);
-            dispatch({
-                type: constants.USER_LOGIN_SUCCESS,
-                payload: data
-            })
+        dispatch({ type: constants.USER_LOGIN_REQUEST });
+        const config = { headers: { 'Content-Type': 'Application/json' } };
+        const { data } = await axios.post(`/api/users/login`, loginData, config);
+        dispatch({
+            type: constants.USER_LOGIN_SUCCESS,
+            payload: data
+        })
 
-            localStorage.setItem('userInfo', JSON.stringify(data));
-        } else {
-
-        }
+        localStorage.setItem('userInfo', JSON.stringify(data));
     } catch (error) {
         dispatch({
             type: constants.USER_LOGIN_FAILED,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+    }
+}
+
+export const userAsGuest = (guestData) => async (dispatch) => {
+    try {
+        dispatch({ type: constants.USER_AS_GUEST_REQUEST });
+        const config = { headers: { 'Content-Type': 'Application/json' } };
+        const { data } = await axios.post(`/api/users/register/visitor`, guestData, config);
+        dispatch({
+            type: constants.USER_AS_GUEST_SUCCESS,
+            payload: data
+        })
+
+        localStorage.setItem('userAsGuestInfo', JSON.stringify(data));
+    } catch (error) {
+        dispatch({
+            type: constants.USER_AS_GUEST_FAILED,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message
         })
     }
@@ -53,11 +68,12 @@ export const userLogout = () => async (dispatch) => {
     localStorage.removeItem('cartItems');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('userPaymentMethod');
-    dispatch({ type: constants.USER_LOGOUT });
+    dispatch({ type: constants.USER_LOGIN_RESET });
+    dispatch({ type: constants.USER_REGISTER_RESET });
     dispatch({ type: constants.USER_DETAILS_RESET });
     dispatch({ type: constants.MY_ORDERS_RESET });
     dispatch({ type: constants.USER_LIST_RESET });
-    document.location.href = '/login'
+    // document.location.href = '/login'
 }
 
 export const removeUserRegisterErrors = () => (dispatch) => {

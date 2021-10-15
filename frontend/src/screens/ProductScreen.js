@@ -126,6 +126,11 @@ const ProductScreen = ({ history, match }) => {
                                                         </Button>
                                                     )}
                                                 </Row>
+                                                <Row>
+                                                    <Link to='/cart' className='btn btn-info btn-block mt-2'>
+                                                        Go to Cart
+                                                    </Link>
+                                                </Row>
                                             </ListGroup.Item>
                                         </ListGroup>
                                     </Card>
