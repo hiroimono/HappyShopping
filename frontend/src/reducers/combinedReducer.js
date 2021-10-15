@@ -16,6 +16,7 @@ import {
 
 import {
     userLoginReducer,
+    userAsGuestReducer,
     userRegisterReducer,
     userDetailsReducer,
     userProfileUpdateReducer,
@@ -44,6 +45,7 @@ export const combinedReducer = combineReducers({
     productNewAdd: productNewAddReducer,
     cart: cartReducer,
     userLogin: userLoginReducer,
+    userAsGuest: userAsGuestReducer,
     userRegister: userRegisterReducer,
     userDelete: userDeleteReducer,
     userDetails: userDetailsReducer,

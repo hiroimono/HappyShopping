@@ -25,7 +25,10 @@ const initialState = {
     },
     userLogin: {
         userInfo: localStorageData.userInfoFromLocalStorage
-    }
+    },
+    userAsGuest: {
+        guestInfo: localStorageData.userAsGuestInfoFromLocalStorage
+    },
 };
 
 const middleware = [thunk];

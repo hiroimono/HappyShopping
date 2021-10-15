@@ -4,6 +4,6 @@ import { getPaypalClientId } from '../controllers/configController.js'
 
 
 const configRouter = express.Router();
-configRouter.route('/paypal-client-id').get(protect, getPaypalClientId);
+configRouter.route('/paypal-client-id').get(getPaypalClientId);
 
 export default configRouter;

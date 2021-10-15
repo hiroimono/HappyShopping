@@ -25,7 +25,7 @@ const OrdersScreen = ({ match, history }) => {
     const dispatch = useDispatch();
 
     const { order, loading, error } = useSelector(state => state.orderDetailsById);
-    const { loading: loadingPay, success: successPay } = useSelector((state) => state.orderPay);
+    const { loading: loadingPay, success: successPay, error: errorPay } = useSelector((state) => state.orderPay);
     const { success: successCancel, error: errorCancel } = useSelector((state) => state.orderCancel);
     const { paypalClientId } = useSelector((state) => state.paypalClientId);
 
@@ -94,6 +94,7 @@ const OrdersScreen = ({ match, history }) => {
 
     const successPaymentHandler = (paymentResult, data) => {
         console.log('order.user: ', order.user);
+        console.log('order.visitor: ', order.visitor);
         console.log('paymentResult: ', paymentResult);
         console.log('data: ', data);
         dispatch(payOrder(orderId, paymentResult))
@@ -112,34 +113,51 @@ const OrdersScreen = ({ match, history }) => {
 
     return loading || loadingPay ?
         <Loader /> :
-        error ?
-            <Message variant='danger'>{error}</Message> :
+        error || errorPay ?
+            <Message variant='danger'>{error || errorPay}</Message> :
             <>
                 <Row>
                     <Col lg={8}>
                         <ListGroup variant='flush'>
                             <ListGroup.Item className="px-0">
                                 <h3>Shipping</h3>
-                                <Row>
-                                    <Col md={2} className='mb-0'>
-                                        <strong>Name: </strong>
-                                    </Col>
-                                    <Col className='mb-0'>
-                                        <span>
-                                            {order.user.name}
-                                        </span>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col md={2} className='mb-0'>
-                                        <strong>Email: </strong>
-                                    </Col>
-                                    <Col className='mb-0'>
-                                        <span>
-                                            <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
-                                        </span>
-                                    </Col>
-                                </Row>
+                                {
+                                    (order?.user?.name || order?.visitor?.name) && (
+                                        <Row>
+                                            <Col md={2} className='mb-0'>
+                                                <strong>Name: </strong>
+                                            </Col>
+                                            <Col className='mb-0'>
+                                                <span>
+                                                    {order.user ? order.user.name : (order.visitor && order.visitor.name)}
+                                                </span>
+                                            </Col>
+                                        </Row>
+                                    )
+                                }
+
+                                {
+                                    (order?.user?.email || order?.visitor?.email) && (
+                                        <Row>
+                                            <Col md={2} className='mb-0'>
+                                                <strong>Email: </strong>
+                                            </Col>
+                                            <Col className='mb-0'>
+                                                <span>
+                                                    {
+                                                        order.user ? (
+                                                            <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+                                                        ) : (
+                                                            order.visitor && (
+                                                                <a href={`mailto:${order.visitor.email}`}>{order.visitor.email}</a>
+                                                            )
+                                                        )
+                                                    }
+                                                </span>
+                                            </Col>
+                                        </Row>
+                                    )
+                                }
                                 <Row>
                                     <Col md={2}>
                                         <p className='mb-0'>
@@ -149,7 +167,7 @@ const OrdersScreen = ({ match, history }) => {
                                     <Col>
                                         <span className='mb-0'>
                                             {(order?.shippingAddress?.street && order?.shippingAddress?.number) &&
-                                                `${order.shippingAddress.street} ${order.shippingAddress.number}`}.
+                                                `${order.shippingAddress.street} ${order.shippingAddress.number}`}
                                         </span>
                                         <span className='mb-0'>
                                             {order?.shippingAddress?.zipcode &&
@@ -173,8 +191,8 @@ const OrdersScreen = ({ match, history }) => {
                             </ListGroup.Item>
 
                             <ListGroup.Item className='px-0'>
-                                <h3>Payment Method:</h3>
-                                <Row>
+                                <h3>Payment:</h3>
+                                {/* <Row>
                                     <Col md={2}>
                                         <p className='mb-0'>
                                             <strong>Method:</strong>
@@ -185,7 +203,7 @@ const OrdersScreen = ({ match, history }) => {
                                             {order?.paymentMethod && `${order.paymentMethod}`}
                                         </p>
                                     </Col>
-                                </Row>
+                                </Row> */}
                                 <Row>
                                     <Col className='col-12 mt-2'>
                                         {

@@ -32,6 +32,21 @@ export const userLoginReducer = (state = {}, action) => {
     }
 }
 
+export const userAsGuestReducer = (state = {}, action) => {
+    switch (action.type) {
+        case constants.USER_AS_GUEST_REQUEST:
+            return { loading: true }
+        case constants.USER_AS_GUEST_SUCCESS:
+            return { loading: false, guestInfo: action.payload }
+        case constants.USER_AS_GUEST_FAILED:
+            return { loading: false, error: action.payload }
+        case constants.USER_AS_GUEST_RESET:
+            return {}
+        default:
+            return state;
+    }
+}
+
 export const userProfileUpdateReducer = (state = {}, action) => {
     switch (action.type) {
         case constants.USER_PROFILE_UPDATE_REQUEST:

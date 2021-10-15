@@ -18,6 +18,7 @@ import { constants } from '../constants/constant';
 const PlaceOrdersScreen = ({ history }) => {
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart);
+    const { guestInfo: guest } = useSelector(state => state.userAsGuest);
 
     // Calculator
     const addDecimals = (num) => Math.round((num * 100) / 100).toFixed(2)
@@ -36,15 +37,28 @@ const PlaceOrdersScreen = ({ history }) => {
     }, [history, success, order, dispatch])
 
     const placeOrderHandler = () => {
-        dispatch(createOrder({
-            cartItems: cart.cartItems,
-            shippingAddress: cart.shippingAddress,
-            paymentMethod: cart.paymentMethod,
-            itemsPrice: cart.itemsPrice,
-            shippingPrice: cart.shippingPrice,
-            taxPrice: cart.taxPrice,
-            totalPrice: cart.totalPrice,
-        }))
+        if (!guest) {
+            dispatch(createOrder({
+                cartItems: cart.cartItems,
+                shippingAddress: cart.shippingAddress,
+                paymentMethod: cart.paymentMethod ? cart.paymentMethod : 'PayPal',
+                itemsPrice: cart.itemsPrice,
+                shippingPrice: cart.shippingPrice,
+                taxPrice: cart.taxPrice,
+                totalPrice: cart.totalPrice,
+            }))
+        } else {
+            dispatch(createOrder({
+                visitor: guest,
+                cartItems: cart.cartItems,
+                shippingAddress: cart.shippingAddress,
+                paymentMethod: cart.paymentMethod ? cart.paymentMethod : 'PayPal',
+                itemsPrice: cart.itemsPrice,
+                shippingPrice: cart.shippingPrice,
+                taxPrice: cart.taxPrice,
+                totalPrice: cart.totalPrice,
+            }))
+        }
     }
 
     const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
@@ -67,7 +81,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                 <Col>
                                     <span className='mb-0'>
                                         {(cart.shippingAddress?.street && cart.shippingAddress?.number) &&
-                                            `${cart.shippingAddress.street} ${cart.shippingAddress.number}`}.
+                                            `${cart.shippingAddress.street} ${cart.shippingAddress.number}`}
                                     </span>
                                     <span className='mb-0'>
                                         {cart.shippingAddress?.zipcode &&

@@ -98,6 +98,22 @@ const getOrderById = asyncHandler(async (req, res) => {
 })
 
 /**
+ * @description get Visitor Order By Id
+ * @route GET api/orders/visitor-order/:id 
+ * @access public
+ */
+const getVisitorOrderById = asyncHandler(async (req, res) => {
+    let order = await Order.findById(req.params.id).populate('visitor', 'name email');
+
+    if (order) {
+        res.json(order);
+    } else {
+        res.status(404);
+        throw new Error('Order not found.');
+    }
+})
+
+/**
  * @description get User's Orders
  * @route GET api/orders/myorders
  * @access private
@@ -133,4 +149,4 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     }
 })
 
-export { addOrderItems, addVisitorOrderItems, getOrderById, updateOrderToPaid, getUserOrders, removeOrderItems }
+export { addOrderItems, addVisitorOrderItems, getOrderById, getVisitorOrderById, updateOrderToPaid, getUserOrders, removeOrderItems }

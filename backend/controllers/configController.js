@@ -4,7 +4,8 @@ import Order from '../models/orderModel.js';
 /**
  * @description get paypal-client-id stored in backend .env
  * @route GET api/config/paypal-client-id
- * @access private
+ * // @access private
+ * @access public
  */
 const getPaypalClientId = asyncHandler(async (req, res) => {
     if (process.env.PAYPAL_CLIENT_ID) {

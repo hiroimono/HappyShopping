@@ -36,7 +36,8 @@ const LoginScreen = ({ location, history }) => {
 
     const guestHandler = (e) => {
         e?.preventDefault();
-        dispatch(userLogin({ email, password }));
+        console.log('redirect: ', redirect);
+        redirect ? history.push(redirect) : history.push('/')
     }
 
     return (
