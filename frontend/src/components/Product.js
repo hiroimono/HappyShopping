@@ -11,7 +11,7 @@ const Product = ({ product }) => {
         <>
             <Card className='pb-3 rounded h-100'>
                 <Link to={`/products/${product?._id}`}>
-                    <Card.Img src={product?.image} variant='top' />
+                    <Card.Img src={product?.image} variant='top' style={{ 'height': '300px', 'objectFit': 'cover' }} />
                 </Link>
 
                 <Card.Body className="d-flex flex-column justify-content-between pb-0">

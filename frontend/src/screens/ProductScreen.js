@@ -14,12 +14,19 @@ import Ratings from '../components/Ratings';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
+// Custom Hooks
+import useBreakpoint from '../customHooks/useBreakpoint';
+
 const ProductScreen = ({ history, match }) => {
+    const { width } = useBreakpoint();
+
     const [qty, setQty] = useState(1);
 
     const dispatch = useDispatch()
     const { loading, error, product } = useSelector(state => state.product)
     const { cartItems } = useSelector(state => state.cart)
+    const { userInfo: user } = useSelector(state => state.userLogin)
+
     const initial = cartItems.filter(item => item._id === match.params.id).length ? true : false;
     const [isInCart, setIsInCart] = useState(initial);
 
@@ -40,6 +47,7 @@ const ProductScreen = ({ history, match }) => {
         dispatch(removeProductFromCart(match.params.id));
         setIsInCart(false)
     }
+
     const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
 
     return (
@@ -53,8 +61,8 @@ const ProductScreen = ({ history, match }) => {
                             <Link to='/' className='btn btn-dark'>Go Back</Link>
                             <Row className='my-3'>
 
-                                <Col md={12} lg={5} className="d-flex no-gutter justify-content-center align-items-center my-3">
-                                    <Image src={product?.image} fluid className="w-100 h-100" style={{ objectFit: 'cover' }} />
+                                <Col md={12} lg={5} className="d-flex no-gutter justify-content-center align-items-center my-3" style={width < 576 ? { 'height': '200px' } : { 'height': '400px' }}>
+                                    <Image src={product?.image} fluid className="w-100 h-100" style={{ 'objectFit': 'cover' }} />
                                 </Col>
 
                                 <Col md={7} lg={4}>
@@ -116,21 +124,34 @@ const ProductScreen = ({ history, match }) => {
                                                         <Button type='button' className="btn btn-block"
                                                             disabled={product?.countInStock <= 0 ? true : false}
                                                             onClick={removeFromCartHandler}>
+                                                            <i className="fas fa-times mr-2"></i>
                                                             Remove from cart
                                                         </Button>
                                                     ) : (
                                                         <Button type='button' className="btn btn-block"
                                                             disabled={product?.countInStock <= 0 ? true : false}
                                                             onClick={addToCartHandler}>
+                                                            <i className="fas fa-plus mr-2"></i>
                                                             Add to cart
                                                         </Button>
                                                     )}
                                                 </Row>
                                                 <Row>
                                                     <Link to='/cart' className='btn btn-info btn-block mt-2'>
+                                                        <i className="fas fa-shopping-cart mr-2"></i>
                                                         Go to Cart
                                                     </Link>
                                                 </Row>
+                                                {
+                                                    user?.isAdmin && (
+                                                        <Row>
+                                                            <Link to={`/admin/productedit/${match.params.id}/edit`} className='btn btn-warning btn-block mt-2'>
+                                                                <i className="fas fa-cut mr-2"></i>
+                                                                Edit this Product
+                                                            </Link>
+                                                        </Row>
+                                                    )
+                                                }
                                             </ListGroup.Item>
                                         </ListGroup>
                                     </Card>

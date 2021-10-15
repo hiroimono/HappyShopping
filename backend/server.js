@@ -9,12 +9,12 @@ import productRouter from './routers/productRouter.js';
 import userRouter from './routers/userRouter.js';
 import orderRouter from './routers/orderRouter.js';
 import configRouter from './routers/configRouter.js';
+import uploadRouter from './routers/uploadRouter.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 config();
 connectDB();
 const app = express();
-const __dirname = path.resolve();
 app.use(express.json());
 
 /** Router Middlewares */
@@ -22,7 +22,11 @@ app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/config', configRouter);
+app.use('/api/uploads', uploadRouter);
 // app.use('/api/cart', cartRouter);
+
+const __dirname = path.resolve();
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '/frontend/build')));
