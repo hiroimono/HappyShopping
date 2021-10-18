@@ -7,7 +7,7 @@ import Visitor from '../models/visitorModel.js';
  * @route POST api/orders
  * @access private
  */
-const addOrderItems = asyncHandler(async (req, res) => {
+export const addOrderItems = asyncHandler(async (req, res) => {
     const { cartItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice } = req.body;
 
     if (!cartItems?.length) {
@@ -31,7 +31,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
  * @route POST api/orders/visitor-order
  * @access public
  */
-const addVisitorOrderItems = asyncHandler(async (req, res) => {
+export const addVisitorOrderItems = asyncHandler(async (req, res) => {
     const { visitor, cartItems, shippingAddress, paymentMethod, itemsPrice, taxPrice, shippingPrice, totalPrice } = req.body;
     let visitorFound = await Visitor.findOne({ "email": visitor.email })
     let order;
@@ -69,7 +69,7 @@ const addVisitorOrderItems = asyncHandler(async (req, res) => {
  * @route DELETE api/orders/:id
  * @access private
  */
-const removeOrderItems = asyncHandler(async (req, res) => {
+export const removeOrderItems = asyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id)
 
     if (order) {
@@ -86,7 +86,7 @@ const removeOrderItems = asyncHandler(async (req, res) => {
  * @route GET api/orders/:id
  * @access private
  */
-const getOrderById = asyncHandler(async (req, res) => {
+export const getOrderById = asyncHandler(async (req, res) => {
     let order = await Order.findById(req.params.id).populate('user', 'name email');
 
     if (order) {
@@ -102,7 +102,7 @@ const getOrderById = asyncHandler(async (req, res) => {
  * @route GET api/orders/visitor-order/:id 
  * @access public
  */
-const getVisitorOrderById = asyncHandler(async (req, res) => {
+export const getVisitorOrderById = asyncHandler(async (req, res) => {
     let order = await Order.findById(req.params.id).populate('visitor', 'name email');
 
     if (order) {
@@ -118,10 +118,22 @@ const getVisitorOrderById = asyncHandler(async (req, res) => {
  * @route GET api/orders/myorders
  * @access private
  */
-const getUserOrders = asyncHandler(async (req, res) => {
+export const getUserOrders = asyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id });
 
     res.json(orders);
+})
+
+/**
+ * @description get All Orders
+ * @route GET api/orders/
+ * @access private/admin
+ */
+export const getAllOrders = asyncHandler(async (req, res) => {
+    const userOrders = await Order.find({ 'user': { $exists: true } }).populate('user', 'id name email');
+    const visitorOrders = await Order.find({ 'visitor': { $exists: true } }).populate('visitor', 'id name email');
+
+    res.json({ userOrders, visitorOrders });
 })
 
 /**
@@ -129,7 +141,7 @@ const getUserOrders = asyncHandler(async (req, res) => {
  * @route GET api/orders/:id/pay
  * @access private
  */
-const updateOrderToPaid = asyncHandler(async (req, res) => {
+export const updateOrderToPaid = asyncHandler(async (req, res) => {
     let order = await Order.findById(req.params.id);
 
     if (order) {
@@ -148,5 +160,3 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
         throw new Error('Order not found.');
     }
 })
-
-export { addOrderItems, addVisitorOrderItems, getOrderById, getVisitorOrderById, updateOrderToPaid, getUserOrders, removeOrderItems }
