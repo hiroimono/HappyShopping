@@ -21,6 +21,7 @@ import PaymentMethodScreen from './screens/PaymentMethodScreen';
 import AdminUserListScreen from './screens/AdminUserListScreen';
 import AdminUserEditScreen from './screens/AdminUserEditScreen';
 import AdminProductListScreen from './screens/AdminProductListScreen';
+import AdminOrderListScreen from './screens/AdminOrderListScreen';
 import AdminProductEditScreen from './screens/AdminProductEditScreen';
 import AdminAddNewProductScreen from './screens/AdminAddNewProductScreen';
 
@@ -45,6 +46,7 @@ const App = () => {
                     <Route path='/admin/userlist' component={AdminUserListScreen} />
                     <Route path='/admin/useredit/:id/edit' component={AdminUserEditScreen} />
                     <Route path='/admin/productlist' component={AdminProductListScreen} />
+                    <Route path='/admin/orderlist' component={AdminOrderListScreen} />
                     <Route path='/admin/productedit/:id/edit' component={AdminProductEditScreen} />
                     <Route path='/admin/product/add' component={AdminAddNewProductScreen} />
                 </Container>

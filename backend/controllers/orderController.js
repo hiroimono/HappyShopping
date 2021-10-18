@@ -74,7 +74,7 @@ export const removeOrderItems = asyncHandler(async (req, res) => {
 
     if (order) {
         await order.remove()
-        res.json({ message: 'Order removed' })
+        res.json({ message: 'Order removed', removedOrder: order })
     } else {
         res.status(404)
         throw new Error('Order not found')

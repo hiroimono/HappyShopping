@@ -76,9 +76,9 @@ const MyOrdersScreen = () => {
                                             <td className="text-right px-2" style={{ verticalAlign: 'middle' }}>{currency(order.totalPrice)}</td>
                                             <td className="text-center" style={{ verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
                                                 {
-                                                    order.isPaid ? (
+                                                    order?.isPaid ? (
                                                         <>
-                                                            <span>{showDate(order.paidAt)}</span>
+                                                            <span>{showDate(order?.paidAt)}</span>
                                                             <i className="fas fa-check ml-2 text-success"></i>
                                                         </>
                                                     ) : <i className="fas fa-times text-danger"></i>
@@ -86,9 +86,9 @@ const MyOrdersScreen = () => {
                                             </td>
                                             <td className="text-center" style={{ verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
                                                 {
-                                                    order.isDelivered ? (
+                                                    order?.isDelivered ? (
                                                         <>
-                                                            <span>{showDate(order.deliveredAt)}</span>
+                                                            <span>{showDate(order?.deliveredAt)}</span>
                                                             <i className="fas fa-check ml-2 text-success"></i>
                                                         </>
                                                     ) : <i className="fas fa-times text-danger"></i>

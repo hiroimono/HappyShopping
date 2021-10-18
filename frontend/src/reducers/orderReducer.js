@@ -37,6 +37,7 @@ export const orderCancelReducer = (state = {}, action) => {
             return {
                 loading: false,
                 success: true,
+                cancelledOrder: action?.payload?.removedOrder
             }
         case constants.ORDER_CANCEL_FAIL:
             return {
@@ -132,5 +133,18 @@ export const orderPayReducer = (state = { loading: false, success: false }, acti
 
         default:
             return state
+    }
+}
+
+export const ordersReducer = (state = { orders: {} }, action) => {
+    switch (action.type) {
+        case constants.ORDER_LIST_REQUEST:
+            return { ...state, loading: true }
+        case constants.ORDER_LIST_SUCCESS:
+            return { ...state, loading: false, orders: action.payload }
+        case constants.ORDER_LIST_FAIL:
+            return { ...state, loading: false, error: action.payload }
+        default:
+            return state;
     }
 }
