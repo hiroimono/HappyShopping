@@ -8,7 +8,7 @@
         "start": "nodemon backend/server",
         "client": "npm start --prefix frontend",
         "redux-devtools": "redux-devtools --hostname=localhost --port=8000",
-        "dev": "concurrently \"npm start\" \"npm run redux-devtools\" \"npm run client\"",
+        "dev": "concurrently \"npm run client\" \"npm start\" \"npm run redux-devtools\"",
         "backend": "concurrently \"npm run start\" \"npm run redux-devtools\"",
         "data:import": "node backend/seeder",
         "data:destroy": "node backend/seeder -d",

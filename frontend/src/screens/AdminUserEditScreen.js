@@ -30,21 +30,31 @@ const AdminUserEditScreen = ({ match, history }) => {
     useEffect(() => {
         if (!userInfo) {
             history.push('/login')
+        }
+    }, [history, userInfo])
+
+    useEffect(() => {
+        dispatch({ type: constants.USER_DETAILS_RESET })
+    }, [dispatch])
+
+    useEffect(() => {
+        if (!user || !user.name) {
+            dispatch(getUserDetails(match?.params.id))
         } else {
-            if (!user || !user.name) {
-                dispatch(getUserDetails(match?.params.id))
-            } else if (success) {
-                history.push('/admin/userlist')
-            } else {
-                setName(user.name)
-                setEmail(user.email)
-                setIsAdmin(user.isAdmin)
-            }
+            setName(user.name)
+            setEmail(user.email)
+            setIsAdmin(user.isAdmin)
+        }
+    }, [dispatch, match?.params.id, user])
+
+    useEffect(() => {
+        if (success) {
+            history.push('/admin/userlist')
         }
         return () => {
             (success || errorEdit) && dispatch({ type: constants.USER_DETAILS_RESET });
         }
-    }, [dispatch, history, userInfo, success, user, match?.params.id, errorEdit])
+    }, [dispatch, errorEdit, history, success])
 
     const submitHandler = (e) => {
         e.preventDefault();
