@@ -170,7 +170,7 @@ export const getUsers = asyncHandler(async (req, res) => {
         res.json(users)
     } else {
         res.status(404);
-        throw new Error('Users could not get!');
+        throw new Error('User not found!');
     }
 })
 
@@ -185,7 +185,7 @@ export const getUserById = asyncHandler(async (req, res) => {
         res.json(user)
     } else {
         res.status(404);
-        throw new Error('Users could not get!');
+        throw new Error('User not found!');
     }
 })
 
