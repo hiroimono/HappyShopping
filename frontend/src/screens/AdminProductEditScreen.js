@@ -30,9 +30,8 @@ const AdminProductEditScreen = ({ match, history }) => {
     const [isUploading, setIsUploading] = useState(false);
 
     const dispatch = useDispatch();
-    const { loading, error, product } = useSelector(state => state.product);
-
     const { userInfo } = useSelector(state => state.userLogin);
+    const { loading, error, product } = useSelector(state => state.product);
     const { success: successEdit, error: errorEdit, loading: loadingEdit } = useSelector(state => state.productEdit);
 
     useEffect(() => {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
+import axios from 'axios';
 // import { Link } from 'react-router-dom';
 
 // bootstrap
@@ -27,12 +28,14 @@ const AdminAddNewProductScreen = ({ match, history }) => {
     const [price, setPrice] = useState('');
     const [countInStock, setCountInStock] = useState('');
     const [image, setImage] = useState('');
+    const [imgError, setImgError] = useState('');
+    const [isUploading, setIsUploading] = useState(false);
 
     const dispatch = useDispatch();
 
     const { userInfo } = useSelector(state => state.userLogin);
-    const { loading, productAdded, error } = useSelector(state => state.productNewAdd);
     const { loading: loadingProduct, error: errorProduct, product } = useSelector(state => state.product);
+    const { loading, productAdded, error } = useSelector(state => state.productNewAdd);
 
     useEffect(() => {
         if (!userInfo) {
@@ -84,7 +87,7 @@ const AdminAddNewProductScreen = ({ match, history }) => {
     const submitHandler = (e) => {
         const form = e.currentTarget;
         e.preventDefault();
-        if (form.checkValidity() === false) {
+        if (!form?.checkValidity()) {
             e.stopPropagation();
             setValidated(true);
         } else {
@@ -92,13 +95,46 @@ const AdminAddNewProductScreen = ({ match, history }) => {
         }
     }
 
+    const uploadFileHandler = async (e) => {
+        console.log('e.target: ', e.target);
+        const file = e.target.files[0];
+        console.log('file: ', file);
+        const formData = new FormData();
+
+        try {
+            setIsUploading(true);
+            let isImage = (/image\/.*/gm).test(file.type)
+
+            if (isImage) {
+                formData.append('image', file)
+                const config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+
+                const { data } = await axios.post('/api/uploads', formData, config)
+
+                setImage(data);
+            } else {
+                // throw new Error('File is not an image. Accepted types: ".jpg", ".jpeg", ".png"')
+                setImgError('File is not an image. Accepted types: ".jpg", ".jpeg", ".png"')
+            }
+
+        } catch (error) {
+            console.log(error)
+        } finally {
+            setIsUploading(false)
+        }
+    }
+
     return (
         <FormContainer>
             <h2>Add a New Product</h2>
-            {loading || loadingProduct ? (
+            {loading || loadingProduct || isUploading ? (
                 <Loader />
-            ) : error || errorProduct ? (
-                <Message variant='danger'>{error || errorProduct}</Message>
+            ) : error || errorProduct || imgError ? (
+                <Message variant='danger'>{error || errorProduct || imgError}</Message>
             ) : (
                 <>
                     {productAddedSuccess && <Message variant='success'>Success: Product was successfully generated!</Message>}
@@ -172,6 +208,7 @@ const AdminAddNewProductScreen = ({ match, history }) => {
                                 <Form.Group controlId='image'>
                                     <Form.Label>image</Form.Label>
                                     <Form.Control required type='text' placeholder='Enter image' value={image} onChange={(e) => setImage(e.target.value)}></Form.Control>
+                                    <Form.File id="image-file" label="Choose File" custom onChange={uploadFileHandler}></Form.File>
                                     <Form.Control.Feedback type="invalid">
                                         Please choose a product image.
                                     </Form.Control.Feedback>
