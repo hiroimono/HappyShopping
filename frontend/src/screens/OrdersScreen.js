@@ -15,7 +15,7 @@ import Loader from '../components/Loader';
 // import FormContainer from '../components/FormContainer';
 
 // Actions
-import { getOrderDetailsById, payOrder, cancelOrder } from '../actions/orderActions.js';
+import { getOrderDetailsById, payOrder, deliverOrder, deliverNotOrder, cancelOrder, payOrderAdmin } from '../actions/orderActions.js';
 import { getPayPalScript } from '../actions/configActions.js';
 import { constants } from '../constants/constant.js'
 
@@ -24,8 +24,12 @@ const OrdersScreen = ({ match, history }) => {
     const [sdkReady, setSdkReady] = useState(false);
     const dispatch = useDispatch();
 
+    const { userInfo } = useSelector(state => state.userLogin);
     const { order, loading, error } = useSelector(state => state.orderDetailsById);
     const { loading: loadingPay, success: successPay, error: errorPay } = useSelector((state) => state.orderPay);
+    const { loading: loadingPayAdmin, success: successPayAdmin, error: errorPayAdmin } = useSelector((state) => state.orderPayAdmin);
+    const { loading: loadingDeliver, success: successDeliver, error: errorDeliver } = useSelector((state) => state.orderDeliver);
+    const { loading: loadingNotDeliver, success: successNotDeliver, error: errorNotDeliver } = useSelector((state) => state.orderNotDeliver);
     const { success: successCancel, error: errorCancel } = useSelector((state) => state.orderCancel);
     const { paypalClientId } = useSelector((state) => state.paypalClientId);
 
@@ -41,12 +45,15 @@ const OrdersScreen = ({ match, history }) => {
             script && script.remove();
         }
 
-        if (!order || successPay || order?._id !== orderId) {
+        if (!order || successPay || successPayAdmin || successDeliver || successNotDeliver || order?._id !== orderId) {
             removeScript()
             dispatch({ type: constants.ORDER_PAY_RESET })
+            dispatch({ type: constants.ORDER_PAY_ADMIN_RESET })
+            dispatch({ type: constants.ORDER_DELIVER_RESET })
+            dispatch({ type: constants.ORDER_NOT_DELIVER_RESET })
             dispatch(getOrderDetailsById(orderId))
         }
-    }, [dispatch, orderId, successPay, order])
+    }, [dispatch, orderId, successPay, order, successDeliver, successNotDeliver, successPayAdmin])
 
     useEffect(() => {
         const addPayPalScript = async (clientId) => {
@@ -93,12 +100,28 @@ const OrdersScreen = ({ match, history }) => {
     }, [dispatch, history, successCancel, errorCancel])
 
     const successPaymentHandler = (paymentResult, data) => {
-        console.log('order.user: ', order.user);
-        console.log('order.visitor: ', order.visitor);
-        console.log('paymentResult: ', paymentResult);
-        console.log('data: ', data);
         dispatch(payOrder(orderId, paymentResult))
         dispatch({ type: constants.CART_ITEMS_RESET })
+    }
+
+    const successAdminPaymentHandler = () => {
+        if (userInfo?.isAdmin) {
+            const paymentByAdmin = {
+                id: userInfo._id,
+                status: !order?.isPaid ? "MARKED AS PAID BY ADMIN" : "MARKED AS NOT PAID BY ADMIN",
+                update_time: Date.now(),
+                email_address: userInfo.email
+            }
+            dispatch(payOrderAdmin(order, paymentByAdmin))
+        }
+    }
+
+    const successDeliverHandler = () => {
+        if (!order.isDelivered) {
+            dispatch(deliverOrder(orderId))
+        } else {
+            dispatch(deliverNotOrder(orderId))
+        }
     }
 
     const paypalErrorHandler = (e) => {
@@ -111,14 +134,39 @@ const OrdersScreen = ({ match, history }) => {
     const showTime = (str) => new Date(str).toLocaleTimeString('de-DE', { timeStyle: 'short' })
     const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
 
-    return loading || loadingPay ?
+    return loading || loadingPay || loadingPayAdmin || loadingDeliver || loadingNotDeliver ?
         <Loader /> :
-        error || errorPay ?
-            <Message variant='danger'>{error || errorPay}</Message> :
+        error || errorPay || errorPayAdmin || errorDeliver || errorNotDeliver ?
+            <Message variant='danger'>{error || errorPay || errorPayAdmin || errorDeliver || errorNotDeliver}</Message> :
             <>
                 <Row>
                     <Col lg={8}>
                         <ListGroup variant='flush'>
+                            <ListGroup.Item className='px-0'>
+                                <h3>Payment:</h3>
+                                {/* <Row>
+                                    <Col md={2}>
+                                        <p className='mb-0'>
+                                            <strong>Method:</strong>
+                                        </p>
+                                    </Col>
+                                    <Col>
+                                        <p className='mb-0'>
+                                            {order?.paymentMethod && `${order.paymentMethod}`}
+                                        </p>
+                                    </Col>
+                                </Row> */}
+                                <Row>
+                                    <Col className='col-12 mt-2'>
+                                        {
+                                            order?.isPaid ?
+                                                <Message variant='success'>Paid on {showDate(order?.paidAt)} at {showTime(order?.paidAt)}</Message> :
+                                                <Message variant='danger'>Not paid yet.</Message>
+                                        }
+                                    </Col>
+                                </Row>
+                            </ListGroup.Item>
+
                             <ListGroup.Item className="px-0">
                                 <h3>Shipping</h3>
                                 {
@@ -185,31 +233,6 @@ const OrdersScreen = ({ match, history }) => {
                                             order?.isDelivered ?
                                                 <Message variant='success'>Paid on {showDate(order?.deliveredAt)}</Message> :
                                                 <Message variant='danger'>Not delivered yet.</Message>
-                                        }
-                                    </Col>
-                                </Row>
-                            </ListGroup.Item>
-
-                            <ListGroup.Item className='px-0'>
-                                <h3>Payment:</h3>
-                                {/* <Row>
-                                    <Col md={2}>
-                                        <p className='mb-0'>
-                                            <strong>Method:</strong>
-                                        </p>
-                                    </Col>
-                                    <Col>
-                                        <p className='mb-0'>
-                                            {order?.paymentMethod && `${order.paymentMethod}`}
-                                        </p>
-                                    </Col>
-                                </Row> */}
-                                <Row>
-                                    <Col className='col-12 mt-2'>
-                                        {
-                                            order?.isPaid ?
-                                                <Message variant='success'>Paid on {showDate(order?.paidAt)} at {showTime(order?.paidAt)}</Message> :
-                                                <Message variant='danger'>Not paid yet.</Message>
                                         }
                                     </Col>
                                 </Row>
@@ -306,7 +329,39 @@ const OrdersScreen = ({ match, history }) => {
                                                 </Col>
                                             </Row>
                                         </ListGroup.Item>
+
                                     </ListGroup>
+
+                                    {
+                                        userInfo?.isAdmin &&
+                                        <Card.Footer className="p-2">
+                                            {
+                                                order?.isPaid ? (
+                                                    <>
+                                                        <Button className="btn btn-block bg-danger" onClick={successAdminPaymentHandler}>Mark as Not Paid</Button>
+                                                        {
+                                                            order?.isDelivered ? (
+                                                                <Button className="btn btn-block bg-danger" onClick={successDeliverHandler}>Mark as Not Delivered</Button>
+                                                            ) : (
+                                                                <Button className="btn btn-block bg-info" onClick={successDeliverHandler}>Mark as Delivered</Button>
+                                                            )
+                                                        }
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Button className="btn btn-block bg-success" onClick={successAdminPaymentHandler}>Mark as Paid</Button>
+                                                        {
+                                                            order?.isDelivered ? (
+                                                                <Button className="btn btn-block bg-danger" onClick={successDeliverHandler}>Mark as Not Delivered</Button>
+                                                            ) : (
+                                                                <Button className="btn btn-block bg-info" onClick={successDeliverHandler}>Mark as Delivered</Button>
+                                                            )
+                                                        }
+                                                    </>
+                                                )
+                                            }
+                                        </Card.Footer>
+                                    }
 
                                 </Card>
 

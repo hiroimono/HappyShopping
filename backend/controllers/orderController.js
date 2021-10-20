@@ -139,7 +139,7 @@ export const getAllOrders = asyncHandler(async (req, res) => {
 /**
  * @description update Order to be paid
  * @route GET api/orders/:id/pay
- * @access private
+ * @access public
  */
 export const updateOrderToPaid = asyncHandler(async (req, res) => {
     let order = await Order.findById(req.params.id);
@@ -153,6 +153,94 @@ export const updateOrderToPaid = asyncHandler(async (req, res) => {
             update_time: req.body.update_time,
             email_address: req.body.payer.email_address
         }
+        const updatedOrder = await order.save();
+        res.json(updatedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found.');
+    }
+})
+
+/**
+ * @description update Order to be paid by Admin
+ * @route GET api/orders/:id/pay-admin
+ * @access private/admin
+ */
+export const updateOrderToPaidAdmin = asyncHandler(async (req, res) => {
+    let order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.isPaid = true;
+        order.paidAt = Date.now();
+        order.paymentByAdmin = {
+            id: req.body.id,
+            status: req.body.status,
+            update_time: req.body.update_time,
+            email_address: req.body.email_address
+        }
+        const updatedOrder = await order.save();
+        res.json(updatedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found.');
+    }
+})
+
+/**
+ * @description update Order to be NOT paid by Admin
+ * @route GET api/orders/:id/pay-admin-not
+ * @access private/admin
+ */
+export const updateOrderToNotPaidAdmin = asyncHandler(async (req, res) => {
+    let order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.isPaid = false;
+        order.paidAt = Date.now();
+        order.paymentByAdmin = {
+            id: req.body.id,
+            status: req.body.status,
+            update_time: req.body.update_time,
+            email_address: req.body.email_address
+        }
+        const updatedOrder = await order.save();
+        res.json(updatedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found.');
+    }
+})
+
+/**
+ * @description update Order to be delivered
+ * @route GET api/orders/:id/deliver
+ * @access private/admin
+ */
+export const updateOrderToDelivered = asyncHandler(async (req, res) => {
+    let order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.isDelivered = true;
+        order.deliveredAt = Date.now();
+        const updatedOrder = await order.save();
+        res.json(updatedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found.');
+    }
+})
+
+/**
+ * @description update Order to be not delivered
+ * @route GET api/orders/:id/not-deliver
+ * @access private/admin
+ */
+export const updateOrderToNotDelivered = asyncHandler(async (req, res) => {
+    let order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.isDelivered = false;
+        order.deliveredAt = null;
         const updatedOrder = await order.save();
         res.json(updatedOrder);
     } else {

@@ -136,6 +136,102 @@ export const orderPayReducer = (state = { loading: false, success: false }, acti
     }
 }
 
+export const orderPayAdminReducer = (state = { loading: false, success: false }, action) => {
+    switch (action.type) {
+        case constants.ORDER_PAY_ADMIN_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case constants.ORDER_PAY_ADMIN_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                success: true
+            }
+        case constants.ORDER_PAY_ADMIN_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case constants.ORDER_PAY_ADMIN_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false
+            }
+
+        default:
+            return state
+    }
+}
+
+export const orderDeliverReducer = (state = { loading: false, success: false }, action) => {
+    switch (action.type) {
+        case constants.ORDER_DELIVER_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case constants.ORDER_DELIVER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                success: true
+            }
+        case constants.ORDER_DELIVER_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case constants.ORDER_DELIVER_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false
+            }
+
+        default:
+            return state
+    }
+}
+
+export const orderNotDeliverReducer = (state = { loading: false, success: false }, action) => {
+    switch (action.type) {
+        case constants.ORDER_NOT_DELIVER_REQUEST:
+            return {
+                ...state,
+                loading: true
+            }
+        case constants.ORDER_NOT_DELIVER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                success: true
+            }
+        case constants.ORDER_NOT_DELIVER_FAIL:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
+            }
+
+        case constants.ORDER_NOT_DELIVER_RESET:
+            return {
+                ...state,
+                loading: false,
+                success: false
+            }
+
+        default:
+            return state
+    }
+}
+
 export const ordersReducer = (state = { orders: {} }, action) => {
     switch (action.type) {
         case constants.ORDER_LIST_REQUEST:

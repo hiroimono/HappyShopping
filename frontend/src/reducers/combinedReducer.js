@@ -30,6 +30,9 @@ import {
     orderCancelReducer,
     orderDetailsByIdReducer,
     orderPayReducer,
+    orderPayAdminReducer,
+    orderDeliverReducer,
+    orderNotDeliverReducer,
     myOrdersReducer,
     ordersReducer
 } from './orderReducer.js'
@@ -62,6 +65,9 @@ export const combinedReducer = combineReducers({
     myOrders: myOrdersReducer,
     orders: ordersReducer,
     orderPay: orderPayReducer,
+    orderPayAdmin: orderPayAdminReducer,
+    orderDeliver: orderDeliverReducer,
+    orderNotDeliver: orderNotDeliverReducer,
 
     paypalClientId: paypalClientIdReducer
 });

@@ -105,18 +105,6 @@ const AdminOrderListScreen = ({ history, match }) => {
     const showDate = (str) => new Date(str).toLocaleDateString('de-DE', { dateStyle: 'medium' })
     const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
 
-    console.log('orders: ', orders);
-    console.log('deletedOrder: ', deletedOrder);
-
-    console.log('step0: ', step0);
-    console.log('total0: ', total0);
-    console.log('index0: ', index0);
-    console.log('numArr0: ', numArr0);
-
-    console.log('step1: ', step1);
-    console.log('total1: ', total1);
-    console.log('numArr1: ', numArr1);
-
     return loading || loadingDeleted ?
         <Loader /> :
         error || errorDeleted ?
@@ -256,7 +244,12 @@ const AdminOrderListScreen = ({ history, match }) => {
                                                                     }
                                                                 </td>
                                                                 <td className="text-center" style={{ verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
-                                                                    <Button className="btn-sm mr-2" variant='danger' onClick={() => deleteHandlerShow(order)} data-toggle="confirmation">
+                                                                    <LinkContainer to={`/orders/${order._id}`}>
+                                                                        <Button className="btn-sm mr-2" variant='outline-info'>
+                                                                            <i className='fas fa-edit'></i>
+                                                                        </Button>
+                                                                    </LinkContainer>
+                                                                    <Button className="btn-sm" variant='danger' onClick={() => deleteHandlerShow(order)} data-toggle="confirmation">
                                                                         <i className='fas fa-trash'></i>
                                                                     </Button>
                                                                 </td>
@@ -424,6 +417,11 @@ const AdminOrderListScreen = ({ history, match }) => {
                                                                     }
                                                                 </td>
                                                                 <td className="text-center" style={{ verticalAlign: 'middle', whiteSpace: 'nowrap' }}>
+                                                                    <LinkContainer to={`/orders/${order._id}`}>
+                                                                        <Button className="btn-sm mr-2" variant='outline-info'>
+                                                                            <i className='fas fa-edit'></i>
+                                                                        </Button>
+                                                                    </LinkContainer>
                                                                     <Button className="btn-sm mr-2" variant='danger' onClick={() => deleteHandlerShow(order)} data-toggle="confirmation">
                                                                         <i className='fas fa-trash'></i>
                                                                     </Button>
