@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // bootstrap
-import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap';
+import { Row, Col, ListGroup, Card, Button, Form } from 'react-bootstrap';
 
 // actions
 import { getSingleProduct } from '../actions/productActions.js'
@@ -13,6 +13,7 @@ import { addProductToCart, removeProductFromCart } from '../actions/cartActions.
 import Ratings from '../components/Ratings';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import ImgSlider from '../components/ImgSlider.js';
 
 // Custom Hooks
 import useBreakpoint from '../customHooks/useBreakpoint';
@@ -62,7 +63,8 @@ const ProductScreen = ({ history, match }) => {
                             <Row className='my-3'>
 
                                 <Col md={12} lg={5} className="d-flex no-gutter justify-content-center align-items-center my-3" style={width < 576 ? { 'height': '200px' } : { 'height': '400px' }}>
-                                    <Image src={product?.image} fluid className="w-100 h-100" style={{ 'objectFit': 'cover' }} />
+                                    {/* <Image src={product?.image} fluid className="w-100 h-100" style={{ 'objectFit': 'cover' }} /> */}
+                                    {product && <ImgSlider productId={product._id} images={product.image} style={{ 'width': '100%', 'height': width < 576 ? '200px' : '400px' }} />}
                                 </Col>
 
                                 <Col md={7} lg={4}>

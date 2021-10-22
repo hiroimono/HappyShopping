@@ -62,6 +62,7 @@ const PlaceOrdersScreen = ({ history }) => {
     }
 
     const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
+    console.log('cart.cartItems: ', cart.cartItems);
 
     return (
         <>
@@ -121,7 +122,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                         <ListGroup.Item key={index} className="my-2 px-3 py-2" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
                                             <Row className="align-items-center m-0">
                                                 <Col xs={2} lg={1} className='px-0'>
-                                                    <Image src={cartItem.image} alt={cartItem.name} fluid rounded />
+                                                    <Image src={cartItem.image[0].path} alt={cartItem.name} fluid rounded />
                                                 </Col>
 
                                                 <Col xs={6} lg={7} className="px-0 px-md-2 py-2">

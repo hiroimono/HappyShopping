@@ -29,7 +29,7 @@ const AdminOrderListScreen = ({ history, match }) => {
     const [index1, setIndex1] = useState(0);
 
     const [show, setShow] = useState(false);
-    // const [isPopover, setIsPopover] = useState(true);
+    const [selected, setSelected] = useState([1, 0]);
     const [orderForDelete, setOrderForDelete] = useState(null);
 
     const dispatch = useDispatch();
@@ -102,6 +102,10 @@ const AdminOrderListScreen = ({ history, match }) => {
         setShow(false)
     };
 
+    const selectedTabHandler = (index) => {
+        setSelected(selected => selected.map((tab, i) => i === index ? 1 : 0))
+    }
+
     const showDate = (str) => new Date(str).toLocaleDateString('de-DE', { dateStyle: 'medium' })
     const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
 
@@ -117,9 +121,20 @@ const AdminOrderListScreen = ({ history, match }) => {
 
                 <Accordion defaultActiveKey="0">
                     <Card>
-                        <Accordion.Toggle as={Card.Header} eventKey="0">
-                            <h4 className="mb-0">Orders By Users:</h4>
-                        </Accordion.Toggle>
+                        <Card.Header className="border-0 d-flex p-0 m-0">
+                            <Accordion.Toggle eventKey="0" className="flex-grow-1 border-0 p-3 w-100" onClick={() => selectedTabHandler(0)} style={{
+                                backgroundColor: selected[0] ? '#cccccc' : '#eeeeee'
+                            }}>
+                                <h4 className="mb-0">Orders By Users:</h4>
+                            </Accordion.Toggle>
+
+                            <Accordion.Toggle eventKey="1" className="flex-grow-1 border-0 p-3 w-100" onClick={() => selectedTabHandler(1)} style={{
+                                backgroundColor: selected[1] ? '#cccccc' : '#eeeeee'
+                            }}>
+                                <h4 className="mb-0">Orders By Guests:</h4>
+                            </Accordion.Toggle>
+                            {/* <h4 className="mb-0">Orders By Users:</h4> */}
+                        </Card.Header>
                         <Accordion.Collapse eventKey="0">
                             <Card.Body className="m-0 p-0 border-0">
 
@@ -294,9 +309,6 @@ const AdminOrderListScreen = ({ history, match }) => {
                     </Card>
 
                     <Card>
-                        <Accordion.Toggle as={Card.Header} eventKey="1" className="d-flex justify-content-between align-items-center">
-                            <h4 className="mb-0">Orders By Guests:</h4>
-                        </Accordion.Toggle>
                         <Accordion.Collapse eventKey="1">
                             <Card.Body className="m-0 p-0 border-0">
 

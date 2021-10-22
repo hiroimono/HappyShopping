@@ -1,4 +1,16 @@
 main {
-    min-height: 80vh;
-    min-height: calc(100vh - 56px);
+	min-height: 80vh;
+	min-height: calc(100vh - 56px);
+}
+
+.carousel-control-next {
+	width: 85%;
+	padding-right: 5px;
+	justify-content: end;
+}
+
+.carousel-control-prev {
+	width: 15%;
+	padding-left: 5px;
+	justify-content: start;
 }

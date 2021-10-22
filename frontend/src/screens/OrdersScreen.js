@@ -68,6 +68,12 @@ const OrdersScreen = ({ match, history }) => {
             document.body.appendChild(script)
         }
 
+        if (order && order.user) {
+            if (!userInfo) {
+                history.push('/login')
+            }
+        }
+
         if (order && !order.isPaid) {
             if (!window.paypal) {
                 dispatch(getPayPalScript())
@@ -85,7 +91,7 @@ const OrdersScreen = ({ match, history }) => {
                 setSdkReady(true)
             }
         }
-    }, [dispatch, order, sdkReady, paypalClientId])
+    }, [dispatch, order, sdkReady, paypalClientId, userInfo, history])
 
     useEffect(() => {
         if (successCancel) {
@@ -133,6 +139,8 @@ const OrdersScreen = ({ match, history }) => {
     const showDate = (str) => new Date(str).toLocaleDateString('de-DE', { dateStyle: 'full' })
     const showTime = (str) => new Date(str).toLocaleTimeString('de-DE', { timeStyle: 'short' })
     const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
+
+    console.log('order: ', order);
 
     return loading || loadingPay || loadingPayAdmin || loadingDeliver || loadingNotDeliver ?
         <Loader /> :
@@ -248,7 +256,7 @@ const OrdersScreen = ({ match, history }) => {
                                             <ListGroup.Item key={index} className="my-2 px-3 py-2" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
                                                 <Row className="align-items-center m-0">
                                                     <Col xs={2} lg={1} className='px-0'>
-                                                        <Image src={item.image} alt={item.name} fluid rounded />
+                                                        <Image src={item.image[0].path} alt={item.name} fluid rounded />
                                                     </Col>
 
                                                     <Col xs={6} lg={7} className="px-0 px-md-2 py-2">
