@@ -38,6 +38,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
             orderData = data;
         }
 
+        console.log('orderData: ', orderData);
 
         dispatch({
             type: constants.ORDER_CREATE_SUCCESS,

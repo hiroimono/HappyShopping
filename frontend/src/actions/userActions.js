@@ -42,6 +42,8 @@ export const userLogin = (loginData) => async (dispatch) => {
             payload: error.response && error.response.data.message ? error.response.data.message : error.message
         })
     }
+
+    localStorage.removeItem('userAsGuestInfo');
 }
 
 export const userAsGuest = (guestData) => async (dispatch) => {
@@ -68,7 +70,9 @@ export const userLogout = () => async (dispatch) => {
     localStorage.removeItem('cartItems');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('userPaymentMethod');
+    localStorage.removeItem('userAsGuestInfo');
     dispatch({ type: constants.USER_LOGIN_RESET });
+    dispatch({ type: constants.USER_AS_GUEST_RESET });
     dispatch({ type: constants.USER_REGISTER_RESET });
     dispatch({ type: constants.USER_DETAILS_RESET });
     dispatch({ type: constants.MY_ORDERS_RESET });

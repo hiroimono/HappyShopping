@@ -59,7 +59,7 @@ const CartScreen = ({ match, location, history }) => {
                                             <ListGroup.Item key={cartItem._id} className="my-2 px-3 py-2" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
                                                 <Row className="align-items-center m-0">
                                                     <Col md={2} className='px-0'>
-                                                        <Image src={cartItem.image} alt={cartItem.name} fluid rounded />
+                                                        <Image src={cartItem.image[0].path} alt={cartItem.name} fluid rounded />
                                                     </Col>
 
                                                     <Col md={4} lg={5} className="px-0 px-md-2 py-2">
