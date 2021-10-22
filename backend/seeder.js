@@ -13,20 +13,21 @@ dotenv.config()
 connectDB()
 
 const importData = async () => {
+    console.log('Starting: '.green.inverse, 'Import All Data'.yellow)
     try {
         await Order.deleteMany()
         await Product.deleteMany()
         await User.deleteMany()
 
         const createdUsers = await User.insertMany(users)
-        const adminUser = createdUsers[0]._id
+        const adminUserId = createdUsers[0]._id
         const sampleProducts = products.map((product) => {
-            return { ...product, user: adminUser }
+            return { ...product, user: adminUserId }
         })
 
         await Product.insertMany(sampleProducts)
 
-        console.log('Data Imported!'.green.inverse)
+        console.log('Imported: '.green.inverse, 'All Data'.yellow)
         process.exit()
     } catch (error) {
         console.error(`${error}`.red.inverse)
@@ -35,12 +36,13 @@ const importData = async () => {
 }
 
 const destroyData = async () => {
+    console.log('Starting: '.green.inverse, 'Destroy All Data'.yellow)
     try {
         await Order.deleteMany()
         await Product.deleteMany()
         await User.deleteMany()
 
-        console.log('Data Destroyed!'.red.inverse)
+        console.log('Destroyed: '.red.inverse, 'All Data'.yellow)
         process.exit()
     } catch (error) {
         console.error(`${error}`.red.inverse)
@@ -48,7 +50,46 @@ const destroyData = async () => {
     }
 }
 
-if (process.argv[2] === '-d') {
+const importProducts = async () => {
+    console.log('Starting: '.green.inverse, 'Import Products'.yellow)
+    try {
+        await Product.deleteMany()
+        const admins = await User.find({ 'isAdmin': true })
+
+        // const createdUsers = await User.insertMany(users)
+        const adminUserId = admins[0]._id
+        const sampleProducts = products.map((product) => {
+            return { ...product, user: adminUserId }
+        })
+
+        await Product.insertMany(sampleProducts)
+
+        console.log('Imported: '.green.inverse, 'New Products List'.yellow)
+        process.exit()
+    } catch (error) {
+        console.error(`${error}`.red.inverse)
+        process.exit(1)
+    }
+}
+
+const destroyProducts = async () => {
+    console.log('Starting: '.green.inverse, 'Destroy Products'.yellow)
+    try {
+        await Product.deleteMany()
+
+        console.log('Destroyed: '.red.inverse, 'Products'.yellow)
+        process.exit()
+    } catch (error) {
+        console.error(`${error}`.red.inverse)
+        process.exit(1)
+    }
+}
+
+if (process.argv[2] === '-d' && process.argv[3] === '-p') {
+    destroyProducts()
+} else if (process.argv[2] === '-p') {
+    importProducts()
+} else if (process.argv[2] === '-d') {
     destroyData()
 } else {
     importData()
