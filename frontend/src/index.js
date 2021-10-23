@@ -6,6 +6,7 @@ import './bootstrap.min.css';
 import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './i18n/config.js';
 
 ReactDOM.render(
     <Provider store={store}>

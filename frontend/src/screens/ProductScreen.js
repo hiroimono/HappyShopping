@@ -18,7 +18,12 @@ import ImgSlider from '../components/ImgSlider.js';
 // Custom Hooks
 import useBreakpoint from '../customHooks/useBreakpoint';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const ProductScreen = ({ history, match }) => {
+    const { t } = useTranslation();
+
     const { width } = useBreakpoint();
 
     const [qty, setQty] = useState(1);
@@ -54,12 +59,12 @@ const ProductScreen = ({ history, match }) => {
     return (
         <>
             {loading ?
-                <Loader>Loading</Loader> :
+                <Loader /> :
                 error ?
                     <Message variant='danger' messageText={error}></Message> :
                     (
                         <>
-                            <Link to='/' className='btn btn-dark'>Go Back</Link>
+                            <Link to='/' className='btn btn-dark'>{t('go-back')}</Link>
                             <Row className='my-3'>
 
                                 <Col md={12} lg={5} className="d-flex no-gutter justify-content-center align-items-center my-3" style={width < 576 ? { 'height': '200px' } : { 'height': '400px' }}>
@@ -80,11 +85,11 @@ const ProductScreen = ({ history, match }) => {
                                         </ListGroup.Item>
 
                                         <ListGroup.Item className='px-0'>
-                                            Price: {currency(product?.price)}
+                                            {t('price')}: {currency(product?.price)}
                                         </ListGroup.Item>
 
                                         <ListGroup.Item className='px-0'>
-                                            Descripton: {product?.description}
+                                            {t('description')}: {product?.description}
                                         </ListGroup.Item>
                                     </ListGroup>
                                 </Col>
@@ -94,7 +99,7 @@ const ProductScreen = ({ history, match }) => {
                                         <ListGroup variant='flush'>
                                             <ListGroup.Item>
                                                 <Row>
-                                                    <Col>Price: </Col>
+                                                    <Col>{t('price')}: </Col>
                                                     <Col><strong>{currency(product?.price)}</strong></Col>
                                                 </Row>
                                             </ListGroup.Item>
@@ -108,7 +113,7 @@ const ProductScreen = ({ history, match }) => {
 
                                             <ListGroup.Item>
                                                 <Row>
-                                                    <Col className="d-flex align-items-center">Quantity: </Col>
+                                                    <Col className="d-flex align-items-center">{t('quantity')}: </Col>
                                                     <Col>
                                                         {product?.countInStock > 0 && (
                                                             <Form.Control as='select' value={qty} onChange={(e) => setQty(e.target.value)}>
@@ -127,21 +132,21 @@ const ProductScreen = ({ history, match }) => {
                                                             disabled={product?.countInStock <= 0 ? true : false}
                                                             onClick={removeFromCartHandler}>
                                                             <i className="fas fa-times mr-2"></i>
-                                                            Remove from cart
+                                                            {t('remove-from-cart')}
                                                         </Button>
                                                     ) : (
                                                         <Button type='button' className="btn btn-block"
                                                             disabled={product?.countInStock <= 0 ? true : false}
                                                             onClick={addToCartHandler}>
                                                             <i className="fas fa-plus mr-2"></i>
-                                                            Add to cart
+                                                            {t('add-to-cart')}
                                                         </Button>
                                                     )}
                                                 </Row>
                                                 <Row>
                                                     <Link to='/cart' className='btn btn-info btn-block mt-2'>
                                                         <i className="fas fa-shopping-cart mr-2"></i>
-                                                        Go to Cart
+                                                        {t('go-to-cart')}
                                                     </Link>
                                                 </Row>
                                                 {
@@ -149,7 +154,7 @@ const ProductScreen = ({ history, match }) => {
                                                         <Row>
                                                             <Link to={`/admin/productedit/${match.params.id}/edit`} className='btn btn-warning btn-block mt-2'>
                                                                 <i className="fas fa-cut mr-2"></i>
-                                                                Edit this Product
+                                                                {t('edit-product')}
                                                             </Link>
                                                         </Row>
                                                     )

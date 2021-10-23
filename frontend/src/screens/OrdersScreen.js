@@ -19,7 +19,12 @@ import { getOrderDetailsById, payOrder, deliverOrder, deliverNotOrder, cancelOrd
 import { getPayPalScript } from '../actions/configActions.js';
 import { constants } from '../constants/constant.js'
 
+/** i18n */
+import { useTranslation, Trans } from 'react-i18next'
+
 const OrdersScreen = ({ match, history }) => {
+    const { t } = useTranslation();
+
     const orderId = match.params.id;
     const [sdkReady, setSdkReady] = useState(false);
     const dispatch = useDispatch();
@@ -151,7 +156,7 @@ const OrdersScreen = ({ match, history }) => {
                     <Col lg={8}>
                         <ListGroup variant='flush'>
                             <ListGroup.Item className='px-0'>
-                                <h3>Payment:</h3>
+                                <h3>{t('payment')}:</h3>
                                 {/* <Row>
                                     <Col md={2}>
                                         <p className='mb-0'>
@@ -167,23 +172,29 @@ const OrdersScreen = ({ match, history }) => {
                                 <Row>
                                     <Col className='col-12 mt-2'>
                                         {
-                                            order?.isPaid ?
-                                                <Message variant='success'>Paid on {showDate(order?.paidAt)} at {showTime(order?.paidAt)}</Message> :
-                                                <Message variant='danger'>Not paid yet.</Message>
+                                            order?.isPaid ? (
+                                                <Message variant='success'>
+                                                    <Trans i18nKey='paid-message'>
+                                                        Paid on {showDate(order?.paidAt)} at {showTime(order?.paidAt)}
+                                                    </Trans>
+                                                </Message>
+                                            ) : (
+                                                <Message variant='danger'>{t('not-paid-yet')}.</Message>
+                                            )
                                         }
                                     </Col>
                                 </Row>
                             </ListGroup.Item>
 
                             <ListGroup.Item className="px-0">
-                                <h3>Shipping</h3>
+                                <h3>{t('shipping')}</h3>
                                 {
                                     (order?.user?.name || order?.visitor?.name) && (
                                         <Row>
-                                            <Col md={2} className='mb-0'>
-                                                <strong>Name: </strong>
+                                            <Col md={4} className='mb-0'>
+                                                <strong>{t('name-and-surname')}: </strong>
                                             </Col>
-                                            <Col className='mb-0'>
+                                            <Col md={8} className='mb-0'>
                                                 <span>
                                                     {order.user ? order.user.name : (order.visitor && order.visitor.name)}
                                                 </span>
@@ -195,10 +206,10 @@ const OrdersScreen = ({ match, history }) => {
                                 {
                                     (order?.user?.email || order?.visitor?.email) && (
                                         <Row>
-                                            <Col md={2} className='mb-0'>
+                                            <Col md={4} className='mb-0'>
                                                 <strong>Email: </strong>
                                             </Col>
-                                            <Col className='mb-0'>
+                                            <Col md={8} className='mb-0'>
                                                 <span>
                                                     {
                                                         order.user ? (
@@ -215,12 +226,12 @@ const OrdersScreen = ({ match, history }) => {
                                     )
                                 }
                                 <Row>
-                                    <Col md={2}>
+                                    <Col md={4}>
                                         <p className='mb-0'>
-                                            <strong>Address: </strong>
+                                            <strong>{t('address')}: </strong>
                                         </p>
                                     </Col>
-                                    <Col>
+                                    <Col md={8}>
                                         <span className='mb-0'>
                                             {(order?.shippingAddress?.street && order?.shippingAddress?.number) &&
                                                 `${order.shippingAddress.street} ${order.shippingAddress.number}`}
@@ -239,17 +250,21 @@ const OrdersScreen = ({ match, history }) => {
                                     <Col className='col-12 mt-2'>
                                         {
                                             order?.isDelivered ?
-                                                <Message variant='success'>Paid on {showDate(order?.deliveredAt)}</Message> :
-                                                <Message variant='danger'>Not delivered yet.</Message>
+                                                <Message variant='success'>
+                                                    <Trans i18nKey='delivered-message'>
+                                                        Delivered at {showDate(order?.deliveredAt)}
+                                                    </Trans>
+                                                </Message> :
+                                                <Message variant='danger'>{t('not-delivered-yet')}.</Message>
                                         }
                                     </Col>
                                 </Row>
                             </ListGroup.Item>
 
                             <ListGroup.Item className='px-0'>
-                                <h3>Order items:</h3>
+                                <h3>{t('order-items')}:</h3>
                                 {!order?.cartItems?.length ? (
-                                    <Message>Your Order is empty.</Message>
+                                    <Message>{t('your-order-is-empty')}.</Message>
                                 ) : (
                                     <ListGroup variant=''>
                                         {order?.cartItems && order.cartItems.map((item, index) => (
@@ -289,15 +304,15 @@ const OrdersScreen = ({ match, history }) => {
                                 <Card className="my-2 text-right">
                                     <ListGroup variant='flush'>
                                         <Card.Header className="p-3 text-right">
-                                            <h3 className="mb-0 text-center">
-                                                Order Summary
-                                            </h3>
+                                            <h5 className="mb-0 text-center">
+                                                {t('order-summary')}
+                                            </h5>
                                         </Card.Header>
 
                                         <ListGroup.Item>
                                             <Row>
                                                 <Col xs={2} lg={4} className='px-1'>
-                                                    <strong>Items:</strong>
+                                                    <strong>{t('items')}:</strong>
                                                 </Col>
                                                 <Col xs={10} lg={8} className='pr-4 text-right'>
                                                     {currency(order.itemsPrice)}
@@ -308,7 +323,7 @@ const OrdersScreen = ({ match, history }) => {
                                         <ListGroup.Item>
                                             <Row>
                                                 <Col xs={2} lg={4} className='px-1'>
-                                                    <strong>Shipping:</strong>
+                                                    <strong>{t('shipping')}:</strong>
                                                 </Col>
                                                 <Col xs={10} lg={8} className='pr-4 text-right'>
                                                     {currency(order.shippingPrice)}
@@ -319,7 +334,7 @@ const OrdersScreen = ({ match, history }) => {
                                         <ListGroup.Item>
                                             <Row>
                                                 <Col xs={2} lg={4} className='px-1'>
-                                                    <strong>Tax:</strong>
+                                                    <strong>{t('tax')}:</strong>
                                                 </Col>
                                                 <Col xs={10} lg={8} className='pr-4 text-right'>
                                                     {currency(order.taxPrice)}
@@ -330,7 +345,7 @@ const OrdersScreen = ({ match, history }) => {
                                         <ListGroup.Item>
                                             <Row>
                                                 <Col xs={2} lg={4} className='px-1'>
-                                                    <h5><strong>Total:</strong></h5>
+                                                    <h5><strong>{t('total')}:</strong></h5>
                                                 </Col>
                                                 <Col xs={10} lg={8} className='pr-4 text-right'>
                                                     <h5><strong>{currency(order.totalPrice)}</strong></h5>
@@ -346,23 +361,23 @@ const OrdersScreen = ({ match, history }) => {
                                             {
                                                 order?.isPaid ? (
                                                     <>
-                                                        <Button className="btn btn-block bg-danger" onClick={successAdminPaymentHandler}>Mark as Not Paid</Button>
+                                                        <Button className="btn btn-block bg-danger" onClick={successAdminPaymentHandler}>{t('mark-as-not-paid')}</Button>
                                                         {
                                                             order?.isDelivered ? (
-                                                                <Button className="btn btn-block bg-danger" onClick={successDeliverHandler}>Mark as Not Delivered</Button>
+                                                                <Button className="btn btn-block bg-danger" onClick={successDeliverHandler}>{t('mark-as-not-delivered')}</Button>
                                                             ) : (
-                                                                <Button className="btn btn-block bg-info" onClick={successDeliverHandler}>Mark as Delivered</Button>
+                                                                <Button className="btn btn-block bg-info" onClick={successDeliverHandler}>{t('mark-as-delivered')}</Button>
                                                             )
                                                         }
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <Button className="btn btn-block bg-success" onClick={successAdminPaymentHandler}>Mark as Paid</Button>
+                                                        <Button className="btn btn-block bg-success" onClick={successAdminPaymentHandler}>{t('mark-as-paid')}</Button>
                                                         {
                                                             order?.isDelivered ? (
-                                                                <Button className="btn btn-block bg-danger" onClick={successDeliverHandler}>Mark as Not Delivered</Button>
+                                                                <Button className="btn btn-block bg-danger" onClick={successDeliverHandler}>{t('mark-as-not-delivered')}</Button>
                                                             ) : (
-                                                                <Button className="btn btn-block bg-info" onClick={successDeliverHandler}>Mark as Delivered</Button>
+                                                                <Button className="btn btn-block bg-info" onClick={successDeliverHandler}>{t('mark-as-delivered')}</Button>
                                                             )
                                                         }
                                                     </>
@@ -400,14 +415,14 @@ const OrdersScreen = ({ match, history }) => {
                                         </ListGroup.Item>
 
                                         <ListGroup.Item className='p-0'>
-                                            <Button className="btn-sm w-100 mr-2" variant='outline-danger' onClick={() => removeOrder(order._id)}>Cancel Order</Button>
+                                            <Button className="btn-sm w-100 mr-2" variant='outline-danger' onClick={() => removeOrder(order._id)}>{t('cancel-order')}</Button>
                                         </ListGroup.Item>
                                     </>
                                 )
                             }
                         </ListGroup>
                     </Col>
-                </Row>
+                </Row >
             </>
 }
 

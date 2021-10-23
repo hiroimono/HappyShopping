@@ -13,7 +13,12 @@ import Loader from '../components/Loader';
 import { getMyOrders, cancelOrder } from '../actions/orderActions.js';
 import { constants } from '../constants/constant';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const MyOrdersScreen = () => {
+    const { t } = useTranslation();
+
     const dispatch = useDispatch();
     const { myOrders, loading, error } = useSelector(state => state.myOrders)
     console.log('myOrders: ', myOrders);
@@ -43,11 +48,11 @@ const MyOrdersScreen = () => {
         error || errorCancel ?
             <Message variant='danger'>{error || errorCancel}</Message> :
             <>
-                <h3>My Orders:</h3>
+                <h3>{t('my-orders')}:</h3>
                 {
                     !myOrders?.length ? (
                         <Message variant="info">
-                            You don't have any orders yet.
+                            {t('you-dont-have-any-orders-yet')}.
                             <LinkContainer to='/'>
                                 <Button className="btn-sm ml-3" variant='outline-info'>
                                     <i className="fas fa-home pr-1"></i> Home
@@ -58,13 +63,13 @@ const MyOrdersScreen = () => {
                         <Table striped bordered responsive hover className="table-sm">
                             <thead>
                                 <tr>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>ID</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>DATE</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>TOTAL</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>PAID</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>DELIVERED</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>DETAILS</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>CANCEL</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>ID</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('date')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('total')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('paid')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('delivered')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('details')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('cancel')}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -96,14 +101,16 @@ const MyOrdersScreen = () => {
                                             </td>
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>
                                                 <LinkContainer to={`/orders/${order._id}`}>
-                                                    <Button className="btn-sm w-100 mr-2" variant='outline-info'>Details</Button>
+                                                    <Button className="btn-sm w-100 mr-2" variant='outline-info'>
+                                                        {t('details')}
+                                                    </Button>
                                                 </LinkContainer>
                                             </td>
                                             <td className="text-center" style={{ verticalAlign: 'middle' }}>
                                                 {
                                                     !order?.isPaid ? (
                                                         <Button className="btn-sm mr-2" variant='outline-danger' onClick={() => removeOrder(order._id)}>
-                                                            Cancel
+                                                            {t('cancel')}
                                                         </Button>
                                                     ) : <i className="fas fa-times text-danger"></i>
                                                 }
@@ -119,59 +126,3 @@ const MyOrdersScreen = () => {
 }
 
 export default MyOrdersScreen
-
-                // <Row>
-                //     <Col lg={12}>
-                //         <ListGroup variant='flush'>
-                //             <ListGroup.Item className='px-0'>
-                //                 <h3>My Orders:</h3>
-                //                 {!myOrders?.length ? (
-                //                     <Message>You've ordered nothing yet.</Message>
-                //                 ) : (
-                //                     myOrders?.map((order, index) => (
-                //                         <Card key={index}>
-                //                             <Card.Body>
-                //                                 <Card.Title>
-                //                                     <h4>Items: </h4>
-                //                                 </Card.Title>
-                //                                 <ListGroup variant='flush'>
-                //                                     {
-                //                                         order?.cartItems?.map((item, index) => (
-                //                                             <ListGroup.Item key={index} className="my-2 p-2" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
-                //                                                 <Row className="align-items-center m-0">
-                //                                                     <Col xs={2} lg={1} className='px-0'>
-                //                                                         <Image src={item.image} alt={item.name} fluid rounded />
-                //                                                     </Col>
-
-                //                                                     <Col xs={6} lg={7} className="px-0 p-2">
-                //                                                         <Link to={`/products/${item._id}`}>
-                //                                                             {item.name}
-                //                                                         </Link>
-                //                                                     </Col>
-
-                //                                                     <Col xs={4} className="px-0">
-                //                                                         {item.qty} x €{item.price} = €{Number(Number(item.qty) * Number(item.price)).toFixed(2)}
-                //                                                     </Col>
-                //                                                 </Row>
-                //                                                 {/* <Row>
-                //                                                 <Col className='col-12 mt-2'>
-                //                                                     {
-                //                                                         item?.isDelivered ?
-                //                                                             <Message variant='success'>Paid on {item?.deliveredAt}</Message> :
-                //                                                             <Message variant='danger'>Not delivered yet.</Message>
-                //                                                     }
-                //                                                 </Col>
-                //                                                 </Row> */}
-                //                                             </ListGroup.Item>
-                //                                         ))
-                //                                     }
-                //                                 </ListGroup>
-                //                             </Card.Body>
-                //                         </Card>
-                //                     )
-                //                     )
-                //                 )}
-                //             </ListGroup.Item>
-                //         </ListGroup>
-                //     </Col>
-                // </Row>

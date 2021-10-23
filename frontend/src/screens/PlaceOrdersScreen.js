@@ -15,7 +15,12 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import { createOrder } from '../actions/orderActions.js';
 import { constants } from '../constants/constant';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const PlaceOrdersScreen = ({ history }) => {
+    const { t } = useTranslation();
+
     const dispatch = useDispatch();
     const cart = useSelector(state => state.cart);
     const { guestInfo: guest } = useSelector(state => state.userAsGuest);
@@ -72,11 +77,11 @@ const PlaceOrdersScreen = ({ history }) => {
                 <Col lg={8}>
                     <ListGroup variant='flush'>
                         <ListGroup.Item className="px-0">
-                            <h3>Shipping</h3>
+                            <h3>{t('shipping')}</h3>
                             <Row>
                                 <Col md={2}>
                                     <p className='mb-0'>
-                                        Address:
+                                        {t('address')}:
                                     </p>
                                 </Col>
                                 <Col>
@@ -113,9 +118,9 @@ const PlaceOrdersScreen = ({ history }) => {
                         </ListGroup.Item> */}
 
                         <ListGroup.Item className="px-0">
-                            <h3>Order items:</h3>
+                            <h3>{t('order-items')}:</h3>
                             {!cart?.cartItems?.length ? (
-                                <Message>Your cart is empty.</Message>
+                                <Message>{t('your-cart-is-empty')}.</Message>
                             ) : (
                                 <ListGroup variant=''>
                                     {cart.cartItems.map((cartItem, index) => (
@@ -155,15 +160,15 @@ const PlaceOrdersScreen = ({ history }) => {
                             <Card className="my-2 text-right">
                                 <ListGroup variant='flush'>
                                     <Card.Header className="p-3 text-right">
-                                        <h3 className="mb-0 text-center">
-                                            Order Summary
-                                        </h3>
+                                        <h4 className="mb-0 text-center">
+                                            {t('order-summary')}
+                                        </h4>
                                     </Card.Header>
 
                                     <ListGroup.Item>
                                         <Row>
                                             <Col xs={2} lg={4} className='px-1'>
-                                                Items:
+                                                {t('items')}:
                                             </Col>
                                             <Col xs={10} lg={8} className='pr-4 text-right'>
                                                 {currency(cart.itemsPrice)}
@@ -174,7 +179,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                     <ListGroup.Item>
                                         <Row>
                                             <Col xs={2} lg={4} className='px-1'>
-                                                Shipping:
+                                                {t('shipping')}:
                                             </Col>
                                             <Col xs={10} lg={8} className='pr-4 text-right'>
                                                 {currency(cart.shippingPrice)}
@@ -185,7 +190,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                     <ListGroup.Item>
                                         <Row>
                                             <Col xs={2} lg={4} className='px-1'>
-                                                Tax:
+                                                {t('tax')}:
                                             </Col>
                                             <Col xs={10} lg={8} className='pr-4 text-right'>
                                                 {currency(cart.taxPrice)}
@@ -196,7 +201,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                     <ListGroup.Item>
                                         <Row>
                                             <Col xs={2} lg={4} className='px-1'>
-                                                <h5><strong>Total:</strong></h5>
+                                                <h5><strong>{t('total')}:</strong></h5>
                                             </Col>
                                             <Col xs={10} lg={8} className='pr-4 text-right'>
                                                 <h5><strong>{currency(cart.totalPrice)}</strong></h5>
@@ -219,7 +224,7 @@ const PlaceOrdersScreen = ({ history }) => {
                             <Button type='button' className='btn btn-success btn-block'
                                 disabled={!cart.cartItems.length}
                                 onClick={placeOrderHandler}>
-                                Place order
+                                {t('place-order')}
                             </Button>
                         </ListGroup.Item>
                     </ListGroup>

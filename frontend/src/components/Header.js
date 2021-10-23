@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 
@@ -6,12 +6,24 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { userLogout } from '../actions/userActions.js'
 
 /** Styles */
-import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Button, ButtonGroup } from 'react-bootstrap';
 
-// Custom Hooks
+/** Custom Hooks */
 import useBreakpoint from '../customHooks/useBreakpoint';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const Header = ({ history }) => {
+    const { t } = useTranslation();
+    const { i18n } = useTranslation();
+    const [lang, setLang] = useState('de')
+
+    const changeLanguage = (e) => {
+        i18n.changeLanguage(e.target.value);
+        setLang(e.target.value)
+    }
+
     const dispatch = useDispatch();
     const { width } = useBreakpoint();
     const { userInfo } = useSelector(state => state.userLogin);
@@ -32,21 +44,21 @@ const Header = ({ history }) => {
 
                 {
                     userInfo?.isAdmin && width >= 768 && (
-                        <NavDropdown title='Admin Menu' id='adminmenu' className="d-md-flex flex-column justify-content-md-center">
+                        <NavDropdown title={t('admin-menu')} id='adminmenu' className="d-md-flex flex-column justify-content-md-center">
                             <LinkContainer to='/admin/userlist'>
-                                <NavDropdown.Item>Users</NavDropdown.Item>
+                                <NavDropdown.Item>{t('users')}</NavDropdown.Item>
                             </LinkContainer>
 
                             <NavDropdown.Divider />
 
                             <LinkContainer to='/admin/productlist'>
-                                <NavDropdown.Item>Products</NavDropdown.Item>
+                                <NavDropdown.Item>{t('products')}</NavDropdown.Item>
                             </LinkContainer>
 
                             <NavDropdown.Divider />
 
                             <LinkContainer to='/admin/orderlist'>
-                                <NavDropdown.Item>Orders</NavDropdown.Item>
+                                <NavDropdown.Item>{t('orders')}</NavDropdown.Item>
                             </LinkContainer>
                         </NavDropdown>
                     )
@@ -60,21 +72,21 @@ const Header = ({ history }) => {
                             <>
                                 {
                                     userInfo?.isAdmin && width < 768 && (
-                                        <NavDropdown title='Admin Menu' id='adminmenu' className="d-md-flex flex-column justify-content-md-center">
+                                        <NavDropdown title={t('admin-menu')} id='adminmenu' className="d-md-flex flex-column justify-content-md-center">
                                             <LinkContainer to='/admin/userlist'>
-                                                <NavDropdown.Item>Users</NavDropdown.Item>
+                                                <NavDropdown.Item>{t('users')}</NavDropdown.Item>
                                             </LinkContainer>
 
                                             <NavDropdown.Divider />
 
                                             <LinkContainer to='/admin/productlist'>
-                                                <NavDropdown.Item>Products</NavDropdown.Item>
+                                                <NavDropdown.Item>{t('products')}</NavDropdown.Item>
                                             </LinkContainer>
 
                                             <NavDropdown.Divider />
 
                                             <LinkContainer to='/admin/orderlist'>
-                                                <NavDropdown.Item>Orders</NavDropdown.Item>
+                                                <NavDropdown.Item>{t('orders')}</NavDropdown.Item>
                                             </LinkContainer>
                                         </NavDropdown>
                                     )
@@ -82,25 +94,25 @@ const Header = ({ history }) => {
 
                                 <NavDropdown title={userInfo.name} id='username' className="d-md-flex flex-column justify-content-md-center">
                                     <LinkContainer to='/profile'>
-                                        <NavDropdown.Item>Profile</NavDropdown.Item>
+                                        <NavDropdown.Item>{t('profile')}</NavDropdown.Item>
                                     </LinkContainer>
 
                                     <NavDropdown.Divider />
 
                                     <LinkContainer to='/my-orders'>
-                                        <NavDropdown.Item>My Orders</NavDropdown.Item>
+                                        <NavDropdown.Item>{t('my-orders')}</NavDropdown.Item>
                                     </LinkContainer>
 
                                     <NavDropdown.Divider />
 
-                                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                                    <NavDropdown.Item onClick={logoutHandler}>{t('logout')}</NavDropdown.Item>
                                 </NavDropdown>
                             </>
                         ) : (
                             <LinkContainer to='/login'>
                                 <Nav.Link>
                                     <Button variant="outline-light border-0" size="sm">
-                                        <i className="fas fa-user mr-2"></i> Log In
+                                        <i className="fas fa-user mr-2"></i> {t('login')}
                                     </Button>
                                 </Nav.Link>
                             </LinkContainer>
@@ -117,10 +129,17 @@ const Header = ({ history }) => {
                                             </span>
                                         )
                                     }
-                                    <span className={cartItems?.length !== 0 ? 'ml-3' : 'ml-2'}>Shopping Cart</span>
+                                    <span className={cartItems?.length !== 0 ? 'ml-3' : 'ml-2'}>{t('shopping-cart')}</span>
                                 </Button>
                             </Nav.Link>
                         </LinkContainer>
+
+                        <div className="d-flex align-items-center">
+                            <ButtonGroup style={{ height: '30px' }}>
+                                <Button className={lang === 'de' ? 'border-0 bg-warning d-flex align-items-center' : 'border-0 bg-secondary d-flex align-items-center'} onClick={changeLanguage} value='de'>De</Button>
+                                <Button className={lang === 'en' ? 'border-0 bg-warning d-flex align-items-center' : 'border-0 bg-secondary d-flex align-items-center'} onClick={changeLanguage} value='en'>En</Button>
+                            </ButtonGroup>
+                        </div>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

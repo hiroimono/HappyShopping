@@ -18,7 +18,12 @@ import { constants } from '../constants/constant.js';
 // actions
 import { getSingleProduct, editSingleProduct } from '../actions/productActions';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const AdminProductEditScreen = ({ match, history }) => {
+    const { t } = useTranslation();
+
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
     const [brand, setBrand] = useState('');
@@ -140,53 +145,53 @@ const AdminProductEditScreen = ({ match, history }) => {
 
     return (
         <FormContainer>
-            <h2>Edit Product</h2>
+            <h2>{t('edit-product')}</h2>
             {
                 loading || loadingEdit || isUploading ? (
                     <Loader />
                 ) : (
                     <>
                         {(error || errorEdit) && <Message variant='danger'>{error || errorEdit}</Message>}
-                        {successEdit && <Message variant='success'>Success: Product Item was updated!</Message>}
+                        {successEdit && <Message variant='success'>{t('success-product-was-updated')}!</Message>}
                         {imgError?.length !== 0 && imgError.map((error, index) => <Message key={index} variant='danger'>{error}</Message>)}
                         <Card>
                             <Card.Body>
                                 <Form onSubmit={submitHandler}>
                                     <Form.Group controlId='name'>
                                         <Form.Label>Name</Form.Label>
-                                        <Form.Control type='text' placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
+                                        <Form.Control type='text' placeholder={t('enter-product-name')} value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
                                     </Form.Group>
 
                                     <Form.Group controlId='description'>
-                                        <Form.Label>Description</Form.Label>
-                                        <Form.Control as="textarea" rows={3} placeholder='Enter description' value={description} onChange={(e) => setDescription(e.target.value)}></Form.Control>
+                                        <Form.Label>{t('description')}</Form.Label>
+                                        <Form.Control as="textarea" rows={3} placeholder={t('enter-description')} value={description} onChange={(e) => setDescription(e.target.value)}></Form.Control>
                                     </Form.Group>
 
                                     <Form.Group controlId='brand'>
-                                        <Form.Label>Brand</Form.Label>
-                                        <Form.Control type='text' placeholder='Enter brand' value={brand} onChange={(e) => setBrand(e.target.value)}></Form.Control>
+                                        <Form.Label>{t('brand')}</Form.Label>
+                                        <Form.Control type='text' placeholder={t('enter-brand')} value={brand} onChange={(e) => setBrand(e.target.value)}></Form.Control>
                                     </Form.Group>
 
                                     <Form.Group controlId='category'>
-                                        <Form.Label>Category</Form.Label>
-                                        <Form.Control type='text' placeholder='Enter category' value={category} onChange={(e) => setCategory(e.target.value)}></Form.Control>
+                                        <Form.Label>{t('category')}</Form.Label>
+                                        <Form.Control type='text' placeholder={t('enter-category')} value={category} onChange={(e) => setCategory(e.target.value)}></Form.Control>
                                     </Form.Group>
 
                                     <Form.Group controlId='price'>
-                                        <Form.Label>Price (€)</Form.Label>
+                                        <Form.Label>{t('price')} (€)</Form.Label>
                                         <InputGroup>
-                                            <Form.Control type='text' placeholder='Enter price' value={price} onChange={(e) => setPrice(e.target.value)}></Form.Control>
+                                            <Form.Control type='text' placeholder={t('enter-price')} value={price} onChange={(e) => setPrice(e.target.value)}></Form.Control>
                                             <InputGroup.Text id="btnGroupAddon">{currency(price)}</InputGroup.Text>
                                         </InputGroup>
                                     </Form.Group>
 
                                     <Form.Group controlId='countInStock'>
                                         <Form.Label>Count In Stock</Form.Label>
-                                        <Form.Control type='number' min='0' placeholder='Enter amount of item in stock' value={countInStock} onChange={(e) => setCountInStock(e.target.value)}></Form.Control>
+                                        <Form.Control type='number' min='0' placeholder={t('enter-count-in-stock')} value={countInStock} onChange={(e) => setCountInStock(e.target.value)}></Form.Control>
                                     </Form.Group>
 
                                     <Form.Group controlId='image'>
-                                        <Form.Label>image</Form.Label>
+                                        <Form.Label>{t('image')}</Form.Label>
                                         <ListGroup>
                                             {
                                                 image?.length !== 0 && image.map((img, index) => (
@@ -210,7 +215,7 @@ const AdminProductEditScreen = ({ match, history }) => {
                                                 ))}
                                         </ListGroup>
 
-                                        <Form.File ref={fileRef} id="image-file" label="Choose File" custom onChange={uploadFileHandler} multiple></Form.File>
+                                        <Form.File ref={fileRef} id="image-file" label={t('choose-file')} custom onChange={uploadFileHandler} multiple></Form.File>
                                     </Form.Group>
 
                                     {/* <Form.Group className="mb-3" controlId="isAdmin">
@@ -219,12 +224,12 @@ const AdminProductEditScreen = ({ match, history }) => {
                                 <Form.Check type="checkbox" label='User' checked={!isAdmin} onChange={e => setIsAdmin(!e.target.checked)} />
                             </Form.Group> */}
 
-                                    <Button type='submit' variant='primary' className="mr-2">Update</Button>
+                                    <Button type='submit' variant='primary' className="mr-2">{t('update')}</Button>
 
                                     <LinkContainer to={`/admin/productlist`}>
                                         <Button variant='info' className="mr-2">
                                             <i className="fas fa-chevron-circle-left mr-1"></i>
-                                            Back to Product List
+                                            {t('back-to-product-list')}
                                         </Button>
                                     </LinkContainer>
                                     {
@@ -232,7 +237,7 @@ const AdminProductEditScreen = ({ match, history }) => {
                                             <LinkContainer to={`/products/${match.params.id}`}>
                                                 <Button variant='warning' className="mr-2">
                                                     <i className="fas fa-chevron-circle-up mr-1"></i>
-                                                    Show Product
+                                                    {t('show-product')}
                                                 </Button>
                                             </LinkContainer>
                                         )

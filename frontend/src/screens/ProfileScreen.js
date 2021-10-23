@@ -16,7 +16,12 @@ import { constants } from '../constants/constant.js';
 // actions
 import { getUserDetails, updateUserProfile } from '../actions/userActions';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const ProfileScreen = ({ location, history }) => {
+    const { t } = useTranslation();
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -71,7 +76,7 @@ const ProfileScreen = ({ location, history }) => {
 
     return (
         <FormContainer>
-            <h2>User Profile</h2>
+            <h2>{t('user-profile')}</h2>
             {message && <Message variant='danger'>{message}</Message>}
             {success && <Message variant="success">Profile Updated</Message>}
             {loading ? (
@@ -83,19 +88,19 @@ const ProfileScreen = ({ location, history }) => {
                     <Card.Body>
                         <Form onSubmit={submitHandler}>
                             <Form.Group controlId='name'>
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control type='name' placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
+                                <Form.Label>{t('name-and-surname')}</Form.Label>
+                                <Form.Control type='name' placeholder={t('enter-your-name-and-surname')} value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
                             </Form.Group>
 
                             <Form.Group controlId='email'>
-                                <Form.Label>Email Address</Form.Label>
-                                <Form.Control type='email' placeholder='Enter email' value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
+                                <Form.Label>{t('email-address')}</Form.Label>
+                                <Form.Control type='email' placeholder={t('enter-email')} value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
                             </Form.Group>
 
                             <Form.Group controlId='password'>
                                 <Form.Row>
                                     <Col>
-                                        <Form.Label>Password</Form.Label>
+                                        <Form.Label>{t('password')}</Form.Label>
                                     </Col>
                                     <Col xs="auto" className='d-flex align-items-center'>
                                         {!isPasswordEmpty && (password && (isPasswordOK ? (
@@ -109,13 +114,13 @@ const ProfileScreen = ({ location, history }) => {
                                         )))}
                                     </Col>
                                 </Form.Row>
-                                <Form.Control type='password' placeholder='Enter password' value={password} onChange={(e) => { setPassword(e.target.value); checkPassword(e.target.value) }}></Form.Control>
+                                <Form.Control type='password' placeholder={t('enter-password')} value={password} onChange={(e) => { setPassword(e.target.value); checkPassword(e.target.value) }}></Form.Control>
                             </Form.Group>
 
                             <Form.Group controlId='confirmPassword'>
                                 <Form.Row>
                                     <Col>
-                                        <Form.Label>Confirm Password</Form.Label>
+                                        <Form.Label>{t('confirm-password')}</Form.Label>
                                     </Col>
                                     <Col xs="auto" className='d-flex align-items-center'>
                                         {!isPasswordEmpty && (confirmPassword && ((password === confirmPassword) ? (
@@ -129,23 +134,23 @@ const ProfileScreen = ({ location, history }) => {
                                         )))}
                                     </Col>
                                 </Form.Row>
-                                <Form.Control type='password' placeholder='Enter password again' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}></Form.Control>
+                                <Form.Control type='password' placeholder={t('enter-password-again')} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}></Form.Control>
                                 <div>
                                     {!isPasswordEmpty && (confirmPassword && ((password === confirmPassword) ? (
                                         <Badge variant='success'>
                                             <i className="fas fa-check mr-1"></i>
-                                            Match
+                                            {t('match')}
                                         </Badge>
                                     ) : (
                                         <Badge variant='secondary'>
                                             <i className="fas fa-times mr-1"></i>
-                                            Not match
+                                            {t('not-match')}
                                         </Badge>
                                     )))}
                                 </div>
                             </Form.Group>
 
-                            <Button type='submit' variant='primary'>Update</Button>
+                            <Button type='submit' variant='primary'>{t('update')}</Button>
                         </Form>
                     </Card.Body>
                 </Card>

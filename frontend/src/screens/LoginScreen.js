@@ -13,7 +13,12 @@ import { userLogin } from '../actions/userActions';
 // bootstrap
 import { Button, Form, Row, Col, Card } from 'react-bootstrap';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const LoginScreen = ({ location, history }) => {
+    const { t } = useTranslation();
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -42,7 +47,7 @@ const LoginScreen = ({ location, history }) => {
 
     return (
         <FormContainer>
-            <h3>Sign in</h3>
+            <h3>{t('login')}</h3>
             {error && <Message variant='danger'>{error}</Message>}
             {loading && <Loader />}
 
@@ -50,29 +55,29 @@ const LoginScreen = ({ location, history }) => {
                 <Card.Body>
                     <Form onSubmit={submitHandler}>
                         <Form.Group controlId='email'>
-                            <Form.Label>Email Address</Form.Label>
-                            <Form.Control type='email' placeholder='Enter email' value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
+                            <Form.Label>{t('email-address')}</Form.Label>
+                            <Form.Control type='email' placeholder={t('enter-email')} value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='password'>
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control type='password' placeholder='Enter password' value={password} onChange={(e) => setPassword(e.target.value)}></Form.Control>
+                            <Form.Label>{t('password')}</Form.Label>
+                            <Form.Control type='password' placeholder={t('enter-password')} value={password} onChange={(e) => setPassword(e.target.value)}></Form.Control>
                         </Form.Group>
 
-                        <Button type='submit' variant='primary'>Sign In</Button>
+                        <Button type='submit' variant='primary'>{t('login')}</Button>
 
                         <Row className="py-3">
                             <Col className="text-left">
                                 {
                                     cartItems?.length ? (
                                         <Link to={`/shipping`}>
-                                            Continue as a Guest
+                                            {t('continue-as-a-guest')}
                                             <i className="fas fa-walking pl-1"></i>
                                         </Link>
                                     ) : (
                                         <Link to={`/`}>
                                             <Button variant="link" size="sm" onClick={() => guestHandler()}>
-                                                Continue as a Guest
+                                                {t('continue-as-a-guest')}
                                                 <i className="fas fa-walking pl-1"></i>
                                             </Button>
                                         </Link>
@@ -80,9 +85,9 @@ const LoginScreen = ({ location, history }) => {
                                 }
                             </Col>
                             <Col className="text-right">
-                                New Customer ? {' '}
+                                {t('new-customer')} ? {' '}
                                 <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-                                    Register
+                                    {t('register')}
                                     <i className="fas fa-sign-in-alt pl-1"></i>
                                 </Link>
                             </Col>

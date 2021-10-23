@@ -18,7 +18,12 @@ import { getOrders, cancelOrder as deleteSingleOrder } from '../actions/orderAct
 // Constants for action types
 // import { constants } from '../constants/constant.js';
 
+/** i18n */
+import { useTranslation, Trans } from 'react-i18next'
+
 const AdminOrderListScreen = ({ history, match }) => {
+    const { t } = useTranslation();
+
     const [step0, setStep0] = useState(15);
     const [total0, setTotal0] = useState('');
     const [numArr0, setNumArr0] = useState([]);
@@ -116,7 +121,13 @@ const AdminOrderListScreen = ({ history, match }) => {
             <>
                 {/* {showSuccess && <Message variant="success">Order edited successfully.</Message>} */}
                 {
-                    deletedOrder && <Message variant="success">Order (id: <span>{deletedOrder?._id}</span>) was successfully deleted.</Message>
+                    deletedOrder && (
+                        <Message variant="success">
+                            <Trans i18nKey="success-deleted-order">
+                                Order (id: {deletedOrder?._id}) was successfully deleted.
+                            </Trans>
+                        </Message>
+                    )
                 }
 
                 <Accordion defaultActiveKey="0">
@@ -125,13 +136,13 @@ const AdminOrderListScreen = ({ history, match }) => {
                             <Accordion.Toggle eventKey="0" className="flex-grow-1 border-0 p-3 w-100" onClick={() => selectedTabHandler(0)} style={{
                                 backgroundColor: selected[0] ? '#cccccc' : '#eeeeee'
                             }}>
-                                <h4 className="mb-0">Orders By Users:</h4>
+                                <h4 className="mb-0">{t('orders-by-users')}:</h4>
                             </Accordion.Toggle>
 
                             <Accordion.Toggle eventKey="1" className="flex-grow-1 border-0 p-3 w-100" onClick={() => selectedTabHandler(1)} style={{
                                 backgroundColor: selected[1] ? '#cccccc' : '#eeeeee'
                             }}>
-                                <h4 className="mb-0">Orders By Guests:</h4>
+                                <h4 className="mb-0">{t('orders-by-guests')}:</h4>
                             </Accordion.Toggle>
                             {/* <h4 className="mb-0">Orders By Users:</h4> */}
                         </Card.Header>
@@ -141,7 +152,7 @@ const AdminOrderListScreen = ({ history, match }) => {
                                 {
                                     !orders?.userOrders?.length ? (
                                         <Message variant="info">
-                                            There is no order yet.
+                                            {t('there-is-no-order-yet')}.
                                             <LinkContainer to='/'>
                                                 <Button className="btn-sm ml-3" variant='outline-info'>
                                                     <i className="fas fa-home pr-1"></i> Home
@@ -183,16 +194,16 @@ const AdminOrderListScreen = ({ history, match }) => {
                                             <Table striped bordered responsive hover className="table-sm mb-0">
                                                 <thead>
                                                     <tr>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>#</th>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>ID</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>#</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Id</th>
                                                         {/* <th className="text-center" style={{ verticalAlign: 'middle' }}>USER ID</th> */}
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>USER</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('user')}</th>
                                                         {/* <th className="text-center" style={{ verticalAlign: 'middle' }}>USER EMAIL</th> */}
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>DATE</th>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>TOTAL</th>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>PAID</th>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>DELIVERED</th>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>ACTIONS</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('date')}</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('total')}</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('paid')}</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('delivered')}</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('actions')}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -315,7 +326,7 @@ const AdminOrderListScreen = ({ history, match }) => {
                                 {
                                     !orders?.visitorOrders?.length ? (
                                         <Message variant="info">
-                                            There is no order yet.
+                                            {t('there-is-no-order-yet')}.
                                             <LinkContainer to='/'>
                                                 <Button className="btn-sm ml-3" variant='outline-info'>
                                                     <i className="fas fa-home pr-1"></i> Home
@@ -356,16 +367,16 @@ const AdminOrderListScreen = ({ history, match }) => {
                                             <Table striped bordered responsive hover className="table-sm mb-0">
                                                 <thead>
                                                     <tr>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>#</th>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>ID</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>#</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Id</th>
                                                         {/* <th className="text-center" style={{ verticalAlign: 'middle' }}>USER ID</th> */}
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>GUEST</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('guest')}</th>
                                                         {/* <th className="text-center" style={{ verticalAlign: 'middle' }}>USER EMAIL</th> */}
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>DATE</th>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>TOTAL</th>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>PAID</th>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>DELIVERED</th>
-                                                        <th className="text-center" style={{ verticalAlign: 'middle' }}>ACTIONS</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('date')}</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('total')}</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('paid')}</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('delivered')}</th>
+                                                        <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('actions')}</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -478,27 +489,39 @@ const AdminOrderListScreen = ({ history, match }) => {
 
                 <Modal show={show} size={'lg'} onHide={() => handleConfirm(false)}>
                     <Modal.Body>
-                        <h3> Would you really want to cancel this order? </h3>
+                        <h3> {t('would-you-really-want-to-cancel-the-order')}? </h3>
 
                         <Table striped bordered responsive hover className="table-sm mt-4">
                             <thead>
                                 <tr>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>ID</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Id</th>
                                     {/* <th className="text-center" style={{ verticalAlign: 'middle' }}>USER ID</th> */}
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>USER NAME</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('name')}</th>
                                     {/* <th className="text-center" style={{ verticalAlign: 'middle' }}>USER EMAIL</th> */}
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>DATE</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>TOTAL</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>PAID</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>DELIVERED</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('date')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('total')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('paid')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('delivered')}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td className="text-center" style={{ verticalAlign: 'middle' }}>{orderForDelete?._id}</td>
                                     {/* <td className="text-center" style={{ verticalAlign: 'middle' }}>{orderForDelete?.user?._id}</td> */}
-                                    {orderForDelete?.user && <td className="text-center" style={{ verticalAlign: 'middle' }}>{orderForDelete?.user?.name}</td>}
-                                    {orderForDelete?.visitor && <td className="text-center" style={{ verticalAlign: 'middle' }}>{orderForDelete?.visitor?.name}</td>}
+                                    {
+                                        orderForDelete?.user && (
+                                            <td className="text-center" style={{ verticalAlign: 'middle' }}>
+                                                {orderForDelete?.user?.name}
+                                            </td>
+                                        )
+                                    }
+                                    {
+                                        orderForDelete?.visitor && (
+                                            <td className="text-center" style={{ verticalAlign: 'middle' }}>
+                                                {orderForDelete?.visitor?.name}
+                                            </td>
+                                        )
+                                    }
                                     {/* <td className="text-center" style={{ verticalAlign: 'middle' }}>{orderForDelete?.user?.email}</td> */}
                                     <td className="text-center" style={{ verticalAlign: 'middle' }}>{showDate(orderForDelete?.createdAt)}</td>
                                     <td className="text-center" style={{ verticalAlign: 'middle' }}>{currency(orderForDelete?.totalPrice)}</td>
@@ -528,10 +551,10 @@ const AdminOrderListScreen = ({ history, match }) => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => handleConfirm(false)}>
-                            No
+                            {t('no')}
                         </Button>
                         <Button variant="primary" onClick={() => handleConfirm(true)}>
-                            Yes
+                            {t('yes')}
                         </Button>
                     </Modal.Footer>
                 </Modal>

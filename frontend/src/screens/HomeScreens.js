@@ -12,7 +12,11 @@ import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const HomeScreen = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const { loading, error, products } = useSelector(state => state.products)
 
@@ -25,9 +29,9 @@ const HomeScreen = () => {
 
     return (
         <>
-            <h2>Latest Products</h2>
+            <h2>{t('latest-products')}</h2>
 
-            { loading ?
+            {loading ?
                 <Loader /> :
                 error ?
                     <Message variant='danger' messageText={error} /> :

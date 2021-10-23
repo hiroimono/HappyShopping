@@ -15,7 +15,12 @@ import { getUserList, deleteUser } from '../actions/userActions.js';
 // Constants for action types
 import { constants } from '../constants/constant.js';
 
+/** i18n */
+import { useTranslation, Trans } from 'react-i18next'
+
 const AdminUserListScreen = ({ history }) => {
+    const { t } = useTranslation();
+
     const [showSuccess, setShowSuccess] = useState(false);
     const dispatch = useDispatch();
 
@@ -69,15 +74,21 @@ const AdminUserListScreen = ({ history }) => {
         error || errorDeleted ?
             <Message variant='danger'>{error || errorDeleted}</Message> :
             <>
-                <h3>My Orders:</h3>
-                {showSuccess && <Message variant="success">User edited successfully.</Message>}
+                <h3>{t('my-orders')}:</h3>
+                {showSuccess && <Message variant="success">{t('user-edited-successfully')}.</Message>}
                 {
-                    deletedUser && <Message variant="success">User <span>{deletedUser?.name}</span> (id: <span>{deletedUser?._id}</span>) was successfully deleted.</Message>
+                    deletedUser && (
+                        <Message variant="success">
+                            <Trans i18nKey="success-deleted-user">
+                                User {deletedUser?.name} with id: {deletedUser?._id} was successfully deleted.
+                            </Trans>
+                        </Message>
+                    )
                 }
                 {
                     !users?.length ? (
                         <Message variant="info">
-                            There is no user yet.
+                            {t('there-is-no-user-yet')}.
                             <LinkContainer to='/'>
                                 <Button className="btn-sm ml-3" variant='outline-info'>
                                     <i className="fas fa-home pr-1"></i> Home
@@ -88,11 +99,11 @@ const AdminUserListScreen = ({ history }) => {
                         <Table striped bordered responsive hover className="table-sm">
                             <thead>
                                 <tr>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>ID</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>NAME</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>EMAIL</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>ADMIN</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}></th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Id</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Name</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Email</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Admin</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -127,15 +138,15 @@ const AdminUserListScreen = ({ history }) => {
 
                 <Modal show={show} size={'lg'} onHide={() => handleConfirm(false)}>
                     <Modal.Body>
-                        <h3> Would you really want to remove the user? </h3>
+                        <h3> {t('would-you-really-want-to-remove-the-user')}? </h3>
 
                         <Table striped bordered responsive hover className="table-sm mt-4">
                             <thead>
                                 <tr>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>ID</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>NAME</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>EMAIL</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>ADMIN</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Id</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Name</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Email</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Admin</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,10 +165,10 @@ const AdminUserListScreen = ({ history }) => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => handleConfirm(false)}>
-                            No
+                            {t('no')}
                         </Button>
                         <Button variant="primary" onClick={() => handleConfirm(true)}>
-                            Yes
+                            {t('yes')}
                         </Button>
                     </Modal.Footer>
                 </Modal>

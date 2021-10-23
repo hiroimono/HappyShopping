@@ -15,7 +15,12 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import { saveShippingAddress, savePaymentMethod } from '../actions/cartActions.js';
 import { userAsGuest } from '../actions/userActions';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const ShippingScreen = ({ history }) => {
+    const { t } = useTranslation();
+
     const { shippingAddress } = useSelector(state => state.cart);
     const { userInfo } = useSelector(state => state.userLogin);
     const { guestInfo: guest } = useSelector(state => state.userAsGuest);
@@ -47,16 +52,16 @@ const ShippingScreen = ({ history }) => {
                     !userInfo && (
                         <Card className="mb-3">
                             <Card.Header>
-                                <h5>Guest Info</h5>
+                                <h5>{t('guest-info')}</h5>
                             </Card.Header>
                             <Card.Body>
                                 <Form.Row>
                                     <Form.Group as={Col} sm={6} lg={8} controlId='name'>
-                                        <Form.Label>Name and Surname*</Form.Label>
+                                        <Form.Label>{t('name-and-surname')}*</Form.Label>
                                         <Form.Control
                                             type='text'
                                             name='name'
-                                            placeholder='Enter your name'
+                                            placeholder={t('enter-your-name-and-surname')}
                                             value={name}
                                             required
                                             onChange={(e) => setName(e.target.value)}
@@ -64,11 +69,11 @@ const ShippingScreen = ({ history }) => {
                                     </Form.Group>
 
                                     <Form.Group as={Col} sm={6} lg={4} controlId='email'>
-                                        <Form.Label>Email Address*</Form.Label>
+                                        <Form.Label>{t('email-address')}*</Form.Label>
                                         <Form.Control
                                             type='email'
                                             name='email'
-                                            placeholder='Enter email'
+                                            placeholder={t('enter-email')}
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                         ></Form.Control>
@@ -82,27 +87,27 @@ const ShippingScreen = ({ history }) => {
 
                 <Card className="mb-3">
                     <Card.Header>
-                        <h5>Shipping Address</h5>
+                        <h5>{t('shipping-address')}</h5>
                     </Card.Header>
                     <Card.Body>
                         <Form.Row>
                             <Form.Group as={Col} sm={6} lg={8} controlId='street'>
-                                <Form.Label>Street*</Form.Label>
+                                <Form.Label>{t('street')}*</Form.Label>
                                 <Form.Control
                                     type='text'
                                     name='street'
-                                    placeholder='Enter street'
+                                    placeholder={t('enter-street')}
                                     value={street}
                                     required
                                     onChange={(e) => setStreet(e.target.value)}></Form.Control>
                             </Form.Group>
 
                             <Form.Group as={Col} sm={6} lg={4} controlId='number'>
-                                <Form.Label>House Number*</Form.Label>
+                                <Form.Label>{t('number')}*</Form.Label>
                                 <Form.Control
                                     type='text'
                                     name='number'
-                                    placeholder='Enter number'
+                                    placeholder={t('enter-number')}
                                     value={number}
                                     required
                                     onChange={(e) => setNumber(e.target.value)}></Form.Control>
@@ -111,39 +116,39 @@ const ShippingScreen = ({ history }) => {
 
                         <Form.Row>
                             <Form.Group as={Col} sm={4} lg={4} controlId="zipcode">
-                                <Form.Label>Zip Code</Form.Label>
+                                <Form.Label>{t('zip-code')}</Form.Label>
                                 <Form.Control
                                     type='text'
                                     name='zipcode'
-                                    placeholder='Enter zipcode'
+                                    placeholder={t('enter-zip-code')}
                                     value={zipcode}
                                     onChange={(e) => setZipcode(e.target.value)}></Form.Control>
                             </Form.Group>
 
                             <Form.Group as={Col} sm={4} lg={4} controlId="city">
-                                <Form.Label>City*</Form.Label>
+                                <Form.Label>{t('city')}*</Form.Label>
                                 <Form.Control
                                     type='text'
                                     name='city'
-                                    placeholder='Enter city'
+                                    placeholder={t('enter-city')}
                                     value={city}
                                     required
                                     onChange={(e) => setCity(e.target.value)}></Form.Control>
                             </Form.Group>
 
                             <Form.Group as={Col} sm={4} lg={4} controlId="country">
-                                <Form.Label>Country*</Form.Label>
+                                <Form.Label>{t('country')}*</Form.Label>
                                 <Form.Control
                                     type='text'
                                     name='country'
-                                    placeholder='Enter country'
+                                    placeholder={t('enter-country')}
                                     value={country}
                                     required
                                     onChange={(e) => setCountry(e.target.value)}></Form.Control>
                             </Form.Group>
                         </Form.Row>
 
-                        <Button type='submit' variant='primary'>Continue</Button>
+                        <Button type='submit' variant='primary'>{t('continue')}</Button>
                     </Card.Body>
                 </Card>
             </Form>

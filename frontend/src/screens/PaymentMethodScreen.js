@@ -14,7 +14,12 @@ import CheckoutSteps from '../components/CheckoutSteps';
 // Actions
 import { savePaymentMethod } from '../actions/cartActions.js';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const PaymentMethodScreen = ({ history }) => {
+    const { t } = useTranslation();
+
     const { shippingAddress } = useSelector(state => state.cart);
 
     if (!shippingAddress) {
@@ -36,13 +41,13 @@ const PaymentMethodScreen = ({ history }) => {
         <FormContainer>
             <CheckoutSteps step1 step2 step3></CheckoutSteps>
 
-            <h3>Payment Method</h3>
+            <h3>{t('payment-method')}</h3>
 
             <Card>
                 <Card.Body>
                     <Form onSubmit={submitHandler}>
                         <Form.Group>
-                            <Form.Label as="legend">Select Method:</Form.Label>
+                            <Form.Label as="legend">{t('select-method')}:</Form.Label>
                             <Col>
                                 <Form.Check type='radio' label='PayPal or Debit Card' id='PayPal' name='paymentMethod' value='PayPal' checked onChange={(e) => setPaymentMethod(e.target.value)}></Form.Check>
                             </Col>
@@ -52,7 +57,7 @@ const PaymentMethodScreen = ({ history }) => {
                             </Col>
                         </Form.Group>
 
-                        <Button type='submit' variant='primary'>Continue</Button>
+                        <Button type='submit' variant='primary'>{t('continue')}</Button>
                     </Form>
                 </Card.Body>
             </Card>

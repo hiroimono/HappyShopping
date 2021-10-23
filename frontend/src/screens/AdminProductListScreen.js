@@ -18,7 +18,12 @@ import useBreakpoint from '../customHooks/useBreakpoint';
 // Constants for action types
 // import { constants } from '../constants/constant.js';
 
+/** i18n */
+import { useTranslation, Trans } from 'react-i18next'
+
 const AdminProductListScreen = ({ history, match }) => {
+    const { t } = useTranslation();
+
     // const [showSuccess, setShowSuccess] = useState(false);
     const dispatch = useDispatch();
     const { width } = useBreakpoint();
@@ -65,26 +70,32 @@ const AdminProductListScreen = ({ history, match }) => {
             <>
                 <Row>
                     <Col>
-                        <h3>Products:</h3>
+                        <h3>{t('products')}:</h3>
                     </Col>
 
                     <Col className="text-right">
                         <LinkContainer to='/admin/product/add'>
                             <Button variant="warning">
                                 <i className={`fas fa-plus ${width >= 576 && 'mr-2'}`}></i>
-                                {width < 576 ? null : 'Add product'}
+                                {width < 576 ? null : t('add-product')}
                             </Button>
                         </LinkContainer>
                     </Col>
                 </Row>
                 {/* {showSuccess && <Message variant="success">Product edited successfully.</Message>} */}
                 {
-                    deletedProduct && <Message variant="success">User <span>{deletedProduct?.name}</span> (id: <span>{deletedProduct?._id}</span>) was successfully deleted.</Message>
+                    deletedProduct && (
+                        <Message variant="success">
+                            <Trans i18nKey="success-deleted-product">
+                                Product '{deletedProduct?.name}' with id: {deletedProduct?._id} was successfully deleted
+                            </Trans>
+                        </Message>
+                    )
                 }
                 {
                     !products?.length ? (
                         <Message variant="info">
-                            There is no product yet.
+                            {t('there-is-no-product-yet')}.
                             <LinkContainer to='/'>
                                 <Button className="btn-sm ml-3" variant='outline-info'>
                                     <i className="fas fa-home pr-1"></i> Home
@@ -95,12 +106,12 @@ const AdminProductListScreen = ({ history, match }) => {
                         <Table striped bordered responsive hover className="table-sm">
                             <thead>
                                 <tr>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>ID</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>NAME</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>PRICE</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>CATEGORY</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>BRAND</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>ACTIONS</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Id</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Name</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('price')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('category')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('brand')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('actions')}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -132,16 +143,16 @@ const AdminProductListScreen = ({ history, match }) => {
 
                 <Modal show={show} size={'lg'} onHide={() => handleConfirm(false)}>
                     <Modal.Body>
-                        <h3> Would you really want to remove the product? </h3>
+                        <h3> {t('would-you-really-want-to-remove-the-product')}? </h3>
 
                         <Table striped bordered responsive hover className="table-sm mt-4">
                             <thead>
                                 <tr>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>ID</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>NAME</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>PRICE</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>CATEGORY</th>
-                                    <th className="text-center" style={{ verticalAlign: 'middle' }}>BRAND</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Id</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Name</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('price')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('category')}</th>
+                                    <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>{t('brand')}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -157,10 +168,10 @@ const AdminProductListScreen = ({ history, match }) => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={() => handleConfirm(false)}>
-                            No
+                            {t('no')}
                         </Button>
                         <Button variant="primary" onClick={() => handleConfirm(true)}>
-                            Yes
+                            {t('yes')}
                         </Button>
                     </Modal.Footer>
                 </Modal>

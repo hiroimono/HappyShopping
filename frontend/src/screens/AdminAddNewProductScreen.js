@@ -18,7 +18,30 @@ import FormContainer from '../components/FormContainer';
 // actions
 import { addNewProduct, getSingleProduct } from '../actions/productActions';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const AdminAddNewProductScreen = ({ match, history }) => {
+    const { t } = useTranslation();
+    const { i18n } = useTranslation();
+    const [language, setLanguage] = useState('de')
+
+    const dispatch = useDispatch();
+    const fileRef = useRef();
+
+    i18n.on('languageChanged', (e) => {
+        setLanguage(e);
+        if (fileRef?.current?.files) {
+            for (let key in fileRef.current.files) {
+                if (key !== 'item' && key !== 'length') {
+                    let file = fileRef.current.files[key];
+                    let isImage = (/image\/.*/gm).test(file.type)
+                    !isImage && setImgError(imgError => [language === 'en' ? `${file.name} ist keine Bilddatei. Akzeptierte Typen:  ".jpg", ".jpeg", ".png"` : `${file.name} is not an image file. Accepted types:  ".jpg", ".jpeg", ".png"`])
+                }
+            }
+        }
+    })
+
     const [validated, setValidated] = useState(false);
     const [productAddedSuccess, setProductAddedSuccess] = useState(false);
     const [name, setName] = useState('');
@@ -30,9 +53,6 @@ const AdminAddNewProductScreen = ({ match, history }) => {
     const [image, setImage] = useState([]);
     const [imgError, setImgError] = useState([]);
     const [isUploading, setIsUploading] = useState(false);
-
-    const dispatch = useDispatch();
-    const fileRef = useRef();
 
     const { userInfo } = useSelector(state => state.userLogin);
     const { loading: loadingProduct, error: errorProduct, product } = useSelector(state => state.product);
@@ -103,7 +123,7 @@ const AdminAddNewProductScreen = ({ match, history }) => {
             if (key !== 'item' && key !== 'length') {
                 let file = e.target.files[key];
                 let isImage = (/image\/.*/gm).test(file.type)
-                isImage ? files.push(file) : setImgError(imgError => [...imgError, `${file.name} is not an image file. Accepted types:  ".jpg", ".jpeg", ".png"`])
+                isImage ? files.push(file) : setImgError(imgError => [...imgError, language === 'de' ? `${file.name} ist keine Bilddatei. Akzeptierte Typen:  ".jpg", ".jpeg", ".png"` : `${file.name} is not an image file. Accepted types:  ".jpg", ".jpeg", ".png"`])
             }
         }
 
@@ -152,7 +172,7 @@ const AdminAddNewProductScreen = ({ match, history }) => {
 
     return (
         <FormContainer>
-            <h2>Add a New Product</h2>
+            <h2>{t('add-a-new-product')}</h2>
             {
                 (loading || loadingProduct || isUploading) && <Loader />
             }
@@ -163,81 +183,81 @@ const AdminAddNewProductScreen = ({ match, history }) => {
                 imgError?.length !== 0 && imgError.map((error, index) => <Message key={index} variant='danger'>{error}</Message>)
             }
             {
-                productAddedSuccess && <Message variant='success'>Success: Product was successfully generated!</Message>
+                productAddedSuccess && <Message variant='success'>{t('success-product-was-generated')}!</Message>
             }
             <>
                 <Card>
                     <Card.Body>
                         <Form noValidate validated={validated} onSubmit={submitHandler}>
                             <Form.Group controlId='name'>
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control required type='text' placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
+                                <Form.Label>Name*</Form.Label>
+                                <Form.Control required type='text' placeholder={t('enter-product-name')} value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
                                 <Form.Control.Feedback type="invalid">
-                                    Please choose a product name.
+                                    {t('this-field-cannot-be-emty')}.
                                 </Form.Control.Feedback>
-                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                <Form.Control.Feedback>{t('looks-good')}!</Form.Control.Feedback>
                             </Form.Group>
 
                             <Form.Group controlId='description'>
-                                <Form.Label>Description</Form.Label>
-                                <Form.Control required as="textarea" rows={3} placeholder='Enter description' value={description} onChange={(e) => setDescription(e.target.value)}></Form.Control>
+                                <Form.Label>{t('description')}*</Form.Label>
+                                <Form.Control required as="textarea" rows={3} placeholder={t('enter-description')} value={description} onChange={(e) => setDescription(e.target.value)}></Form.Control>
                                 <Form.Control.Feedback type="invalid">
-                                    Please choose a product description.
+                                    {t('this-field-cannot-be-emty')}.
                                 </Form.Control.Feedback>
-                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                <Form.Control.Feedback>{t('looks-good')}!</Form.Control.Feedback>
                             </Form.Group>
 
                             <Form.Group controlId='brand'>
-                                <Form.Label>Brand</Form.Label>
-                                <Form.Control required type='text' placeholder='Enter brand' value={brand} onChange={(e) => setBrand(e.target.value)}></Form.Control>
+                                <Form.Label>{t('brand')}*</Form.Label>
+                                <Form.Control required type='text' placeholder={t('enter-brand')} value={brand} onChange={(e) => setBrand(e.target.value)}></Form.Control>
                                 <Form.Control.Feedback type="invalid">
-                                    Please choose a product brand.
+                                    {t('this-field-cannot-be-emty')}.
                                 </Form.Control.Feedback>
-                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                <Form.Control.Feedback>{t('looks-good')}!</Form.Control.Feedback>
                             </Form.Group>
 
                             <Form.Group controlId='category'>
-                                <Form.Label>Category</Form.Label>
-                                <Form.Control required type='text' placeholder='Enter category' value={category} onChange={(e) => setCategory(e.target.value)}></Form.Control>
+                                <Form.Label>{t('category')}*</Form.Label>
+                                <Form.Control required type='text' placeholder={t('enter-category')} value={category} onChange={(e) => setCategory(e.target.value)}></Form.Control>
                                 <Form.Control.Feedback type="invalid">
-                                    Please choose a product category.
+                                    {t('this-field-cannot-be-emty')}.
                                 </Form.Control.Feedback>
-                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                <Form.Control.Feedback>{t('looks-good')}!</Form.Control.Feedback>
                             </Form.Group>
 
                             <Form.Group controlId='price'>
-                                <Form.Label>Price (€)</Form.Label>
+                                <Form.Label>{t('price')} (€)</Form.Label>
                                 <InputGroup>
-                                    <Form.Control type='text' placeholder='Enter price' value={price} onChange={(e) => setPrice(e.target.value)}></Form.Control>
-                                    <InputGroup.Text id="btnGroupAddon">Value: {currency(price ? price : '0')}</InputGroup.Text>
+                                    <Form.Control required type='text' placeholder={t('enter-price')} value={price} onChange={(e) => setPrice(e.target.value)}></Form.Control>
+                                    <InputGroup.Text id="btnGroupAddon">{t('value')}: {currency(price ? price : '0')}</InputGroup.Text>
                                 </InputGroup>
-                                {price >= 0 && <Form.Control.Feedback>Looks good!</Form.Control.Feedback>}
-                                {price < 0 && <Form.Control.Feedback type="invalid">Please enter a positive number!</Form.Control.Feedback>}
+                                {price >= 0 && <Form.Control.Feedback>{t('looks-good')}!</Form.Control.Feedback>}
+                                {price < 0 && <Form.Control.Feedback type="invalid">{t('please-enter-a-positive-number')}!</Form.Control.Feedback>}
                                 {
                                     // eslint-disable-next-line eqeqeq
-                                    price == undefined &&
                                     <Form.Control.Feedback type="invalid">
-                                        Please choose a product price.
+                                        {t('this-field-cannot-be-emty')}.
                                     </Form.Control.Feedback>
+
                                 }
                             </Form.Group>
 
                             <Form.Group controlId='countInStock'>
-                                <Form.Label>Count In Stock</Form.Label>
-                                <Form.Control required type='number' placeholder='Enter amount of item in stock' value={countInStock} onChange={(e) => e.target.value >= 0 && setCountInStock(e.target.value)}></Form.Control>
-                                {countInStock >= 0 && <Form.Control.Feedback>Looks good!</Form.Control.Feedback>}
-                                {countInStock < 0 && <Form.Control.Feedback type="invalid">Please enter a positive number!</Form.Control.Feedback>}
+                                <Form.Label>{t('count-in-stock')}</Form.Label>
+                                <Form.Control required type='number' placeholder={t('enter-count-in-stock')} value={countInStock} onChange={(e) => e.target.value >= 0 && setCountInStock(e.target.value)}></Form.Control>
+                                {countInStock >= 0 && <Form.Control.Feedback>{t('looks-good')}!</Form.Control.Feedback>}
+                                {countInStock < 0 && <Form.Control.Feedback type="invalid">{t('please-enter-a-positive-number')}!</Form.Control.Feedback>}
                                 {
                                     // eslint-disable-next-line eqeqeq
                                     countInStock == undefined &&
                                     <Form.Control.Feedback type="invalid">
-                                        Please choose a product stock number.
+                                        {t('this-field-cannot-be-emty')}.
                                     </Form.Control.Feedback>
                                 }
                             </Form.Group>
 
                             <Form.Group controlId='image'>
-                                <Form.Label>Image</Form.Label>
+                                <Form.Label>{t('image')}</Form.Label>
                                 {/* {
                                     image?.length && image.map((img, index) => (
                                         <Form.Control key={index} required type='text' placeholder='Enter image' value={img} onChange={(e) => { arr = [...image]; arr[index] = e.target.value; setImage(arr) }}></Form.Control>
@@ -267,11 +287,11 @@ const AdminAddNewProductScreen = ({ match, history }) => {
                                         ))}
                                 </ListGroup>
 
-                                <Form.File ref={fileRef} id="image-file" label="Choose File" custom onChange={uploadFileHandler} multiple></Form.File>
+                                <Form.File ref={fileRef} id="image-file" label={t('choose-file')} custom onChange={uploadFileHandler} multiple></Form.File>
                                 <Form.Control.Feedback type="invalid">
-                                    Please choose a product image.
+                                    {t('this-field-cannot-be-emty')}.
                                 </Form.Control.Feedback>
-                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                <Form.Control.Feedback>{t('looks-good')}!</Form.Control.Feedback>
                             </Form.Group>
 
                             {/* <Form.Group className="mb-3" controlId="isAdmin">
@@ -280,10 +300,10 @@ const AdminAddNewProductScreen = ({ match, history }) => {
                                 <Form.Check type="checkbox" label='User' checked={!isAdmin} onChange={e => setIsAdmin(!e.target.checked)} />
                             </Form.Group> */}
 
-                            <Button type='submit' variant='primary' className="mr-2">Generate</Button>
+                            <Button type='submit' variant='primary' className="mr-2">{t('generate')}</Button>
 
                             <LinkContainer to={`/admin/productlist`}>
-                                <Button variant='info' className="mr-2"><i className="fas fa-chevron-circle-left mr-1"></i>Back to Product List</Button>
+                                <Button variant='info' className="mr-2"><i className="fas fa-chevron-circle-left mr-1"></i>{t('back-to-product-list')}</Button>
                             </LinkContainer>
                         </Form>
                     </Card.Body>

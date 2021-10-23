@@ -11,7 +11,12 @@ import Message from '../components/Message.js';
 // Bootstrap
 import { Row, Col, Container, ListGroup, Image, Form, Button, Card } from 'react-bootstrap';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const CartScreen = ({ match, location, history }) => {
+    const { t } = useTranslation();
+
     const productId = match.params.id ? match.params.id : null;
     const qty = location.search ? Number(location.search.split('=')[1]) : 1;
     const dispatch = useDispatch();
@@ -41,11 +46,11 @@ const CartScreen = ({ match, location, history }) => {
         <Container>
             <Row>
                 <Col md={12}>
-                    <h1>Shopping Cart:</h1>
+                    <h1>{t('shopping-cart')}:</h1>
                     {
                         cartItems.length === 0 ? (
                             <Message>
-                                Your cart is empty. <Link to='/'>
+                                {t('your-cart-is-empty')}. <Link to='/'>
                                     <Button className="btn-sm ml-3" variant='outline-info'>
                                         <i className="fas fa-home pr-1"></i> Home
                                     </Button>
@@ -96,7 +101,7 @@ const CartScreen = ({ match, location, history }) => {
                                         <ListGroup variant='flush'>
                                             <Card.Header className="p-3 text-right">
                                                 <h4 className="mb-0">
-                                                    Subtotal: <span className="text-nowrap">{cartItems.reduce((acc, item) => acc + Number(item.qty), 0)} item</span>
+                                                    {t('subtotal')}: <span className="text-nowrap">{cartItems.reduce((acc, item) => acc + Number(item.qty), 0)} item</span>
                                                 </h4>
                                             </Card.Header>
 
@@ -110,7 +115,7 @@ const CartScreen = ({ match, location, history }) => {
                                     <Button type='button' className='btn btn-success btn-block'
                                         disabled={cartItems.length === 0}
                                         onClick={checkoutHandler}>
-                                        Proceed Checkout
+                                        {t('proceed-checkout')}
                                     </Button>
                                 </Col>
                             </Row>

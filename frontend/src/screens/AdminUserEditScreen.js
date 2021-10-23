@@ -16,7 +16,12 @@ import { constants } from '../constants/constant.js';
 // actions
 import { getUserDetails, editUser } from '../actions/userActions';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const AdminUserEditScreen = ({ match, history }) => {
+    const { t } = useTranslation();
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [isAdmin, setIsAdmin] = useState(false);
@@ -63,7 +68,7 @@ const AdminUserEditScreen = ({ match, history }) => {
 
     return (
         <FormContainer>
-            <h2>Edit User</h2>
+            <h2>{t('edit-user')}</h2>
             {loading ? (
                 <Loader />
             ) : error || errorEdit ? (
@@ -73,22 +78,22 @@ const AdminUserEditScreen = ({ match, history }) => {
                     <Card.Body>
                         <Form onSubmit={submitHandler}>
                             <Form.Group controlId='name'>
-                                <Form.Label>Name</Form.Label>
-                                <Form.Control type='text' placeholder='Enter your name' value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
+                                <Form.Label>{t('name-and-surname')}</Form.Label>
+                                <Form.Control type='text' placeholder={t('enter-your-name-and-surname')} value={name} onChange={(e) => setName(e.target.value)}></Form.Control>
                             </Form.Group>
 
                             <Form.Group controlId='email'>
-                                <Form.Label>Email Address</Form.Label>
-                                <Form.Control type='email' placeholder='Enter email' value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
+                                <Form.Label>{t('email-address')}</Form.Label>
+                                <Form.Control type='email' placeholder={t('enter-email')} value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="isAdmin">
-                                <Form.Label>Permission Level</Form.Label>
+                                <Form.Label>{t('permission-level')}</Form.Label>
                                 <Form.Check type="checkbox" label='Admin' checked={isAdmin} onChange={e => setIsAdmin(e.target.checked)} />
-                                <Form.Check type="checkbox" label='User' checked={!isAdmin} onChange={e => setIsAdmin(!e.target.checked)} />
+                                <Form.Check type="checkbox" label={t('user')} checked={!isAdmin} onChange={e => setIsAdmin(!e.target.checked)} />
                             </Form.Group>
 
-                            <Button type='submit' variant='primary'>Update</Button>
+                            <Button type='submit' variant='primary'>{t('update')}</Button>
                         </Form>
                     </Card.Body>
                 </Card>
