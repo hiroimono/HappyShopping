@@ -41,7 +41,7 @@ const ProductScreen = ({ history, match }) => {
 
     useEffect(() => {
         dispatch(getSingleProduct(match.params.id));
-    }, [dispatch, match.params.id, qty])
+    }, [dispatch, match.params.id])
 
     const addToCartHandler = () => {
         // history.push(`/cart/${match.params.id}?qty=${qty}`);
@@ -56,6 +56,7 @@ const ProductScreen = ({ history, match }) => {
 
     const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
 
+    console.log('qty: ', qty);
     return (
         <>
             {loading ?
