@@ -15,7 +15,7 @@ const CheckoutSteps = ({ step1, step2, step3 }) => {
                 {step1 ? (
                     <LinkContainer to="/login">
                         <Nav.Link>
-                            <h4 className='mb-0'>{t('login')}</h4>
+                            <h4 className='mb-0 fs-20'>{t('login')}</h4>
                         </Nav.Link>
                     </LinkContainer>
                 ) : (
@@ -37,7 +37,7 @@ const CheckoutSteps = ({ step1, step2, step3 }) => {
                 {step2 ? (
                     <LinkContainer to="/shipping">
                         <Nav.Link>
-                            <h4 className='mb-0'>{t('shipping')}</h4>
+                            <h4 className='mb-0 fs-20'>{t('shipping')}</h4>
                         </Nav.Link>
                     </LinkContainer>
                 ) : (
@@ -81,7 +81,7 @@ const CheckoutSteps = ({ step1, step2, step3 }) => {
                 {step3 ? (
                     <LinkContainer to="/placeorder">
                         <Nav.Link>
-                            <h4 className='mb-0'>{t('place-order')}</h4>
+                            <h4 className='mb-0 fs-20'>{t('place-order')}</h4>
                         </Nav.Link>
                     </LinkContainer>
                 ) : (

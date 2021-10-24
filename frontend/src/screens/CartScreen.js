@@ -46,7 +46,9 @@ const CartScreen = ({ match, location, history }) => {
         <Container>
             <Row>
                 <Col md={12}>
-                    <h1>{t('shopping-cart')}:</h1>
+                    <Row>
+                        <h2>{t('shopping-cart')}:</h2>
+                    </Row>
                     {
                         cartItems.length === 0 ? (
                             <Message>
@@ -61,19 +63,19 @@ const CartScreen = ({ match, location, history }) => {
                                 <Col md={8} className="px-0">
                                     <ListGroup variant=''>
                                         {cartItems.map((cartItem) => (
-                                            <ListGroup.Item key={cartItem._id} className="my-2 px-3 py-2" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
+                                            <ListGroup.Item key={cartItem._id} className="my-2 px-2 py-2" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
                                                 <Row className="align-items-center m-0">
-                                                    <Col md={2} className='px-0'>
+                                                    <Col md={2} className='col-4 px-0'>
                                                         <Image src={cartItem.image[0].path} alt={cartItem.name} fluid rounded />
                                                     </Col>
 
-                                                    <Col md={4} lg={5} className="px-0 px-md-2 py-2">
+                                                    <Col md={4} lg={5} className="col-8 px-2 px-md-2 py-2">
                                                         <Link to={`/products/${cartItem._id}`}>
                                                             {cartItem.name}
                                                         </Link>
                                                     </Col>
 
-                                                    <Col md={2} className="col-7 px-0 col-md-2">
+                                                    <Col md={2} className="col-6 px-0 col-md-2">
                                                         {currency(cartItem.price)}
                                                     </Col>
 
@@ -85,7 +87,7 @@ const CartScreen = ({ match, location, history }) => {
                                                         </Form.Control>
                                                     </Col>
 
-                                                    <Col md={1} className="col-2 col-md-1 pr-0 text-right">
+                                                    <Col md={1} className="col-3 col-md-1 pr-0 text-right">
                                                         <Button type='button' variant='light' onClick={() => removeFromCartHandler(cartItem._id)}>
                                                             <i className='fas fa-trash'></i>
                                                         </Button>
@@ -96,13 +98,13 @@ const CartScreen = ({ match, location, history }) => {
                                     </ListGroup>
                                 </Col>
 
-                                <Col md={4} className="mb-5 px-0 pl-md-4 order-first order-md-last">
+                                <Col md={4} className="mb-5 px-0 pl-md-4">
                                     <Card className="my-2 text-right">
                                         <ListGroup variant='flush'>
                                             <Card.Header className="p-3 text-right">
-                                                <h4 className="mb-0">
+                                                <h5 className="mb-0">
                                                     {t('subtotal')}: <span className="text-nowrap">{cartItems.reduce((acc, item) => acc + Number(item.qty), 0)} item</span>
-                                                </h4>
+                                                </h5>
                                             </Card.Header>
 
                                             <ListGroup.Item>

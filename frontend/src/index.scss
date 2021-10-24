@@ -18,3 +18,30 @@ main {
 .nav-item .nav-link {
 	color: #efb73e !important;
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin-bottom: 0;
+}
+
+@media screen and (max-width: 576px) {
+	.fs-24 {
+		font-size: 24px !important;
+	}
+	.fs-20 {
+		font-size: 20px !important;
+	}
+	.fs-16 {
+		font-size: 16px !important;
+	}
+	.fs-12 {
+		font-size: 12px !important;
+	}
+	.fs-8 {
+		font-size: 8px !important;
+	}
+}

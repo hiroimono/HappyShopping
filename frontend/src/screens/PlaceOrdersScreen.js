@@ -77,7 +77,7 @@ const PlaceOrdersScreen = ({ history }) => {
                 <Col lg={8}>
                     <ListGroup variant='flush'>
                         <ListGroup.Item className="px-0">
-                            <h3>{t('shipping')}</h3>
+                            <h4>{t('shipping')}:</h4>
                             <Row>
                                 <Col md={2}>
                                     <p className='mb-0'>
@@ -118,25 +118,25 @@ const PlaceOrdersScreen = ({ history }) => {
                         </ListGroup.Item> */}
 
                         <ListGroup.Item className="px-0">
-                            <h3>{t('order-items')}:</h3>
+                            <h4>{t('order-items')}:</h4>
                             {!cart?.cartItems?.length ? (
                                 <Message>{t('your-cart-is-empty')}.</Message>
                             ) : (
                                 <ListGroup variant=''>
                                     {cart.cartItems.map((cartItem, index) => (
-                                        <ListGroup.Item key={index} className="my-2 px-3 py-2" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
+                                        <ListGroup.Item key={index} className="my-2 p-2" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
                                             <Row className="align-items-center m-0">
                                                 <Col xs={2} lg={1} className='px-0'>
                                                     <Image src={cartItem.image[0].path} alt={cartItem.name} fluid rounded />
                                                 </Col>
 
-                                                <Col xs={6} lg={7} className="px-0 px-md-2 py-2">
+                                                <Col xs={6} lg={7} className="px-2 fs-12">
                                                     <Link to={`/products/${cartItem._id}`}>
                                                         {cartItem.name}
                                                     </Link>
                                                 </Col>
 
-                                                <Col xs={4} className="px-0">
+                                                <Col xs={4} className="px-0 fs-12">
                                                     {cartItem.qty} x {currency(cartItem.price)} = {currency(Number(cartItem.qty) * Number(cartItem.price))}
                                                 </Col>
 
@@ -160,17 +160,17 @@ const PlaceOrdersScreen = ({ history }) => {
                             <Card className="my-2 text-right">
                                 <ListGroup variant='flush'>
                                     <Card.Header className="p-3 text-right">
-                                        <h4 className="mb-0 text-center">
+                                        <h5 className="mb-0 text-center">
                                             {t('order-summary')}
-                                        </h4>
+                                        </h5>
                                     </Card.Header>
 
                                     <ListGroup.Item>
                                         <Row>
-                                            <Col xs={2} lg={4} className='px-1'>
+                                            <Col xs={4} className='px-1'>
                                                 {t('items')}:
                                             </Col>
-                                            <Col xs={10} lg={8} className='pr-4 text-right'>
+                                            <Col xs={8} className='pr-4 text-right'>
                                                 {currency(cart.itemsPrice)}
                                             </Col>
                                         </Row>
@@ -178,10 +178,10 @@ const PlaceOrdersScreen = ({ history }) => {
 
                                     <ListGroup.Item>
                                         <Row>
-                                            <Col xs={2} lg={4} className='px-1'>
+                                            <Col xs={4} className='px-1'>
                                                 {t('shipping')}:
                                             </Col>
-                                            <Col xs={10} lg={8} className='pr-4 text-right'>
+                                            <Col xs={8} className='pr-4 text-right'>
                                                 {currency(cart.shippingPrice)}
                                             </Col>
                                         </Row>
@@ -189,10 +189,10 @@ const PlaceOrdersScreen = ({ history }) => {
 
                                     <ListGroup.Item>
                                         <Row>
-                                            <Col xs={2} lg={4} className='px-1'>
+                                            <Col xs={4} className='px-1'>
                                                 {t('tax')}:
                                             </Col>
-                                            <Col xs={10} lg={8} className='pr-4 text-right'>
+                                            <Col xs={8} className='pr-4 text-right'>
                                                 {currency(cart.taxPrice)}
                                             </Col>
                                         </Row>
@@ -200,10 +200,10 @@ const PlaceOrdersScreen = ({ history }) => {
 
                                     <ListGroup.Item>
                                         <Row>
-                                            <Col xs={2} lg={4} className='px-1'>
+                                            <Col xs={4} className='px-1'>
                                                 <h5><strong>{t('total')}:</strong></h5>
                                             </Col>
-                                            <Col xs={10} lg={8} className='pr-4 text-right'>
+                                            <Col xs={8} className='pr-4 text-right'>
                                                 <h5><strong>{currency(cart.totalPrice)}</strong></h5>
                                             </Col>
                                         </Row>
