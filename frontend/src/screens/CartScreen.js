@@ -46,21 +46,17 @@ const CartScreen = ({ match, location, history }) => {
         <Container>
             <Row>
                 <Col md={12}>
-                    <Row>
-                        <h2 className="mb-2">{t('shopping-cart')}:</h2>
-                    </Row>
+                    <h2 className="mb-2">{t('shopping-cart')}:</h2>
                     {
                         cartItems.length === 0 ? (
-                            <Row>
-                                <Message>
-                                    {t('your-cart-is-empty')}.
-                                    <Link to='/'>
-                                        <Button className="btn-sm ml-3" variant='outline-info'>
-                                            <i className="fas fa-home pr-1"></i> Home
-                                        </Button>
-                                    </Link>
-                                </Message>
-                            </Row>
+                            <Message>
+                                {t('your-cart-is-empty')}.
+                                <Link to='/'>
+                                    <Button className="btn-sm ml-3" variant='outline-info'>
+                                        <i className="fas fa-home pr-1"></i> Home
+                                    </Button>
+                                </Link>
+                            </Message>
                         ) : (
                             <Row>
                                 <Col md={8} className="px-0">
