@@ -60,7 +60,7 @@ const MyOrdersScreen = () => {
                             </LinkContainer>
                         </Message>
                     ) : (
-                        <Table striped bordered responsive hover className="table-sm">
+                        <Table striped bordered responsive hover className="table-sm fs-12">
                             <thead>
                                 <tr>
                                     <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>ID</th>

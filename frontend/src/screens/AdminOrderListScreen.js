@@ -152,7 +152,7 @@ const AdminOrderListScreen = ({ history, match }) => {
                                 {
                                     !orders?.userOrders?.length ? (
                                         <Message variant="info">
-                                            {t('there-is-no-order-yet')}.
+                                            <span className="fs-12">{t('there-is-no-order-yet')}.</span>
                                             <LinkContainer to='/'>
                                                 <Button className="btn-sm ml-3" variant='outline-info'>
                                                     <i className="fas fa-home pr-1"></i> Home
@@ -191,7 +191,7 @@ const AdminOrderListScreen = ({ history, match }) => {
                                                     </Row>
                                                 )
                                             }
-                                            <Table striped bordered responsive hover className="table-sm mb-0">
+                                            <Table striped bordered responsive hover className="table-sm mb-0 fs-12">
                                                 <thead>
                                                     <tr>
                                                         <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>#</th>
@@ -326,7 +326,7 @@ const AdminOrderListScreen = ({ history, match }) => {
                                 {
                                     !orders?.visitorOrders?.length ? (
                                         <Message variant="info">
-                                            {t('there-is-no-order-yet')}.
+                                            <span className="fs-12">{t('there-is-no-order-yet')}.</span>
                                             <LinkContainer to='/'>
                                                 <Button className="btn-sm ml-3" variant='outline-info'>
                                                     <i className="fas fa-home pr-1"></i> Home
@@ -364,7 +364,7 @@ const AdminOrderListScreen = ({ history, match }) => {
                                                 )
                                             }
 
-                                            <Table striped bordered responsive hover className="table-sm mb-0">
+                                            <Table striped bordered responsive hover className="table-sm mb-0 fs-12">
                                                 <thead>
                                                     <tr>
                                                         <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>#</th>
@@ -491,7 +491,7 @@ const AdminOrderListScreen = ({ history, match }) => {
                     <Modal.Body>
                         <h3> {t('would-you-really-want-to-cancel-the-order')}? </h3>
 
-                        <Table striped bordered responsive hover className="table-sm mt-4">
+                        <Table striped bordered responsive hover className="table-sm mt-4 fs-12">
                             <thead>
                                 <tr>
                                     <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Id</th>

@@ -103,7 +103,7 @@ const AdminProductListScreen = ({ history, match }) => {
                             </LinkContainer>
                         </Message>
                     ) : (
-                        <Table striped bordered responsive hover className="table-sm">
+                        <Table striped bordered responsive hover className="table-sm fs-12">
                             <thead>
                                 <tr>
                                     <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Id</th>
@@ -145,7 +145,7 @@ const AdminProductListScreen = ({ history, match }) => {
                     <Modal.Body>
                         <h3> {t('would-you-really-want-to-remove-the-product')}? </h3>
 
-                        <Table striped bordered responsive hover className="table-sm mt-4">
+                        <Table striped bordered responsive hover className="table-sm mt-4 fs-12">
                             <thead>
                                 <tr>
                                     <th className="text-center" style={{ verticalAlign: 'middle', textTransform: 'uppercase' }}>Id</th>
