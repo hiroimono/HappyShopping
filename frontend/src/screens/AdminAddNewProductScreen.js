@@ -172,7 +172,7 @@ const AdminAddNewProductScreen = ({ match, history }) => {
 
     return (
         <FormContainer>
-            <h2>{t('add-a-new-product')}</h2>
+            <h4 className="mb-2">{t('add-a-new-product')}</h4>
             {
                 (loading || loadingProduct || isUploading) && <Loader />
             }
@@ -187,7 +187,7 @@ const AdminAddNewProductScreen = ({ match, history }) => {
             }
             <>
                 <Card>
-                    <Card.Body>
+                    <Card.Body className="p-2">
                         <Form noValidate validated={validated} onSubmit={submitHandler}>
                             <Form.Group controlId='name'>
                                 <Form.Label>Name*</Form.Label>
@@ -300,10 +300,13 @@ const AdminAddNewProductScreen = ({ match, history }) => {
                                 <Form.Check type="checkbox" label='User' checked={!isAdmin} onChange={e => setIsAdmin(!e.target.checked)} />
                             </Form.Group> */}
 
-                            <Button type='submit' variant='primary' className="mr-2">{t('generate')}</Button>
+                            <Button type='submit' variant='primary' className="btn-block mb-1">{t('generate')}</Button>
 
                             <LinkContainer to={`/admin/productlist`}>
-                                <Button variant='info' className="mr-2"><i className="fas fa-chevron-circle-left mr-1"></i>{t('back-to-product-list')}</Button>
+                                <Button variant='info' className="btn-block mb-1">
+                                    <i className="fas fa-chevron-circle-left mr-1"></i>
+                                    {t('back-to-product-list')}
+                                </Button>
                             </LinkContainer>
                         </Form>
                     </Card.Body>

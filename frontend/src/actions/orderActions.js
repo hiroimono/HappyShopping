@@ -136,7 +136,7 @@ export const getOrderDetailsById = (id) => async (dispatch, getState) => {
                 : error.message
 
         dispatch({
-            type: constants.ORDER_CREATE_FAIL,
+            type: constants.ORDER_DETAILS_BY_ID_FAIL,
             payload: message,
         })
     }

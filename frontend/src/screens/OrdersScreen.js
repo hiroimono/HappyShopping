@@ -41,7 +41,7 @@ const OrdersScreen = ({ match, history }) => {
     // Calculator
     if (!loading && !loadingPay) {
         const addDecimals = (num) => Math.round((num * 100) / 100).toFixed(2)
-        order.itemsPrice = addDecimals(order.cartItems.reduce((acc, curr) => acc + curr.price * curr.qty, 0));
+        order && (order.itemsPrice = addDecimals(order.cartItems.reduce((acc, curr) => acc + curr.price * curr.qty, 0)));
     }
 
     useEffect(() => {
@@ -156,7 +156,7 @@ const OrdersScreen = ({ match, history }) => {
                     <Col lg={8}>
                         <ListGroup variant='flush'>
                             <ListGroup.Item className='px-0'>
-                                <h3>{t('payment')}:</h3>
+                                <h4 className="mb-2">{t('payment')}:</h4>
                                 {/* <Row>
                                     <Col md={2}>
                                         <p className='mb-0'>
@@ -187,7 +187,7 @@ const OrdersScreen = ({ match, history }) => {
                             </ListGroup.Item>
 
                             <ListGroup.Item className="px-0">
-                                <h3>{t('shipping')}</h3>
+                                <h4 className="mb-2">{t('shipping')}</h4>
                                 {
                                     (order?.user?.name || order?.visitor?.name) && (
                                         <Row>
@@ -262,25 +262,25 @@ const OrdersScreen = ({ match, history }) => {
                             </ListGroup.Item>
 
                             <ListGroup.Item className='px-0'>
-                                <h3>{t('order-items')}:</h3>
+                                <h4 className="mb-2">{t('order-items')}:</h4>
                                 {!order?.cartItems?.length ? (
                                     <Message>{t('your-order-is-empty')}.</Message>
                                 ) : (
                                     <ListGroup variant=''>
                                         {order?.cartItems && order.cartItems.map((item, index) => (
-                                            <ListGroup.Item key={index} className="my-2 px-3 py-2" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
+                                            <ListGroup.Item key={index} className="my-2 p-2" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
                                                 <Row className="align-items-center m-0">
                                                     <Col xs={2} lg={1} className='px-0'>
                                                         <Image src={item.image[0].path} alt={item.name} fluid rounded />
                                                     </Col>
 
-                                                    <Col xs={6} lg={7} className="px-0 px-md-2 py-2">
+                                                    <Col xs={6} lg={7} className="px-2 py-2 fs-10">
                                                         <Link to={`/products/${item._id}`}>
                                                             {item.name}
                                                         </Link>
                                                     </Col>
 
-                                                    <Col xs={4} className="px-0">
+                                                    <Col xs={4} className="px-0 fs-12">
                                                         {item.qty} x {currency(item.price)} = {currency(Number(Number(item.qty) * Number(item.price)).toFixed(2))}
                                                     </Col>
 
@@ -311,10 +311,10 @@ const OrdersScreen = ({ match, history }) => {
 
                                         <ListGroup.Item>
                                             <Row>
-                                                <Col xs={2} lg={4} className='px-1'>
+                                                <Col xs={4} className='px-1'>
                                                     <strong>{t('items')}:</strong>
                                                 </Col>
-                                                <Col xs={10} lg={8} className='pr-4 text-right'>
+                                                <Col xs={8} className='pr-4 text-right'>
                                                     {currency(order.itemsPrice)}
                                                 </Col>
                                             </Row>
@@ -322,10 +322,10 @@ const OrdersScreen = ({ match, history }) => {
 
                                         <ListGroup.Item>
                                             <Row>
-                                                <Col xs={2} lg={4} className='px-1'>
+                                                <Col xs={4} className='px-1'>
                                                     <strong>{t('shipping')}:</strong>
                                                 </Col>
-                                                <Col xs={10} lg={8} className='pr-4 text-right'>
+                                                <Col xs={8} className='pr-4 text-right'>
                                                     {currency(order.shippingPrice)}
                                                 </Col>
                                             </Row>
@@ -333,10 +333,10 @@ const OrdersScreen = ({ match, history }) => {
 
                                         <ListGroup.Item>
                                             <Row>
-                                                <Col xs={2} lg={4} className='px-1'>
+                                                <Col xs={4} className='px-1'>
                                                     <strong>{t('tax')}:</strong>
                                                 </Col>
-                                                <Col xs={10} lg={8} className='pr-4 text-right'>
+                                                <Col xs={8} className='pr-4 text-right'>
                                                     {currency(order.taxPrice)}
                                                 </Col>
                                             </Row>
@@ -344,10 +344,10 @@ const OrdersScreen = ({ match, history }) => {
 
                                         <ListGroup.Item>
                                             <Row>
-                                                <Col xs={2} lg={4} className='px-1'>
+                                                <Col xs={4} className='px-1'>
                                                     <h5><strong>{t('total')}:</strong></h5>
                                                 </Col>
-                                                <Col xs={10} lg={8} className='pr-4 text-right'>
+                                                <Col xs={8} className='pr-4 text-right'>
                                                     <h5><strong>{currency(order.totalPrice)}</strong></h5>
                                                 </Col>
                                             </Row>

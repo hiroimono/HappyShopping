@@ -145,7 +145,7 @@ const AdminProductEditScreen = ({ match, history }) => {
 
     return (
         <FormContainer>
-            <h2>{t('edit-product')}</h2>
+            <h3 className="mb-2">{t('edit-product')}</h3>
             {
                 loading || loadingEdit || isUploading ? (
                     <Loader />
@@ -155,7 +155,7 @@ const AdminProductEditScreen = ({ match, history }) => {
                         {successEdit && <Message variant='success'>{t('success-product-was-updated')}!</Message>}
                         {imgError?.length !== 0 && imgError.map((error, index) => <Message key={index} variant='danger'>{error}</Message>)}
                         <Card>
-                            <Card.Body>
+                            <Card.Body className="p-2">
                                 <Form onSubmit={submitHandler}>
                                     <Form.Group controlId='name'>
                                         <Form.Label>Name</Form.Label>
@@ -197,15 +197,15 @@ const AdminProductEditScreen = ({ match, history }) => {
                                                 image?.length !== 0 && image.map((img, index) => (
                                                     <ListGroup.Item key={index} className="mb-1 p-1" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
                                                         <Row className="align-items-center m-0">
-                                                            <Col xs={1} className='px-0'>
-                                                                <Image src={img?.path} alt={img?.name} fluid rounded />
+                                                            <Col xs={2} className='px-0'>
+                                                                <Image src={img.path} alt={img.name} fluid rounded />
                                                             </Col>
 
-                                                            <Col xs={9} className="px-0 pl-3 text-sm-left">
+                                                            <Col xs={8} className="px-0 pl-2 text-sm-left fs-10">
                                                                 {img?.name}
                                                             </Col>
 
-                                                            <Col xs={2} className="px-2 text-right">
+                                                            <Col xs={2} className="px-0 text-right">
                                                                 <Button type='button' variant="light" onClick={() => removeImgHandler(img.name, index)}>
                                                                     <i className='fas fa-trash'></i>
                                                                 </Button>
@@ -224,10 +224,10 @@ const AdminProductEditScreen = ({ match, history }) => {
                                 <Form.Check type="checkbox" label='User' checked={!isAdmin} onChange={e => setIsAdmin(!e.target.checked)} />
                             </Form.Group> */}
 
-                                    <Button type='submit' variant='primary' className="mr-2">{t('update')}</Button>
+                                    <Button type='submit' variant='primary' className="btn-block mb-1">{t('update')}</Button>
 
                                     <LinkContainer to={`/admin/productlist`}>
-                                        <Button variant='info' className="mr-2">
+                                        <Button variant='info' className="btn-block mb-1">
                                             <i className="fas fa-chevron-circle-left mr-1"></i>
                                             {t('back-to-product-list')}
                                         </Button>
@@ -235,7 +235,7 @@ const AdminProductEditScreen = ({ match, history }) => {
                                     {
                                         match?.params?.id && (
                                             <LinkContainer to={`/products/${match.params.id}`}>
-                                                <Button variant='warning' className="mr-2">
+                                                <Button variant='warning' className="btn-block mb-1">
                                                     <i className="fas fa-chevron-circle-up mr-1"></i>
                                                     {t('show-product')}
                                                 </Button>

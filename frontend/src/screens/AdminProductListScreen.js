@@ -70,7 +70,7 @@ const AdminProductListScreen = ({ history, match }) => {
             <>
                 <Row>
                     <Col>
-                        <h3>{t('products')}:</h3>
+                        <h3 className="mb-2">{t('products')}:</h3>
                     </Col>
 
                     <Col className="text-right">

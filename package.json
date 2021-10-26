@@ -14,6 +14,7 @@
         "data:destroy": "node backend/seeder -d",
         "product:import": "node backend/seeder -p",
         "product:destroy": "node backend/seeder -d -p",
+        "order:destroy": "node backend/seeder -d -o",
         "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
     },
     "repository": {

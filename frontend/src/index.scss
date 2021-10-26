@@ -28,18 +28,42 @@ h6 {
 	margin-bottom: 0;
 }
 
+.d-flex-start {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.d-flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 @media screen and (max-width: 576px) {
 	.fs-24 {
 		font-size: 24px !important;
 	}
+	.fs-22 {
+		font-size: 22px !important;
+	}
 	.fs-20 {
 		font-size: 20px !important;
+	}
+	.fs-18 {
+		font-size: 18px !important;
 	}
 	.fs-16 {
 		font-size: 16px !important;
 	}
+	.fs-14 {
+		font-size: 14px !important;
+	}
 	.fs-12 {
 		font-size: 12px !important;
+	}
+	.fs-10 {
+		font-size: 10px !important;
 	}
 	.fs-8 {
 		font-size: 8px !important;

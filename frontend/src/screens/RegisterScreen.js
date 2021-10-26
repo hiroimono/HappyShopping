@@ -71,13 +71,13 @@ const RegisterScreen = ({ location, history }) => {
 
     return (
         <FormContainer>
-            <h3>{t('register')}</h3>
+            <h3 className="mb-2">{t('register')}</h3>
             {message && <Message variant='danger'>{message}</Message>}
             {error && <Message variant='danger'>{error}</Message>}
             {loading && <Loader />}
 
             <Card>
-                <Card.Body>
+                <Card.Body className="p-2">
                     <Form onSubmit={submitHandler}>
                         <Form.Group controlId='name'>
                             <Form.Label>{t('name-and-surname')}*</Form.Label>
@@ -142,15 +142,15 @@ const RegisterScreen = ({ location, history }) => {
                             </div>
                         </Form.Group>
 
-                        <Button type='submit' variant='primary'>{t('register')}</Button>
+                        <Button type='submit' variant='primary' className="btn-block">{t('register')}</Button>
 
                         <Row className="py-3">
-                            <Col className="text-right">
+                            <Col className="text-right fs-14">
                                 {t('already-have-an-account')} ? {' '}
-                                <span onClick={redirectTo} style={{ cursor: 'pointer', color: '#e95420' }}>
+                                <div onClick={redirectTo} style={{ cursor: 'pointer', color: '#e95420' }}>
                                     {t('login')}
                                     <i className="fas fa-sign-in-alt pl-1"></i>
-                                </span>
+                                </div>
                             </Col>
                         </Row>
                     </Form>

@@ -76,7 +76,7 @@ const ProfileScreen = ({ location, history }) => {
 
     return (
         <FormContainer>
-            <h2>{t('user-profile')}</h2>
+            <h2 className="mb-2">{t('user-profile')}</h2>
             {message && <Message variant='danger'>{message}</Message>}
             {success && <Message variant="success">Profile Updated</Message>}
             {loading ? (
@@ -85,7 +85,7 @@ const ProfileScreen = ({ location, history }) => {
                 <Message variant='danger'>{error}</Message>
             ) : (
                 <Card>
-                    <Card.Body>
+                    <Card.Body className="p-2">
                         <Form onSubmit={submitHandler}>
                             <Form.Group controlId='name'>
                                 <Form.Label>{t('name-and-surname')}</Form.Label>
@@ -150,7 +150,7 @@ const ProfileScreen = ({ location, history }) => {
                                 </div>
                             </Form.Group>
 
-                            <Button type='submit' variant='primary'>{t('update')}</Button>
+                            <Button type='submit' variant='primary' className="btn-block">{t('update')}</Button>
                         </Form>
                     </Card.Body>
                 </Card>

@@ -68,14 +68,14 @@ const AdminUserEditScreen = ({ match, history }) => {
 
     return (
         <FormContainer>
-            <h2>{t('edit-user')}</h2>
+            <h3 className="mb-2">{t('edit-user')}</h3>
             {loading ? (
                 <Loader />
             ) : error || errorEdit ? (
                 <Message variant='danger'>{error || errorEdit}</Message>
             ) : (
                 <Card>
-                    <Card.Body>
+                    <Card.Body className="p-2">
                         <Form onSubmit={submitHandler}>
                             <Form.Group controlId='name'>
                                 <Form.Label>{t('name-and-surname')}</Form.Label>
@@ -93,7 +93,7 @@ const AdminUserEditScreen = ({ match, history }) => {
                                 <Form.Check type="checkbox" label={t('user')} checked={!isAdmin} onChange={e => setIsAdmin(!e.target.checked)} />
                             </Form.Group>
 
-                            <Button type='submit' variant='primary'>{t('update')}</Button>
+                            <Button type='submit' variant='primary' className="btn-block">{t('update')}</Button>
                         </Form>
                     </Card.Body>
                 </Card>

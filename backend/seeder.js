@@ -85,7 +85,22 @@ const destroyProducts = async () => {
     }
 }
 
-if (process.argv[2] === '-d' && process.argv[3] === '-p') {
+const destroyOrders = async () => {
+    console.log('Starting: '.green.inverse, 'Destroy Orders'.yellow)
+    try {
+        await Order.deleteMany()
+
+        console.log('Destroyed: '.red.inverse, 'Orders'.yellow)
+        process.exit()
+    } catch (error) {
+        console.error(`${error}`.red.inverse)
+        process.exit(1)
+    }
+}
+
+if (process.argv[2] === '-d' && process.argv[3] === '-o') {
+    destroyOrders()
+} else if (process.argv[2] === '-d' && process.argv[3] === '-p') {
     destroyProducts()
 } else if (process.argv[2] === '-p') {
     importProducts()

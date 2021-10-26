@@ -77,7 +77,7 @@ const PlaceOrdersScreen = ({ history }) => {
                 <Col lg={8}>
                     <ListGroup variant='flush'>
                         <ListGroup.Item className="px-0">
-                            <h4>{t('shipping')}:</h4>
+                            <h4 className="mb-2">{t('shipping')}:</h4>
                             <Row>
                                 <Col md={2}>
                                     <p className='mb-0'>
@@ -118,7 +118,7 @@ const PlaceOrdersScreen = ({ history }) => {
                         </ListGroup.Item> */}
 
                         <ListGroup.Item className="px-0">
-                            <h4>{t('order-items')}:</h4>
+                            <h4 className="mb-2">{t('order-items')}:</h4>
                             {!cart?.cartItems?.length ? (
                                 <Message>{t('your-cart-is-empty')}.</Message>
                             ) : (

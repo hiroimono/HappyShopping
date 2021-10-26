@@ -51,10 +51,10 @@ const ShippingScreen = ({ history }) => {
                 {
                     !userInfo && (
                         <Card className="mb-3">
-                            <Card.Header>
+                            <Card.Header className="p-2">
                                 <h5>{t('guest-info')}</h5>
                             </Card.Header>
-                            <Card.Body>
+                            <Card.Body className="p-2">
                                 <Form.Row>
                                     <Form.Group as={Col} sm={6} lg={8} controlId='name'>
                                         <Form.Label>{t('name-and-surname')}*</Form.Label>
@@ -84,12 +84,11 @@ const ShippingScreen = ({ history }) => {
                     )
                 }
 
-
                 <Card className="mb-3">
-                    <Card.Header>
+                    <Card.Header className="p-2">
                         <h5>{t('shipping-address')}</h5>
                     </Card.Header>
-                    <Card.Body>
+                    <Card.Body className="p-2">
                         <Form.Row>
                             <Form.Group as={Col} sm={6} lg={8} controlId='street'>
                                 <Form.Label>{t('street')}*</Form.Label>
@@ -148,7 +147,7 @@ const ShippingScreen = ({ history }) => {
                             </Form.Group>
                         </Form.Row>
 
-                        <Button type='submit' variant='primary'>{t('continue')}</Button>
+                        <Button type='submit' className="btn-block" variant='primary'>{t('continue')}</Button>
                     </Card.Body>
                 </Card>
             </Form>

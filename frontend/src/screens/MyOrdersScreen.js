@@ -48,7 +48,7 @@ const MyOrdersScreen = () => {
         error || errorCancel ?
             <Message variant='danger'>{error || errorCancel}</Message> :
             <>
-                <h3>{t('my-orders')}:</h3>
+                <h3 className="mb-2">{t('my-orders')}:</h3>
                 {
                     !myOrders?.length ? (
                         <Message variant="info">

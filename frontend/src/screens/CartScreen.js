@@ -47,17 +47,20 @@ const CartScreen = ({ match, location, history }) => {
             <Row>
                 <Col md={12}>
                     <Row>
-                        <h2>{t('shopping-cart')}:</h2>
+                        <h2 className="mb-2">{t('shopping-cart')}:</h2>
                     </Row>
                     {
                         cartItems.length === 0 ? (
-                            <Message>
-                                {t('your-cart-is-empty')}. <Link to='/'>
-                                    <Button className="btn-sm ml-3" variant='outline-info'>
-                                        <i className="fas fa-home pr-1"></i> Home
-                                    </Button>
-                                </Link>
-                            </Message>
+                            <Row>
+                                <Message>
+                                    {t('your-cart-is-empty')}.
+                                    <Link to='/'>
+                                        <Button className="btn-sm ml-3" variant='outline-info'>
+                                            <i className="fas fa-home pr-1"></i> Home
+                                        </Button>
+                                    </Link>
+                                </Message>
+                            </Row>
                         ) : (
                             <Row>
                                 <Col md={8} className="px-0">
@@ -65,21 +68,21 @@ const CartScreen = ({ match, location, history }) => {
                                         {cartItems.map((cartItem) => (
                                             <ListGroup.Item key={cartItem._id} className="my-2 px-2 py-2" style={{ backgroundColor: 'ghostwhite', borderTopWidth: '1px' }}>
                                                 <Row className="align-items-center m-0">
-                                                    <Col md={2} className='col-4 px-0'>
+                                                    <Col xs={3} md={2} className='px-0'>
                                                         <Image src={cartItem.image[0].path} alt={cartItem.name} fluid rounded />
                                                     </Col>
 
-                                                    <Col md={4} lg={5} className="col-8 px-2 px-md-2 py-2">
+                                                    <Col md={4} lg={5} className="d-none d-md-block fs-14 px-2 px-md-2 py-2">
                                                         <Link to={`/products/${cartItem._id}`}>
                                                             {cartItem.name}
                                                         </Link>
                                                     </Col>
 
-                                                    <Col md={2} className="col-6 px-0 col-md-2">
+                                                    <Col md={2} className="d-none d-md-block px-0">
                                                         {currency(cartItem.price)}
                                                     </Col>
 
-                                                    <Col md={2} className="col-3 px-0 col-md-2">
+                                                    <Col md={2} className="d-none d-md-block px-0">
                                                         <Form.Control as='select' value={cartItem.qty} onChange={(e) => setQty(cartItem._id, e.target.value)}>
                                                             {[...Array(cartItem.countInStock).keys()].map((num) =>
                                                                 <option key={num}>{num + 1}</option>
@@ -87,10 +90,40 @@ const CartScreen = ({ match, location, history }) => {
                                                         </Form.Control>
                                                     </Col>
 
-                                                    <Col md={1} className="col-3 col-md-1 pr-0 text-right">
+                                                    <Col md={1} className="d-none d-md-block pr-0 text-right">
                                                         <Button type='button' variant='light' onClick={() => removeFromCartHandler(cartItem._id)}>
                                                             <i className='fas fa-trash'></i>
                                                         </Button>
+                                                    </Col>
+
+                                                    <Col xs={9} className="d-md-none align-items-stretch">
+                                                        <Row className="justify-content-around align-items-center">
+                                                            <Col className="d-flex-start fs-14 py-2">
+                                                                <Link to={`/products/${cartItem._id}`}>
+                                                                    {cartItem.name}
+                                                                </Link>
+                                                            </Col>
+                                                        </Row>
+
+                                                        <Row className="justify-content-around align-items-center">
+                                                            <Col xs={5} className="d-flex-start">
+                                                                {currency(cartItem.price)}
+                                                            </Col>
+
+                                                            <Col xs={4} className="text-right px-1">
+                                                                <Form.Control as='select' value={cartItem.qty} onChange={(e) => setQty(cartItem._id, e.target.value)}>
+                                                                    {[...Array(cartItem.countInStock).keys()].map((num) =>
+                                                                        <option key={num}>{num + 1}</option>
+                                                                    )}
+                                                                </Form.Control>
+                                                            </Col>
+
+                                                            <Col xs={3} className="text-right px-0">
+                                                                <Button type='button' variant='light' onClick={() => removeFromCartHandler(cartItem._id)}>
+                                                                    <i className='fas fa-trash'></i>
+                                                                </Button>
+                                                            </Col>
+                                                        </Row>
                                                     </Col>
                                                 </Row>
                                             </ListGroup.Item>

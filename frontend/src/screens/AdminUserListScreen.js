@@ -74,7 +74,7 @@ const AdminUserListScreen = ({ history }) => {
         error || errorDeleted ?
             <Message variant='danger'>{error || errorDeleted}</Message> :
             <>
-                <h3>{t('my-orders')}:</h3>
+                <h3 className="mb-2">{t('my-orders')}:</h3>
                 {showSuccess && <Message variant="success">{t('user-edited-successfully')}.</Message>}
                 {
                     deletedUser && (

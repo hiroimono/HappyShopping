@@ -133,16 +133,16 @@ const AdminOrderListScreen = ({ history, match }) => {
                 <Accordion defaultActiveKey="0">
                     <Card>
                         <Card.Header className="border-0 d-flex p-0 m-0">
-                            <Accordion.Toggle eventKey="0" className="flex-grow-1 border-0 p-3 w-100" onClick={() => selectedTabHandler(0)} style={{
+                            <Accordion.Toggle eventKey="0" className="flex-grow-1 border-0 p-2 p-md-3 w-100" onClick={() => selectedTabHandler(0)} style={{
                                 backgroundColor: selected[0] ? '#cccccc' : '#eeeeee'
                             }}>
-                                <h4 className="mb-0">{t('orders-by-users')}:</h4>
+                                <h4 className="mb-0 fs-16">{t('orders-by-users')}:</h4>
                             </Accordion.Toggle>
 
-                            <Accordion.Toggle eventKey="1" className="flex-grow-1 border-0 p-3 w-100" onClick={() => selectedTabHandler(1)} style={{
+                            <Accordion.Toggle eventKey="1" className="flex-grow-1 border-0 p-2 p-md-3 w-100" onClick={() => selectedTabHandler(1)} style={{
                                 backgroundColor: selected[1] ? '#cccccc' : '#eeeeee'
                             }}>
-                                <h4 className="mb-0">{t('orders-by-guests')}:</h4>
+                                <h4 className="mb-0 fs-16">{t('orders-by-guests')}:</h4>
                             </Accordion.Toggle>
                             {/* <h4 className="mb-0">Orders By Users:</h4> */}
                         </Card.Header>
