@@ -20,6 +20,7 @@ import { addNewProduct, getSingleProduct } from '../actions/productActions';
 
 /** i18n */
 import { useTranslation } from 'react-i18next'
+import { constants } from '../constants/constant';
 
 const AdminAddNewProductScreen = ({ match, history }) => {
     const { t } = useTranslation();
@@ -56,13 +57,18 @@ const AdminAddNewProductScreen = ({ match, history }) => {
 
     const { userInfo } = useSelector(state => state.userLogin);
     const { loading: loadingProduct, error: errorProduct, product } = useSelector(state => state.product);
-    const { loading, productAdded, error } = useSelector(state => state.productNewAdd);
+    const { loading, productAdded, error: errorAdded } = useSelector(state => state.productNewAdd);
 
     useEffect(() => {
         if (!userInfo) {
             history.push('/login')
         }
     }, [history, userInfo])
+
+    useEffect(() => {
+        dispatch({ type: constants.SINGLE_PRODUCT_RESET })
+        dispatch({ type: constants.PRODUCT_NEW_ADD_RESET })
+    }, [dispatch])
 
     // useEffect(() => {
     //     if (!(product?._id || successEdit)) {
@@ -91,7 +97,10 @@ const AdminAddNewProductScreen = ({ match, history }) => {
             setProductAddedSuccess(true)
             // history.push('/admin/productlist')
         }
-    }, [dispatch, productAdded])
+        return () => {
+            dispatch({ type: constants.PRODUCT_NEW_ADD_RESET })
+        }
+    }, [dispatch, errorAdded, productAdded])
 
     useEffect(() => {
         if (product) {
@@ -103,7 +112,10 @@ const AdminAddNewProductScreen = ({ match, history }) => {
             setCountInStock(product.countInStock)
             setImage([...product.image])
         }
-    }, [dispatch, product])
+        return () => {
+            dispatch({ type: constants.SINGLE_PRODUCT_RESET })
+        }
+    }, [dispatch, errorAdded, product, productAdded])
 
     const submitHandler = (e) => {
         const form = e.currentTarget;
@@ -172,12 +184,12 @@ const AdminAddNewProductScreen = ({ match, history }) => {
 
     return (
         <FormContainer>
-            <h4 className="mb-2">{t('add-a-new-product')}</h4>
+            <h4 className="mb-2 fs-22">{t('add-a-new-product')}</h4>
             {
                 (loading || loadingProduct || isUploading) && <Loader />
             }
             {
-                (error || errorProduct) && <Message variant='danger'>{error || errorProduct}</Message>
+                (errorAdded || errorProduct) && <Message variant='danger'>{errorAdded || errorProduct}</Message>
             }
             {
                 imgError?.length !== 0 && imgError.map((error, index) => <Message key={index} variant='danger'>{error}</Message>)

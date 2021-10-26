@@ -36,6 +36,8 @@ export const productNewAddReducer = (state = { productAdded: null }, action) => 
             return { ...state, loading: false, productAdded: action.payload }
         case constants.PRODUCT_NEW_ADD_FAILED:
             return { ...state, loading: false, error: action.payload }
+        case constants.PRODUCT_NEW_ADD_RESET:
+            return { productAdded: null }
         default:
             return state
     }
