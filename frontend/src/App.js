@@ -30,7 +30,7 @@ const App = () => {
         <Router>
             <Header />
 
-            <main style={{ paddingTop: '56px' }}>
+            <main id='main' style={{ paddingTop: '56px' }}>
                 <Container className='py-3'>
                     <Route path='/' component={HomeScreen} exact />
                     <Route path='/login' component={LoginScreen} />

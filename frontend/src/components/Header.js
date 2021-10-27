@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 
@@ -30,6 +30,27 @@ const Header = ({ history }) => {
     const { cartItems } = useSelector(state => state.cart)
 
     const isLoggedIn = userInfo ? true : false;
+
+    useEffect(() => {
+        const main = document.getElementById('main');
+        main.addEventListener('click', toggle)
+        return () => main.removeEventListener('click', toggle)
+    }, [])
+
+    const toggle = () => {
+        const toggler = document.querySelector('button.navbar-toggler');
+        const navbar = document.querySelector('div#collapse');
+        if (navbar.classList.contains('show') && !toggler.classList.contains('collapsed')) {
+            toggler.classList.add('collapsed');
+            navbar.classList.remove('show')
+            navbar.classList.remove('collapse')
+            navbar.classList.add('collapsing');
+            setTimeout(() => {
+                navbar.classList.remove('collapsing');
+                navbar.classList.add('collapse');
+            }, 100);
+        }
+    }
 
     const logoutHandler = () => {
         dispatch(userLogout())
