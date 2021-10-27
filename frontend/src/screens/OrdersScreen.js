@@ -414,9 +414,13 @@ const OrdersScreen = ({ match, history }) => {
                                             )}
                                         </ListGroup.Item>
 
-                                        <ListGroup.Item className='p-0'>
-                                            <Button className="btn-sm w-100 mr-2" variant='outline-danger' onClick={() => removeOrder(order._id)}>{t('cancel-order')}</Button>
-                                        </ListGroup.Item>
+                                        {
+                                            userInfo ? (
+                                                <ListGroup.Item className='p-0'>
+                                                    <Button className="btn-sm w-100 mr-2" variant='outline-danger' onClick={() => removeOrder(order._id)}>{t('cancel-order')}</Button>
+                                                </ListGroup.Item>
+                                            ) : ''
+                                        }
                                     </>
                                 )
                             }
