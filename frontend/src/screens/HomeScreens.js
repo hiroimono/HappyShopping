@@ -29,7 +29,7 @@ const HomeScreen = () => {
 
     return (
         <>
-            <h2>{t('latest-products')}</h2>
+            <h2 className="mb-2">{t('latest-products')}</h2>
 
             {loading ?
                 <Loader /> :
