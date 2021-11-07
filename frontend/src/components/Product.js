@@ -6,7 +6,11 @@ import { Card } from 'react-bootstrap';
 import Ratings from './Ratings';
 import ImgSlider from './ImgSlider';
 
+/** i18n */
+import { useTranslation } from 'react-i18next'
+
 const Product = ({ product }) => {
+    const { t } = useTranslation();
 
     const currency = (amount) => new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(amount)
     let history = useHistory()
@@ -21,6 +25,11 @@ const Product = ({ product }) => {
                     {/* <Link to={`/products/${product?._id}`} title={product?.description}> */}
                     <Card.Title as='div'>
                         <strong>{product?.name}</strong>
+                        <sup className="ml-2">
+                            <span className="badge badge-info badge-pill px-2 py-1">
+                                {t('go')}<i class="fas fa-external-link-alt pl-2 fa-xs"></i>
+                            </span>
+                        </sup>
                     </Card.Title>
                     <Card.Text as='div'>
                         <Ratings rating={product.rating} numReviews={product.numReviews} color='gold' />
