@@ -28,8 +28,10 @@ const PlaceOrdersScreen = ({ history }) => {
     // Calculator
     const addDecimals = (num) => Math.round((num * 100) / 100).toFixed(2)
     cart.itemsPrice = addDecimals(cart.cartItems.reduce((acc, curr) => acc + curr.price * curr.qty, 0));
-    cart.shippingPrice = cart.itemsPrice > 100 ? addDecimals(0) : Number(10);
-    cart.taxPrice = addDecimals(.19 * cart.itemsPrice);
+    // cart.shippingPrice = cart.itemsPrice > 100 ? addDecimals(0) : Number(10);
+    cart.shippingPrice = cart.itemsPrice > 100 ? addDecimals(0) : Number(0);
+    // cart.taxPrice = addDecimals(.19 * cart.itemsPrice);
+    cart.taxPrice = 0;
     cart.totalPrice = addDecimals(Number(cart.itemsPrice) + Number(cart.shippingPrice) + Number(cart.taxPrice));
 
     const { order, success, error } = useSelector(state => state.orderCreate)
@@ -187,7 +189,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                         </Row>
                                     </ListGroup.Item>
 
-                                    <ListGroup.Item>
+                                    {/* <ListGroup.Item>
                                         <Row>
                                             <Col xs={4} className='px-1'>
                                                 {t('tax')}:
@@ -196,7 +198,7 @@ const PlaceOrdersScreen = ({ history }) => {
                                                 {currency(cart.taxPrice)}
                                             </Col>
                                         </Row>
-                                    </ListGroup.Item>
+                                    </ListGroup.Item> */}
 
                                     <ListGroup.Item>
                                         <Row>
@@ -212,14 +214,12 @@ const PlaceOrdersScreen = ({ history }) => {
 
                             </Card>
 
-
                             {
                                 error &&
                                 <Message variant='danger'>
                                     {error}
                                 </Message>
                             }
-
 
                             <Button type='button' className='btn btn-success btn-block'
                                 disabled={!cart.cartItems.length}
