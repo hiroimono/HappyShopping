@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // bootstrap
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
+import { Button, Row, Col, ListGroup, Image, Card, Container } from 'react-bootstrap';
 
 // Components
 import Message from '../components/Message';
@@ -72,7 +72,7 @@ const PlaceOrdersScreen = ({ history }) => {
     console.log('cart.cartItems: ', cart.cartItems);
 
     return (
-        <>
+        <Container>
             <CheckoutSteps step1 step2 step3></CheckoutSteps>
 
             <Row>
@@ -230,7 +230,7 @@ const PlaceOrdersScreen = ({ history }) => {
                     </ListGroup>
                 </Col>
             </Row>
-        </>
+        </Container>
     )
 }
 

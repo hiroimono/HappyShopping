@@ -64,17 +64,17 @@ export const updateProductById = asyncHandler(async (req, res) => {
         product.countInStock = req.body.countInStock || product.countInStock;
         product.image = req.body.image || product.image;
 
-        const updatedUser = await product.save();
+        const updatedProduct = await product.save();
 
         res.json({
-            _id: updatedUser._id,
-            name: updatedUser.name,
-            description: updatedUser.description,
-            brand: updatedUser.brand,
-            category: updatedUser.category,
-            price: updatedUser.price,
-            countInStock: updatedUser.countInStock,
-            image: updatedUser.image
+            _id: updatedProduct._id,
+            name: updatedProduct.name,
+            description: updatedProduct.description,
+            brand: updatedProduct.brand,
+            category: updatedProduct.category,
+            price: updatedProduct.price,
+            countInStock: updatedProduct.countInStock,
+            image: updatedProduct.image
         })
     } else {
         res.status(404);

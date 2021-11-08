@@ -118,5 +118,6 @@
     "please-enter-a-positive-number": "Please enter a positive number",
     "generate": "Generate",
     "value": "Value",
-    "go": "Go to details"
+    "go": "Go to details",
+    "categories": "Categories"
 }

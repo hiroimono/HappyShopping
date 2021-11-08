@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // bootstrap
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Card, Button, Container } from 'react-bootstrap';
 
 // Paypal Button
 // import { loadScript } from "@paypal/paypal-js";
@@ -151,7 +151,7 @@ const OrdersScreen = ({ match, history }) => {
         <Loader /> :
         error || errorPay || errorPayAdmin || errorDeliver || errorNotDeliver ?
             <Message variant='danger'>{error || errorPay || errorPayAdmin || errorDeliver || errorNotDeliver}</Message> :
-            <>
+            <Container>
                 <Row>
                     <Col lg={8}>
                         <ListGroup variant='flush'>
@@ -427,7 +427,7 @@ const OrdersScreen = ({ match, history }) => {
                         </ListGroup>
                     </Col>
                 </Row >
-            </>
+            </Container>
 }
 
 export default OrdersScreen

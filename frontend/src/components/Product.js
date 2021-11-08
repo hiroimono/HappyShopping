@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Card } from 'react-bootstrap';
+import { Card, Badge } from 'react-bootstrap';
 
 /** Components */
 import Ratings from './Ratings';
@@ -26,9 +26,9 @@ const Product = ({ product }) => {
                     <Card.Title as='div'>
                         <strong>{product?.name}</strong>
                         <sup className="ml-2">
-                            <span className="badge badge-info badge-pill px-2 py-1">
-                                {t('go')}<i class="fas fa-external-link-alt pl-2 fa-xs"></i>
-                            </span>
+                            <Badge pill className="badge-warning px-2 py-1">
+                                {t('go')}<i className="fas fa-external-link-alt pl-2 fa-xs"></i>
+                            </Badge>
                         </sup>
                     </Card.Title>
                     <Card.Text as='div'>

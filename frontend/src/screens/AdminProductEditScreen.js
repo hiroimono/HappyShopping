@@ -117,10 +117,10 @@ const AdminProductEditScreen = ({ match, history }) => {
         }
     }
 
-    const removeImgHandler = async (name, index) => {
+    const removeImgHandler = async (id, name, index) => {
         try {
             setIsUploading(true);
-            const { data } = await axios.delete(`/api/uploads/delete/${name}`)
+            const { data } = await axios.delete(`/api/uploads/delete/${id}/${name}`)
             if (data?.status === 'deleted') {
                 let arr = [...image]
                 let deleted = arr.splice(index, 1);
@@ -206,7 +206,7 @@ const AdminProductEditScreen = ({ match, history }) => {
                                                             </Col>
 
                                                             <Col xs={2} className="px-0 text-right">
-                                                                <Button type='button' variant="light" onClick={() => removeImgHandler(img.name, index)}>
+                                                                <Button type='button' variant="light" onClick={() => removeImgHandler(product._id, img.name, index)}>
                                                                     <i className='fas fa-trash'></i>
                                                                 </Button>
                                                             </Col>

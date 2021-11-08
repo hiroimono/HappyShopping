@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 // bootstrap
-import { Row, Col, ListGroup, Card, Button, Form } from 'react-bootstrap';
+import { Row, Col, ListGroup, Card, Button, Form, Container } from 'react-bootstrap';
 
 // actions
 import { getSingleProduct } from '../actions/productActions.js'
@@ -58,7 +58,7 @@ const ProductScreen = ({ history, match }) => {
 
     console.log('qty: ', qty);
     return (
-        <>
+        <Container>
             {loading ?
                 <Loader /> :
                 error ?
@@ -168,7 +168,7 @@ const ProductScreen = ({ history, match }) => {
                         </>
                     )
             }
-        </>
+        </Container>
     )
 }
 

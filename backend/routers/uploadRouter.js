@@ -3,6 +3,9 @@ import asyncHandler from 'express-async-handler'
 import path from 'path'
 import multer from 'multer'
 import fs from 'fs'
+import Product from '../models/productModel.js';
+
+
 
 const router = express.Router()
 
@@ -45,9 +48,11 @@ router.route('/').post(upload.array('image'), asyncHandler((req, res) => {
     res.status(201).json(files)
 }))
 
-router.route('/delete/:name').delete(asyncHandler((req, res) => {
+router.route('/delete/:id/:name').delete(asyncHandler(async (req, res) => {
+    const fileId = req.params.id;
+    console.log('fileId: ', fileId);
     const filename = req.params.name;
-    fs.unlink(`uploads/${filename}`, function (err) {
+    fs.unlink(`uploads/${filename}`, async function (err) {
         if (err && err.code == 'ENOENT') {
             // file doens't exist
             res.status(400).json({ error: "File doesn't exist, won't remove it." });
@@ -55,6 +60,18 @@ router.route('/delete/:name').delete(asyncHandler((req, res) => {
             // other errors, e.g. maybe we don't have enough permission
             res.status(400).json({ error: "Error occurred while trying to remove file" });
         } else {
+
+            const product = await Product.findById(req.params.id);
+
+            if (product) {
+                product.image = product.image.filter(img => img.name !== filename);
+
+                const updatedProduct = await product.save();
+            } else {
+                res.status(404);
+                throw new Error('Product not updated while deleting image!');
+            }
+
             res.status(201).json({
                 name: filename,
                 status: 'deleted'
