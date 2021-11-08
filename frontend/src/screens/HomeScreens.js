@@ -78,7 +78,7 @@ const HomeScreen = () => {
                                 <ButtonGroup vertical as={Card} className="p-0 border-0">
                                     {
                                         cats?.length && cats.map((cat, i) => (
-                                            <Button key={i} className="btn btn-light btn-outline-info border-0 text-left pl-3"
+                                            <Button key={i} className="btn btn-light btn-outline-warning border-0 text-left pl-3"
                                                 onClick={() => setSelectedCat(cat)}>
                                                 {cat}
                                             </Button>
