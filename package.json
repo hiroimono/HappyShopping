@@ -4,6 +4,9 @@
     "description": "A Sample Online Shopping Webpage like Amazon built by using MERN stack",
     "main": "server.js",
     "type": "module",
+    "engines": {
+        "node": "14.19.1"
+    },
     "scripts": {
         "start": "nodemon backend/server",
         "client": "npm start --prefix frontend",
