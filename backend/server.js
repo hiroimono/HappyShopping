@@ -2,9 +2,11 @@ import express from 'express';
 import path from 'path';
 import { config } from 'dotenv';
 import connectDB from './config/db.js';
+import serverless from "serverless-http";
 
 import colors from 'colors';
 
+import defaultRouter from './routers/defaultRouter.js';
 import productRouter from './routers/productRouter.js';
 import userRouter from './routers/userRouter.js';
 import orderRouter from './routers/orderRouter.js';
@@ -29,19 +31,22 @@ const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '/frontend/build')));
-    app.get('*', (req, res) =>
-        res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-    )
+    // app.use(express.static(path.join(__dirname, '/frontend/build')));
+    // app.get('*', (req, res) =>
+    //     res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+    // );
+    app.use("/.netlify/functions/server", defaultRouter);
 } else {
     app.get('/', (req, res) => {
-        res.send('API is running....')
-    })
+        res.send('API is running....');
+    });
 }
 
 /** Not found pages and Error Handler Middlewares */
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000
-app.listen(PORT, console.log(`Backend Sever is running in ${process.env.NODE_ENV} mode on port ${PORT}!`.yellow.bold))
+// const PORT = process.env.PORT || 5000
+// app.listen(PORT, console.log(`Backend Sever is running in ${process.env.NODE_ENV} mode on port ${PORT}!`.yellow.bold))
+module.exports = app;
+module.exports.handler = serverless(app);
