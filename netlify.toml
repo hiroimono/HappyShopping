@@ -3,4 +3,4 @@
   node_bundler = "esbuild"
 
 [build]
-  command = "npm install && npm run build"
+  command = "npm install && npm install --prefix frontend && npm run build --prefix frontend"
