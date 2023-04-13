@@ -52,5 +52,5 @@ app.use(errorHandler);
 
 // const PORT = process.env.PORT || 5000
 // app.listen(PORT, console.log(`Backend Sever is running in ${process.env.NODE_ENV} mode on port ${PORT}!`.yellow.bold))
-module.exports = app;
-module.exports.handler = serverless(app);
+exports = app;
+exports.handler = serverless(app);
