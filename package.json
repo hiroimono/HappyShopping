@@ -8,7 +8,8 @@
         "node": "16.x"
     },
     "scripts": {
-        "start": "nodemon backend/server",
+        "start": "node backend/server",
+        "server": "nodemon backend/server",
         "local": "concurrently \"npm run client\" \"npm run backend\"",
         "client": "set PORT=3005 && npm start --prefix frontend",
         "backend": "npm start",
