@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 /** Styles */
 import { Container } from 'react-bootstrap';
@@ -24,6 +24,7 @@ import AdminProductListScreen from './screens/AdminProductListScreen';
 import AdminOrderListScreen from './screens/AdminOrderListScreen';
 import AdminProductEditScreen from './screens/AdminProductEditScreen';
 import AdminAddNewProductScreen from './screens/AdminAddNewProductScreen';
+import { Redirect } from 'react-router-dom/cjs/react-router-dom.min';
 
 const App = () => {
     return (
@@ -49,12 +50,15 @@ const App = () => {
                     <Route path='/admin/orderlist' component={AdminOrderListScreen} />
                     <Route path='/admin/productedit/:id/edit' component={AdminProductEditScreen} />
                     <Route path='/admin/product/add' component={AdminAddNewProductScreen} />
+                    <Route path='*'>
+                        <Redirect to="/" />
+                    </Route>
                 </Container>
             </main>
 
             <Footer />
         </Router>
     );
-}
+};
 
 export default App;
